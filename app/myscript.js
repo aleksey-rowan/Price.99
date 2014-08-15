@@ -79,6 +79,8 @@ $(document).on("change", function () {
 
             price.value = parseFloat(price.valueString);
 
+            //console.log("match", price, elm);
+
             // discard prices more than 99,999
             if (price.value <= 99999) {
                 

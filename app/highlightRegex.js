@@ -32,27 +32,34 @@
     }*/
     $.fn.highlightRegex = function (regex, options) {
         if (typeof regex === 'object' && !(regex.constructor.name == 'RegExp' || regex instanceof RegExp)) {
-            options = regex
-            regex = undefined
+            options = regex;
+            regex = undefined;
         }
+
         if (typeof options === 'undefined') options = {}
-        options.className = options.className || 'highlight'
+        options.className = options.className || '';
+        options.jClassName = options.className ? '.' + options.className : options.className;
         options.tagType = options.tagType || 'span'
         options.attrs = options.attrs || {}
+
+
         if (typeof regex === 'undefined' || regex.source === '') {
-            $(this).find(options.tagType + '.' + options.className).each(function () {
-                $(this).replaceWith($(this).text())
-                //normalize($(this).parent().get(0))
-            })
+            $(this)
+                .find(options.tagType + options.jClassName)
+                .each(function () {
+                    var node = $(this);
+                    node.replaceWith(node.text());
+                    //normalize(node.parent().get(0))
+                });
         } else {
             $(this).each(function () {
                 var elt = $(this).get(0)
                 //normalize(elt)
 
                 switch (this.tagName) {
-                    case "SCRIPT":
+                    case 'SCRIPT':
                         return;
-                    case "STYLE":
+                    case 'STYLE':
                         return;
                     default:
                 }
@@ -62,7 +69,7 @@
                     //normalize(searchnode)
                     if (searchnode.nodeType == 3) {
                         // don't re-highlight the same node over and over
-                        if ($(searchnode).parent(options.tagType + '.' + options.className).length) {
+                        if ($(searchnode).parent(options.tagType + options.jClassName).length) {
                             return;
                         }
 
@@ -82,7 +89,9 @@
                                 //console.log(result);
                                                                                                
                                 spannode = document.createElement(options.tagType)
-                                spannode.className = options.className
+                                if (options.className) {
+                                    spannode.className = options.className
+                                }
                                 $(spannode).attr(options.attrs)
 
                                 if (!first) {

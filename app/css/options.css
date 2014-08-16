@@ -1,0 +1,12 @@
+﻿body {
+    width: 450px;
+    height: 500px;
+}
+
+.chrome-bootstrap .frame .navigation {
+    width: 100px;
+}
+
+.chrome-bootstrap .frame .view {
+    -webkit-margin-start: 100px
+}

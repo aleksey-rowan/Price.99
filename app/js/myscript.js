@@ -6,8 +6,11 @@ $(document).on("change", function () {
     console.log("I've changed!");
 });
 
-//$(document).ready(function () {
+(function () {
     "use strict";
+
+
+    
     console.log("hey!");
 
     var nodes = $("body").children(":not('script, style')"), //$("body").children().not("script");
@@ -117,21 +120,21 @@ $(document).on("change", function () {
                     for (i = 0; i < whole.length; i++) {
                         price.parts.whole[i]
                             .text(whole[i])
-                            .attr("title", "Old price: " + price.value)
-                            .css("text-decoration", "underline");
+                            .attr("title", "Old price: " + price.value);
+                            //.css("text-decoration", "underline");
                         //.css("background-color", "red");
 
                     }
 
                     price.parts.decimalMark
-                        .attr("title", "Old price: " + price.value)
-                        .css("text-decoration", "underline");
+                        .attr("title", "Old price: " + price.value);
+                        //.css("text-decoration", "underline");
 
                     for (i = 0; i < fraction.length; i++) {
                         price.parts.fraction[i]
                             .text(fraction[i])
-                            .attr("title", "Old price: " + price.value)
-                            .css("text-decoration", "underline");
+                            .attr("title", "Old price: " + price.value);
+                            //.css("text-decoration", "underline");
                             //.css("background-color", "blue");
                     }
                 }
@@ -158,4 +161,7 @@ $(document).on("change", function () {
     //"1324.42".match(/^(-)?(\d+)((.|,)\d{2})/ig)
 
     //$(".number").each(function (i, elm) { var num = parseFloat($(elm).text(), 10), trail = (num % 1).toFixed(2); if (trail >= .9) { console.log(num, Math.round(num)); $(elm).text(Math.round(num)); } })
-//});
+
+
+}());
+

@@ -145,6 +145,8 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
             },
 
             reset: function () {
+                this.setPrice(this.oldPrice);
+                this.synchronize(this.newPrice);
                 this.isChanged = false;
             },
 
@@ -187,6 +189,19 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
                   });
 
                   break;
+
+              case "reset":
+                  var count = 0;
+
+                  pricePoints.forEach(function (pp) {
+                      pp.reset();
+                      count += pp.isChanged ? 1 : 0;
+                  });
+
+                  chrome.runtime.sendMessage({
+                      action: 'pricesChanged',
+                      count: count
+                  });
 
               default:
                   break;
@@ -251,81 +266,6 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
         if (m) {
             console.log("match", m[0], "->", (parseFloat(m[0].replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, "")) % 1).toFixed(2), "||", value);
             pricePoints.push(Object.create(pricePoint).init(m[0], elm));
-
-            /*price = {
-                valueString: m[0].replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, ""),
-
-                parts: {
-                    currencySign: null,
-                    whole: [],
-                    decimalMark: null,
-                    fraction: []
-                }
-            };
-
-            price.value = parseFloat(price.valueString);
-
-            //console.log("match", price, elm);
-
-            // discard prices more than 99,999
-            if (price.value <= 99999) {
-                price.valueArray = price.valueString.split("");
-                price.fraction = parseFloat((price.value % 1).toFixed(2), 10);
-                price.nodes = elm.splice(0, price.valueString.length + 1);
-
-                var decimalMarkIndex = price.valueArray.indexOf(".") + 1,
-                    whole, fraction, i;
-
-                price.parts.currencySign = price.nodes[0];
-                price.parts.whole = price.nodes.slice(1, decimalMarkIndex);
-                price.parts.decimalMark = price.nodes[decimalMarkIndex];
-                price.parts.fraction = price.nodes.slice(decimalMarkIndex + 1);
-
-                //console.log("match", price);
-
-                if (price.fraction > 0.3) {
-                    ps = Math.ceil(price.value).toFixed(2);
-                    decimalMarkIndex = ps.indexOf(".");
-                    price.newValue = parseFloat(ps, 10);
-
-                    whole = ps.substring(0, decimalMarkIndex);
-                    fraction = ps.substring(decimalMarkIndex + 1);
-
-                    if (decimalMarkIndex > price.parts.whole.length) {
-                        var x = price.parts.whole[price.parts.whole.length - 1],
-                            xclone = x.clone();
-
-                        price.parts.whole.push(xclone)
-                        x.after(xclone);
-                    }
-
-                    for (i = 0; i < whole.length; i++) {
-                        price.parts.whole[i]
-                            .text(whole[i])
-                            .attr("title", "Old price: " + price.value);
-                            //.css("text-decoration", "underline");
-                        //.css("background-color", "red");
-                    }
-
-                    price.parts.decimalMark
-                        .attr("title", "Old price: " + price.value);
-                        //.css("text-decoration", "underline");
-
-                    for (i = 0; i < fraction.length; i++) {
-                        price.parts.fraction[i]
-                            .text(fraction[i])
-                            .attr("title", "Old price: " + price.value);
-                            //.css("text-decoration", "underline");
-                            //.css("background-color", "blue");
-                    }
-                }
-
-                // filter garbage nodes
-                //elm = elm.splice(price.valueString.length);
-
-                //console.log("match", m, "->", (m.replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, "") % 1).toFixed(2), "||", value);
-            }
-            */
         } else {
             console.log("garbage", value);
         }
@@ -343,4 +283,27 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
     //"1324.42".match(/^(-)?(\d+)((.|,)\d{2})/ig)
 
     //$(".number").each(function (i, elm) { var num = parseFloat($(elm).text(), 10), trail = (num % 1).toFixed(2); if (trail >= .9) { console.log(num, Math.round(num)); $(elm).text(Math.round(num)); } })
+
+    MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+    var timeOutFlag;
+
+    var observer = new MutationObserver(function (mutations, observer) {
+        console.log(mutations, observer);
+
+        if (timeOutFlag) {
+            window.clearTimeout(timeOutFlag);
+        }
+
+        timeOutFlag = window.setTimeout(function () {
+            console.log('Mutations finished');
+        }, 200);
+    });
+
+    // define what element should be observed by the observer
+    // and what types of mutations trigger the callback
+    observer.observe(document, {
+        subtree: true,
+        childList: true
+    });
 }());

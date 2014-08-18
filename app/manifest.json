@@ -11,10 +11,10 @@
 
     "options_page": "options.html",
 
-    "browser_action": {
+    /*"browser_action": {
         "default_icon": "img/icon.png",
         "default_popup": "options.html"
-    },
+    },*/
 
     "background": {
         "scripts": [
@@ -22,14 +22,14 @@
         ]
     },
 
-    /*"page_action": {
+    "page_action": {
         "default_icon": {                    // optional
         "19": "img/icon.png",           // optional
         "38": "img/icon.png"            // optional
         },
         "default_title": "Price.99",      // optional; shown in tooltip
         "default_popup": "options.html"        // optional
-    },*/
+    },
 
     "permissions": [
         "storage"

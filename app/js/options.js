@@ -60,7 +60,11 @@
         var likesColor = document.getElementById('like').checked;
         chrome.storage.sync.set({
             favoriteColor: color,
-            likesColor: likesColor
+            likesColor: likesColor,
+            complex: {
+                object: "me",
+                andArray: [1,2,3]
+            },
         }, function () {
             // Update status to let user know options were saved.
             var status = document.getElementById('status');
@@ -78,10 +82,13 @@
         // Use default value color = 'red' and likesColor = true.
         chrome.storage.sync.get({
             favoriteColor: 'red',
-            likesColor: true
+            likesColor: true,
+            complex: null
         }, function (items) {
             document.getElementById('color').value = items.favoriteColor;
             document.getElementById('like').checked = items.likesColor;
+
+            console.log(items);
         });
     }
     document.getElementById('save').addEventListener('click',

@@ -1,31 +1,26 @@
 ﻿/* global $, chrome */
 
-//Price.99    
+//Price.99
 
 $(document).on("change", function () {
     console.log("I've changed!");
 });
 
-chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
-    console.log(response.farewell);
+/*chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
+    console.log('hello ->', response.farewell);
 });
 
-chrome.runtime.onMessage.addListener(
-  function (request, sender, sendResponse) {
-      console.log(sender.tab ?
-                  "from a content script:" + sender.tab.url :
-                  "from the extension");
+chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
+    console.log('getOptions ->', response.farewell);
+});
 
-      console.log(request);
-  });
-
+  */
 (function () {
     "use strict";
-    
+
     var buddy,
         CONST = {
             CURRENCY_SIGNS: '$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺'
-
         },
         event = {
             GET_OPTIONS: "getOptions",
@@ -35,7 +30,6 @@ chrome.runtime.onMessage.addListener(
         options,
         pricePoint = {
             init: function (text, nodes) {
-
                 $.extend(this, {
                     oldPrice: {
                         value: null,
@@ -76,23 +70,19 @@ chrome.runtime.onMessage.addListener(
                 this.parts.decimalMark = this.nodes[this.oldPrice.decimalMarkIndex + 1];
                 this.parts.fraction = this.nodes.slice(this.oldPrice.decimalMarkIndex + 2);
 
-                if (this.recalculatePrice()) {
-                    this.synchronize(this.newPrice);
-                }
-
                 return this;
             },
-            
-            setPrice: function(target, text) {
+
+            setPrice: function (target, text) {
                 target.valueString = text.replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, ""),
                 target.value = parseFloat(target.valueString);
                 target.whole = parseInt(target.valueString);
                 target.fraction = parseFloat((target.value % 1).toFixed(2), 10);
-                target.decimalMarkIndex = 
+                target.decimalMarkIndex =
                     target.valueString.indexOf(".") !== -1 ? target.valueString.indexOf(".") : target.valueString.length;
             },
 
-            recalculatePrice: function() {
+            recalculatePrice: function () {
                 if (this.oldPrice.fraction > 0.3) {
                     var ps = Math.ceil(this.oldPrice.value).toFixed(2);
 
@@ -104,7 +94,7 @@ chrome.runtime.onMessage.addListener(
                 }
             },
 
-            synchronize: function(targetPrice) {
+            synchronize: function (targetPrice) {
                 var node,
                     nodeClone,
                     i,
@@ -147,31 +137,66 @@ chrome.runtime.onMessage.addListener(
                 }
             },
 
-            update: function() {
-
+            update: function () {
+                if (this.recalculatePrice()) {
+                    this.synchronize(this.newPrice);
+                    this.isChanged = true;
+                }
             },
 
-            reset: function() {
-                
+            reset: function () {
+                this.isChanged = false;
             },
+
+            isChanged: false,
 
             oldPrice: null,
             newPrice: null,
             parts: null,
             nodes: null
         },
+        pricePoints = [],
         garbage = [],
-        pricePoints = [];
+        nodes = $("body").children(":not('script, style')"), //$("body").children().not("script"),
+        array = [];
 
     console.log("Price.99's here");
 
-    var nodes = $("body").children(":not('script, style')"), //$("body").children().not("script");
-        array = [];
+    chrome.runtime.sendMessage({ action: 'getOptions' });
+
+    chrome.runtime.onMessage.addListener(
+      function (request, sender, sendResponse) {
+          console.log(sender.tab ?
+                      "from a content script:" + sender.tab.url :
+                      "from the extension", request);
+
+          switch (request.action) {
+              case "optionsChanged":
+                  console.log('Tab: new options received');
+
+                  var count = 0;
+
+                  pricePoints.forEach(function (pp) {
+                      pp.update();
+                      count += pp.isChanged ? 1 : 0;
+                  });
+
+                  chrome.runtime.sendMessage({
+                      action: 'pricesChanged',
+                      count: count
+                  });
+
+                  break;
+
+              default:
+                  break;
+          }
+      });
 
     nodes.highlightRegex(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺.\d]/ig, {
         tagType: "ppnn"
     });
-        
+
     /*nodes.highlightRegex(/[.]/ig, { //nodes.highlightRegex(/[.,]/ig, {
         tagType: "ppnn",
         className: "ppnn-decimal-mark"
@@ -186,15 +211,15 @@ chrome.runtime.onMessage.addListener(
         tagType: "ppnn",
         className: "ppnn-digit"
     });*/
-    
+
     /*$("body").highlightRegex(/(-)?(\d+)((.|,)\d{2})?/ig, {
         tagType: "price",
         className: "number"
     });*/
-    
+
     $("ppnn").each(function (i, elm) {
         var t;
-        elm = $(elm);            
+        elm = $(elm);
 
         if (elm.text() === "$") {
             array.push([elm]);
@@ -207,14 +232,13 @@ chrome.runtime.onMessage.addListener(
 
         return;
 
-
         //if (elm.hasClass("ppnn-currency-symbol")) {
         //    array.push([elm]);
         //} else if (array.length > 0) {
         //    t = array[array.length - 1];
         //    t.push(elm);
         //}
-    });    
+    });
 
     unwrapNodes(garbage);
 
@@ -225,7 +249,6 @@ chrome.runtime.onMessage.addListener(
             ps;
 
         if (m) {
-
             console.log("match", m[0], "->", (parseFloat(m[0].replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, "")) % 1).toFixed(2), "||", value);
             pricePoints.push(Object.create(pricePoint).init(m[0], elm));
 
@@ -246,7 +269,6 @@ chrome.runtime.onMessage.addListener(
 
             // discard prices more than 99,999
             if (price.value <= 99999) {
-                
                 price.valueArray = price.valueString.split("");
                 price.fraction = parseFloat((price.value % 1).toFixed(2), 10);
                 price.nodes = elm.splice(0, price.valueString.length + 1);
@@ -265,9 +287,9 @@ chrome.runtime.onMessage.addListener(
                     ps = Math.ceil(price.value).toFixed(2);
                     decimalMarkIndex = ps.indexOf(".");
                     price.newValue = parseFloat(ps, 10);
-                    
+
                     whole = ps.substring(0, decimalMarkIndex);
-                    fraction = ps.substring(decimalMarkIndex + 1);                   
+                    fraction = ps.substring(decimalMarkIndex + 1);
 
                     if (decimalMarkIndex > price.parts.whole.length) {
                         var x = price.parts.whole[price.parts.whole.length - 1],
@@ -276,14 +298,13 @@ chrome.runtime.onMessage.addListener(
                         price.parts.whole.push(xclone)
                         x.after(xclone);
                     }
-                    
+
                     for (i = 0; i < whole.length; i++) {
                         price.parts.whole[i]
                             .text(whole[i])
                             .attr("title", "Old price: " + price.value);
                             //.css("text-decoration", "underline");
                         //.css("background-color", "red");
-
                     }
 
                     price.parts.decimalMark
@@ -303,8 +324,7 @@ chrome.runtime.onMessage.addListener(
                 //elm = elm.splice(price.valueString.length);
 
                 //console.log("match", m, "->", (m.replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, "") % 1).toFixed(2), "||", value);
-                
-            }   
+            }
             */
         } else {
             console.log("garbage", value);
@@ -323,7 +343,4 @@ chrome.runtime.onMessage.addListener(
     //"1324.42".match(/^(-)?(\d+)((.|,)\d{2})/ig)
 
     //$(".number").each(function (i, elm) { var num = parseFloat($(elm).text(), 10), trail = (num % 1).toFixed(2); if (trail >= .9) { console.log(num, Math.round(num)); $(elm).text(Math.round(num)); } })
-
-
 }());
-

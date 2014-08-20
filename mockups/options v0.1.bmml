@@ -1,0 +1,145 @@
+<mockup version="1.0" skin="wireframe" fontFace="Balsamiq Sans" measuredW="1590" measuredH="662" mockupW="1463" mockupH="601">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::Switch" x="389" y="94" w="-1" h="-1" measuredW="49" measuredH="28" zOrder="0" locked="false" isInGroup="-1"/>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Switch" x="457" y="94" w="-1" h="-1" measuredW="49" measuredH="28" zOrder="1" locked="false" isInGroup="-1"/>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::NumericStepper" x="457" y="137" w="-1" h="-1" measuredW="49" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>99</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::NumericStepper" x="393" y="137" w="-1" h="-1" measuredW="41" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>9</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::Switch" x="340" y="94" w="-1" h="-1" measuredW="49" measuredH="28" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <onOffState>off</onOffState>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::NumericStepper" x="340" y="137" w="49" h="-1" measuredW="41" measuredH="24" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>disabled</state>
+        <text>9</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Switch" x="291" y="94" w="-1" h="-1" measuredW="49" measuredH="28" zOrder="6" locked="false" isInGroup="-1"/>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::NumericStepper" x="295" y="137" w="-1" h="-1" measuredW="41" measuredH="24" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>9</text>
+      </controlProperties>
+    </control>
+    <control controlID="14" controlTypeID="com.balsamiq.mockups::Title" x="280" y="128" w="-1" h="-1" measuredW="12" measuredH="43" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%2C</text>
+      </controlProperties>
+    </control>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::Title" x="441" y="128" w="-1" h="-1" measuredW="10" measuredH="43" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>.</text>
+      </controlProperties>
+    </control>
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Title" x="232" y="128" w="-1" h="-1" measuredW="48" measuredH="43" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>...9</text>
+      </controlProperties>
+    </control>
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::NumericStepper" x="1063" y="371" w="-1" h="-1" measuredW="49" measuredH="24" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>89</text>
+      </controlProperties>
+    </control>
+    <control controlID="20" controlTypeID="com.balsamiq.mockups::NumericStepper" x="999" y="371" w="-1" h="-1" measuredW="41" measuredH="24" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>9</text>
+      </controlProperties>
+    </control>
+    <control controlID="22" controlTypeID="com.balsamiq.mockups::NumericStepper" x="946" y="371" w="49" h="-1" measuredW="41" measuredH="24" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>disabled</state>
+        <text>9</text>
+      </controlProperties>
+    </control>
+    <control controlID="24" controlTypeID="com.balsamiq.mockups::NumericStepper" x="901" y="371" w="-1" h="-1" measuredW="41" measuredH="24" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>9</text>
+      </controlProperties>
+    </control>
+    <control controlID="25" controlTypeID="com.balsamiq.mockups::Title" x="886" y="362" w="-1" h="-1" measuredW="12" measuredH="43" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%2C</text>
+      </controlProperties>
+    </control>
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::Title" x="1047" y="362" w="-1" h="-1" measuredW="10" measuredH="43" zOrder="16" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>.</text>
+      </controlProperties>
+    </control>
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::Title" x="778" y="362" w="-1" h="-1" measuredW="105" measuredH="43" zOrder="17" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>%24%20123</text>
+      </controlProperties>
+    </control>
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::CheckBox" x="908" y="331" w="-1" h="-1" measuredW="34" measuredH="22" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>selected</state>
+        <text>On</text>
+      </controlProperties>
+    </control>
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::CheckBox" x="957" y="331" w="-1" h="-1" measuredW="34" measuredH="22" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>On</text>
+      </controlProperties>
+    </control>
+    <control controlID="31" controlTypeID="com.balsamiq.mockups::CheckBox" x="1006" y="331" w="-1" h="-1" measuredW="34" measuredH="22" zOrder="20" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>selected</state>
+        <text>On</text>
+      </controlProperties>
+    </control>
+    <control controlID="32" controlTypeID="com.balsamiq.mockups::CheckBox" x="1075" y="331" w="34" h="22" measuredW="34" measuredH="22" zOrder="21" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>selected</state>
+        <text>On</text>
+      </controlProperties>
+    </control>
+    <control controlID="38" controlTypeID="com.balsamiq.mockups::Tooltip" x="1395" y="61" w="-1" h="-1" measuredW="92" measuredH="33" zOrder="22" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>a%20tooltip</text>
+      </controlProperties>
+    </control>
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::iPadPopover" x="823" y="405" w="296" h="154" measuredW="222" measuredH="187" zOrder="25" locked="false" isInGroup="-1">
+      <controlProperties>
+        <popoverArrowPosition>4</popoverArrowPosition>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="40" controlTypeID="com.balsamiq.mockups::SubTitle" x="823" y="271" w="-1" h="-1" measuredW="210" measuredH="27" zOrder="23" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Rounding%20Up%20Rules</text>
+      </controlProperties>
+    </control>
+    <control controlID="41" controlTypeID="com.balsamiq.mockups::Title" x="127" y="312" w="-1" h="-1" measuredW="293" measuredH="43" zOrder="24" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Round%20Up%20Rules</text>
+      </controlProperties>
+    </control>
+    <control controlID="42" controlTypeID="com.balsamiq.mockups::Paragraph" x="833" y="439" w="275" h="113" measuredW="275" measuredH="80" zOrder="26" locked="false" isInGroup="-1">
+      <controlProperties>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22871.9833984375%2C534%2C919.42041015625%2C547%22%20href%3D%22http%3A//support.balsamiq.com/customer/portal/articles/110121%23basicformatting%22%20alt%3D%22web%20link%22%20id%3D%2242%22%20target%3D%22_blank%22/%3E</map>
+        <text>The%20price%20will%20be%20rounded%20*up*%20to%20the%20nearest%20dollar%20when%20the%20number%20of%20cents%20exceeds%20or%20is%20equal%20%20%7Bcolor%3Anavy%7D*89*%7Bcolor%7D.%0A%20%0A_Example_%3A%0A56.99%09-%3E%20%20%20%0957.00%20%0A56.88%09-%3E%20%0956.88%0A%20%0A%20%0AA%20*paragraph*%20of%20%7Bcolor%3Ared%7Dtext%7Bcolor%7D%20with%20an%20%5Bunassigned%20link%5D.%0AA%20_second_%20%26row%26%20of%20%7Etext%7E%20with%20a%20%5Bweb%20link%5D%28http%3A//support.balsamiq.com/customer/portal/articles/110121%23basicformatting%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="43" controlTypeID="com.balsamiq.mockups::Paragraph" x="1315" y="146" w="-1" h="-1" measuredW="275" measuredH="80" zOrder="27" locked="false" isInGroup="-1">
+      <controlProperties>
+        <map>%3Carea%20shape%3D%22rect%22%20coords%3D%221353.9833984375%2C100.6%2C1401.42041015625%2C113.6%22%20href%3D%22http%3A//support.balsamiq.com/customer/portal/articles/110121%23basicformatting%22%20alt%3D%22web%20link%22%20id%3D%2243%22%20target%3D%22_blank%22/%3E</map>
+        <text>A%20*paragraph*%20of%20%7Bcolor%3Ared%7Dtext%7Bcolor%7D%20with%20an%20%5Bunassigned%20link%5D.%0AA%20_second_%20%26row%26%20of%20%7Etext%7E%20with%20a%20%5Bweb%20link%5D%28http%3A//support.balsamiq.com/customer/portal/articles/110121%23basicformatting%29</text>
+      </controlProperties>
+    </control>
+    <control controlID="45" controlTypeID="com.balsamiq.mockups::Image" x="150" y="439" w="-1" h="-1" measuredW="416" measuredH="223" zOrder="28" locked="false" isInGroup="-1">
+      <controlProperties>
+        <src>./assets/2014-08-18%252022_07_45-Picker%2520Demo%2520-%2520Opera.png</src>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

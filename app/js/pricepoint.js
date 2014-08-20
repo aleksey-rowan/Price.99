@@ -57,12 +57,6 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
                 // keep string and parsed price
                 this.setPrice(this.oldPrice, text);
 
-                /*this.oldPrice.valueString = text.replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, ""),
-                this.oldPrice.value = parseFloat(this.oldPrice.valueString);
-                this.oldPrice.whole = parseInt(this.oldPrice.valueString);
-                this.oldPrice.fraction = parseFloat((this.oldPrice.value % 1).toFixed(2), 10);
-                this.oldPrice.decimalMarkIndex = this.oldPrice.valueString.indexOf(".");*/
-
                 this.nodes = nodes.splice(0, this.oldPrice.valueString.length + 1);
 
                 this.parts.currencySign = this.nodes[0]; // count currency sign when slicing up the node array
@@ -83,7 +77,52 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
             },
 
             recalculatePrice: function () {
-                if (this.oldPrice.fraction > 0.3) {
+                var isRounded = false,
+                    roundRules = options.roundRules,
+                    roundedPrice = this.oldPrice.value,
+                    temp;
+
+                if (roundRules.cents.enabled
+                    && parseFloat((roundedPrice % 1).toFixed(2), 10) >= roundRules.cents.value / 100) {
+                    roundedPrice = Math.ceil(roundedPrice);
+                    isRounded = true;
+                }
+
+                if (roundRules.dollars.enabled) {
+                    temp = util.getDigit(roundedPrice, 0);
+
+                    if (temp >= roundRules.dollars.value) {
+                        roundedPrice = Math.floor(roundedPrice) + 10 - temp;
+                        isRounded = true;
+                    }
+                }
+
+                if (roundRules.tens.enabled) {
+                    temp = util.getDigit(roundedPrice, 1);
+
+                    if (temp >= roundRules.tens.value) {
+                        roundedPrice = Math.floor(roundedPrice) + 100 - (temp * 10) - util.getDigit(roundedPrice, 0);
+                        isRounded = true;
+                    }
+                }
+
+                if (roundRules.hundreds.enabled) {
+                    temp = util.getDigit(roundedPrice, 2);
+
+                    if (temp >= roundRules.hundreds.value) {
+                        roundedPrice = Math.floor(roundedPrice) + 1000 - (temp * 100) - (util.getDigit(roundedPrice, 1) * 10) - util.getDigit(roundedPrice, 0);
+                        isRounded = true;
+                    }
+                }
+
+                if (isRounded) {
+                    this.setPrice(this.newPrice, parseInt(roundedPrice, 10).toFixed(2));
+                    return true;
+                } else {
+                    return false;
+                }
+
+                /*if (this.oldPrice.fraction > 0.3) {
                     var ps = Math.ceil(this.oldPrice.value).toFixed(2);
 
                     this.setPrice(this.newPrice, ps);
@@ -91,7 +130,9 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
                     return true;
                 } else {
                     return false;
-                }
+                }*/
+
+                //return isRounded;
             },
 
             synchronize: function (targetPrice) {
@@ -121,19 +162,23 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
                         });
                 }
 
-                this.parts.decimalMark
-                    .attr({
-                        title: "Old price: " + this.oldPrice.value,
-                        class: 'ppnn-invisible'
-                    });
-
-                for (i = 0; i < fractionString.length; i++) {
-                    this.parts.fraction[i]
-                        .text(fractionString[i])
+                if (this.parts.decimalMark) {
+                    this.parts.decimalMark
                         .attr({
                             title: "Old price: " + this.oldPrice.value,
                             class: 'ppnn-invisible'
                         });
+                }
+
+                if (this.parts.fraction.length > 0) {
+                    for (i = 0; i < fractionString.length; i++) {
+                        this.parts.fraction[i]
+                            .text(fractionString[i])
+                            .attr({
+                                title: "Old price: " + this.oldPrice.value,
+                                class: 'ppnn-invisible'
+                            });
+                    }
                 }
             },
 
@@ -160,7 +205,23 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
         pricePoints = [],
         garbage = [],
         nodes = $("body").children(":not('script, style')"), //$("body").children().not("script"),
-        array = [];
+        array = [],
+
+        parser,
+        util;
+
+    parser = (function () {
+        return {
+        };
+    }());
+
+    util = (function () {
+        return {
+            getDigit: function (N, n) {
+                return Math.floor(N / (Math.pow(10, n)) % 10);
+            }
+        };
+    }());
 
     console.log("Price.99's here");
 
@@ -174,6 +235,8 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
 
           switch (request.action) {
               case "optionsChanged":
+                  options = request.options;
+
                   console.log('Tab: new options received');
 
                   var count = 0;
@@ -212,26 +275,6 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
         tagType: "ppnn"
     });
 
-    /*nodes.highlightRegex(/[.]/ig, { //nodes.highlightRegex(/[.,]/ig, {
-        tagType: "ppnn",
-        className: "ppnn-decimal-mark"
-    });*/
-
-    /*nodes.highlightRegex(/[aeiouy]/ig, {
-        tagType: "ppnn",
-        className: "ppnn-vowel"
-    });*/
-
-    /*nodes.highlightRegex(/\d/ig, {
-        tagType: "ppnn",
-        className: "ppnn-digit"
-    });*/
-
-    /*$("body").highlightRegex(/(-)?(\d+)((.|,)\d{2})?/ig, {
-        tagType: "price",
-        className: "number"
-    });*/
-
     $("ppnn").each(function (i, elm) {
         var t;
         elm = $(elm);
@@ -244,15 +287,6 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
         } else {
             garbage.push(elm);
         }
-
-        return;
-
-        //if (elm.hasClass("ppnn-currency-symbol")) {
-        //    array.push([elm]);
-        //} else if (array.length > 0) {
-        //    t = array[array.length - 1];
-        //    t.push(elm);
-        //}
     });
 
     unwrapNodes(garbage);
@@ -280,10 +314,8 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
         });
     }
 
-    //"1324.42".match(/^(-)?(\d+)((.|,)\d{2})/ig)
-
-    //$(".number").each(function (i, elm) { var num = parseFloat($(elm).text(), 10), trail = (num % 1).toFixed(2); if (trail >= .9) { console.log(num, Math.round(num)); $(elm).text(Math.round(num)); } })
-
+    // Mutation Observers
+    /*
     MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
 
     var timeOutFlag;
@@ -306,4 +338,5 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
         subtree: true,
         childList: true
     });
+    */
 }());

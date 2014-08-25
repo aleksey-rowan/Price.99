@@ -2,9 +2,9 @@
 
 //Price.99
 
-$(document).on("change", function () {
+/*$(document).on("change", function () {
     console.log("I've changed!");
-});
+});*/
 
 /*chrome.runtime.sendMessage({ greeting: "hello" }, function (response) {
     console.log('hello ->', response.farewell);
@@ -15,6 +15,20 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
 });
 
   */
+
+// package/lib is a dependency we require
+define(["package/lib"], function (lib) {
+    // behavior for our module
+    function foo() {
+        lib.log("hello world!");
+    }
+
+    // export (expose) foo to other modules as foobar
+    return {
+        foobar: foo
+    }
+});
+
 (function () {
     "use strict";
 
@@ -224,6 +238,8 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
     }());
 
     console.log("Price.99's here");
+
+    return;
 
     chrome.runtime.sendMessage({ action: 'getOptions' });
 

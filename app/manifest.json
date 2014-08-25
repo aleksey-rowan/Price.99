@@ -23,12 +23,12 @@
     },
 
     "page_action": {
-        "default_icon": {                    // optional
-        "19": "img/icon.png",           // optional
-        "38": "img/icon.png"            // optional
+        "default_icon": { // optional
+            "19": "img/icon.png", // optional
+            "38": "img/icon.png" // optional
         },
-        "default_title": "Price.99",      // optional; shown in tooltip
-        "default_popup": "options.html"        // optional
+        "default_title": "Price.99", // optional; shown in tooltip
+        "default_popup": "options.html" // optional
     },
 
     "permissions": [
@@ -38,14 +38,23 @@
     "content_scripts": [
         {
             "matches": [ "<all_urls>" ],
-            "css": [ 
+            "css": [
                 "css/pricepoint.css"
             ],
             "js": [
-                "js/lib/jquery-1.11.1.min.js",
+                "js/require.js",
+                "js/requireContent.js",
+                "js/main.js",
+                "js/lib/jquery-1.11.1.min.js"
+                /*"js/lib/jquery-1.11.1.min.js",
                 "js/lib/highlightRegex.js",
-                "js/pricepoint.js"
+                "js/pricepoint.js"*/
             ]
         }
+    ],
+
+    "web_accessible_resources": [
+        "js/*",
+        "js/lib/*"
     ]
 }

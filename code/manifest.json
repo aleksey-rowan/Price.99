@@ -1,0 +1,53 @@
+{
+    "manifest_version": 2,
+
+    "name": "Price.99",
+    "description": "This extension demonstrates a browser action with kittens.",
+    "version": "0.0.1",
+
+    "icons": { "128": "images/icon.png" },
+
+    "options_page": "options.html",
+
+    /*"browser_action": {
+        "default_icon": "images/icon.png",
+        "default_popup": "html/popup.html"
+    },*/
+
+    "background": {
+        "scripts": [
+            "js/background.js"
+        ]
+    },
+
+    "page_action": {
+        "default_icon": { // optional
+            "19": "img/icon.png", // optional
+            "38": "img/icon.png" // optional
+        },
+        "default_title": "Price.99", // optional; shown in tooltip
+        "default_popup": "options.html" // optional
+    },
+
+    "permissions": [
+        "storage"
+    ],
+
+    "content_scripts": [
+        {
+            "matches": [ "<all_urls>" ],
+            "css": [
+                "css/pricepoint.css"
+            ],
+            "js": [
+                "js/content.js"
+            ]
+        }
+    ],
+
+    "options_page": "html/options.html",
+    "devtools_page": "html/devtools.html",
+    "permissions": [ "<all_urls>" ],
+    "web_accessible_resources": [ "js/*", "html/*", "css/*", "images/*" ],
+    "content_security_policy": "script-src 'self'; object-src 'self'"
+}

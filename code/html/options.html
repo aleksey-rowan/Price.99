@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>My Test Extension Options</title>
+    <link href="css/lib/chrome-bootstrap.min.css" rel="stylesheet" />
+    <link href="css/options.css" rel="stylesheet" />
+</head>
+<body class="chrome-bootstrap">
+
+    <div class="frame">
+        <div class="navigation">
+            <h1><a href="#">Price.99</a></h1>
+            <ul class="menu">
+                <li class="selected">
+                    <a href="#options">Options</a>
+                </li>                
+            </ul>
+            <ul class="menu">
+                <li>
+                    <a href="#about">About</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mainview view">
+            <div id="options" class="selected">
+                <header>
+                    <h1>Options</h1>
+                </header>
+                <div class="content">
+                    <h2>H2 heading</h2>
+                    <h3>H3 heading</h3>
+                    <h4>H4 heading</h4>
+                    <p>Pellentesque tincidunt, metus a posuere sagittis, turpis metus mattis lectus, eget gravida eros odio at orci. Donec a sem orci. Aliquam erat volutpat. Suspendisse vehicula sapien vel elit pulvinar vehicula. Suspendisse ullamcorper egestas convallis. Integer non urna massa, et tristique risus. Aenean rhoncus suscipit ornare.</p>
+                    <p>Praesent porttitor imperdiet iaculis. Duis vel placerat lectus. Vivamus ante enim, ultrices id accumsan id, mollis in nunc. Cras volutpat dolor vel metus mattis at mattis nisi blandit. Donec sollicitudin, sapien ut lacinia viverra, massa sapien gravida ante, ac lobortis turpis justo eu felis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nullam porta risus quis nisl sodales eu euismod neque pulvinar. Ut et dolor ante. Cras dapibus dolor non metus eleifend ornare.</p>
+                    <a href="#">This is a link</a>
+
+                    Favorite color:
+                    <select id="color">
+                        <option value="red">red</option>
+                        <option value="green">green</option>
+                        <option value="blue">blue</option>
+                        <option value="yellow">yellow</option>
+                    </select>
+
+                    <label>
+                        <input type="checkbox" id="like">
+                        I like colors.
+                    </label>
+
+                    <div id="status"></div>
+                    <button id="save">Save</button>
+                </div>
+            </div>
+
+            <div id="about">
+                <header>
+                    <h1>About</h1>
+                </header>
+                <div class="content">
+                    <p>About stuff.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="js/lib/jquery-1.11.1.min.js"></script>
+    <script src="js/options.js"></script>
+</body>
+</html>

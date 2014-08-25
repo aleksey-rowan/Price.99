@@ -136,6 +136,6 @@ module.exports = function(grunt) {
   //
 
   grunt.registerTask('default', ['clean', 'test', 'mkdir:unpacked', 'copy:main', 'manifest',
-    'mkdir:js', 'browserify', 'copy:prod', 'uglify', 'exec', 'circleci']);
+    'mkdir:js', 'browserify', 'copy:prod', 'uglify', /*'exec',*/ 'circleci']);
 
 };

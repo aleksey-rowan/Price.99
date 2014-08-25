@@ -1,4 +1,6 @@
-;(function() {
+/* global require */
+
+; (function () {
   // here we use SHARED message handlers, so all the contexts support the same
   // commands. but this is NOT typical messaging system usage, since you usually
   // want each context to handle different commands. for this you don't need

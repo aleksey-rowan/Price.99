@@ -2,8 +2,8 @@
 
 ; (function () {
     console.log('CONTENT SCRIPT WORKS!');
-    
-    var $ = require('./libs/jquery'),
+
+    var $ = require('./libs/jquery-1.11.1.min'),
     // here we use SHARED message handlers, so all the contexts support the same
     // commands. but this is NOT typical messaging system usage, since you usually
     // want each context to handle different commands. for this you don't need
@@ -14,11 +14,13 @@
     // instance of given context is created / destroyed, or you want to be able to
     // issue command requests from this context), you may simply omit the
     // `hadnlers` parameter for good when invoking msg.init()
-        handlers = require('./modules/handlers').create('ct');
-        //pp = require('./modules/pricepoint.js');
+        handlers = require('./modules/handlers').create('ct'),
+        msg = require('./modules/msg').init('ct', handlers);
+    //pp = require('./modules/pricepoint.js');
 
-    require('./modules/msg').init('ct', handlers);
-    
+    msg.bg('getOptions', function (res) {
+        console.log('Options ->', res);
+    });
+
     console.log('jQuery version:', $().jquery);
-
 })();

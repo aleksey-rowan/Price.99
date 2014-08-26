@@ -1,9 +1,8 @@
 /* global require, chrome */
 
 ; (function () {
-    
     console.log('BACKGROUND SCRIPT WORKS!');
-    
+
     // here we use SHARED message handlers, so all the contexts support the same
     // commands. in background, we extend the handlers with two special
     // notification hooks. but this is NOT typical messaging system usage, since
@@ -15,35 +14,7 @@
     // know when new instance of given context is created / destroyed, or you want
     // to be able to issue command requests from this context), you may simply
     // omit the `hadnlers` parameter for good when invoking msg.init()
-    var handlers = require('./modules/handlers').create('bg');
-    // adding special background notification handlers onConnect / onDisconnect
-    function logEvent(ev, context, tabId) {
-        console.log(ev + ': context = ' + context + ', tabId = ' + tabId);
-    }
-    
-    handlers.onConnect = logEvent.bind(null, 'onConnect');
-    handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
-    var msg = require('./modules/msg').init('bg', handlers);
-    
-    // issue `echo` command in 10 seconds after invoked,
-    // schedule next run in 5 minutes
-    function helloWorld() {
-        console.log('===== will broadcast "hello world!" in 10 seconds');
-        setTimeout(function () {
-            console.log('>>>>> broadcasting "hello world!" now');
-            msg.bcast('echo', 'hello world!', function () {
-                console.log('<<<<< broadcasting done');
-            });
-        }, 10 * 1000);
-        setTimeout(helloWorld, 5 * 60 * 1000);
-    }
-    
-    // start broadcasting loop
-    helloWorld();
-
-    // old code
-
-    var //buddy,
+    var handlers = require('./modules/handlers').create('bg'),
         CONST = {
             options: {
                 roundRules: {
@@ -70,13 +41,51 @@
                 }
             }
         };
-    
+
+    // adding special background notification handlers onConnect / onDisconnect
+    function logEvent(ev, context, tabId) {
+        console.log(ev + ': context = ' + context + ', tabId = ' + tabId);
+    }
+
+    handlers.onConnect = logEvent.bind(null, 'onConnect');
+    handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
+    handlers.getOptions = function (done, blah) {
+        console.log(blah);
+
+        chrome.storage.sync.get({
+            options: CONST.options
+        }, function (items) {
+            console.log('GetOptions', 'Sending response', items.options);
+            done(items.options);
+        });
+    };
+
+    var msg = require('./modules/msg').init('bg', handlers);
+
+    // issue `echo` command in 10 seconds after invoked,
+    // schedule next run in 5 minutes
+    function helloWorld() {
+        console.log('===== will broadcast "hello world!" in 10 seconds');
+        setTimeout(function () {
+            console.log('>>>>> broadcasting "hello world!" now');
+            msg.bcast('echo', 'hello world!', function () {
+                console.log('<<<<< broadcasting done');
+            });
+        }, 10 * 1000);
+        setTimeout(helloWorld, 5 * 60 * 1000);
+    }
+
+    // start broadcasting loop
+    helloWorld();
+
+    // old code
+
     chrome.runtime.onMessage.addListener(
     function (request, sender) { //, sendResponse) {
         console.log(sender.tab ?
                     "from a content script:" + sender.tab.url :
                     "from the extension", request);
-        
+
         /*if (request.greeting == "hello") {
             sendResponse({ farewell: "goodbye" });
 
@@ -92,7 +101,7 @@
 
         switch (request.action) {
             case 'getOptions':
-                
+
                 chrome.storage.sync.get({
                     options: CONST.options
                 }, function (items) {
@@ -103,12 +112,12 @@
                         options: items.options
                     });
                 });
-                
+
                 break;
 
             case 'pricesChanged':
                 console.log('Prices changed:', request.count);
-                
+
                 if (request.count > 0) {
                     chrome.pageAction.show(sender.tab.id);
                     /*chrome.pageAction.setTitle({
@@ -118,12 +127,11 @@
                 } else {
                     chrome.pageAction.hide(sender.tab.id);
                 }
-                
+
                 break;
 
             default:
                 break;
         }
     });
-
 })();

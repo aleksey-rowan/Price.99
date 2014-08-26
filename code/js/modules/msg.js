@@ -519,6 +519,8 @@ Messaging.prototype.onConnect = function (port) {
     port.postMessage({ cmd: 'setName', name: portId });
     // invoke custom onConnect handler
     if ('function' === typeof (this.handlers.onConnect)) { this.handlers.onConnect(categName, tabId); }
+
+    this.handlers.port = port;
 };
 
 // create main messaging object, hiding all the complexity from the user

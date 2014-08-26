@@ -46,11 +46,13 @@
     function logEvent(ev, context, tabId) {
         console.log(ev + ': context = ' + context + ', tabId = ' + tabId);
     }
-
+    
     handlers.onConnect = logEvent.bind(null, 'onConnect');
     handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
-    handlers.getOptions = function (done, blah) {
-        console.log(blah);
+    handlers.getOptions = function (done) {
+        console.log('Showing icon for', this.port.sender.tab.id);
+        
+        chrome.pageAction.show(this.port.sender.tab.id);
 
         chrome.storage.sync.get({
             options: CONST.options

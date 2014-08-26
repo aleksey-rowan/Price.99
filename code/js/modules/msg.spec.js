@@ -236,10 +236,12 @@ describe('messaging module', function() {
     var handlers = bgMain.__getHandlers();
     assert('object' === typeof(handlers));
     // log, random, invalid, bg_cmd, bg_1_cmd, _onConnect, _onDisconnect, onConnect, onDisconnect
-    assert(9 === Object.keys(handlers).length);
+        //assert(9 === Object.keys(handlers).length);
+        assert(10 === Object.keys(handlers).length);
     handlers = ctxMain[0].__getHandlers();
     assert('object' === typeof(handlers));
-    assert(5 === Object.keys(handlers).length); // log, random, invalid, ct_cmd, ct_1_cmd
+        //assert(5 === Object.keys(handlers).length); // log, random, invalid, ct_cmd, ct_1_cmd
+        assert(5 === Object.keys(handlers).length); // log, random, invalid, ct_cmd, ct_1_cmd
   });
 
   it('should return false when invalid arguments are passed to cmd(), bcast() and bg()', function() {

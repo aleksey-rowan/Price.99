@@ -15,12 +15,30 @@
     // issue command requests from this context), you may simply omit the
     // `hadnlers` parameter for good when invoking msg.init()
         handlers = require('./modules/handlers').create('ct'),
-        msg = require('./modules/msg').init('ct', handlers);
+        msg = require('./modules/msg').init('ct', handlers),
+        parser = require('./modules/parser'),
+        storage = require('./modules/storage');
     //pp = require('./modules/pricepoint.js');
-
+    
+    console.log(storage.options);
+    parser.blah();
+    storage.options = { one : "one" };
+    
+    console.log(storage.options);
+    parser.blah();
     msg.bg('getOptions', function (res) {
         console.log('Options ->', res);
+        storage.options = res;
+        console.log(storage.options);
+        parser.blah();
     });
 
     console.log('jQuery version:', $().jquery);
+
+    parser.parse();
+    
+    console.log(parser.pricePoints);
+
+    $('ppnn').addClass('p1');
+
 })();

@@ -1,3 +1,5 @@
+/* global module */
+
 //
 // Extension messaging system.
 //

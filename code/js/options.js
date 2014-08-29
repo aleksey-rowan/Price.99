@@ -14,11 +14,11 @@
     // instance of given context is created / destroyed, or you want to be able to
     // issue command requests from this context), you may simply omit the
     // `hadnlers` parameter for good when invoking msg.init()
-    var $ = require('./libs/jquery-1.11.1.min');//,
-        //handlers = require('./modules/handlers').create('options'),
-        //msg = require('./modules/msg').init('options', handlers),
-        //form = require('./modules/form'),
-        //runner = require('./modules/runner');
+    var $ = require('./libs/jquery-1.11.1.min'),
+        handlers = require('./modules/handlers').create('options'),
+        msg = require('./modules/msg').init('options', handlers);//,
+    //form = require('./modules/form'),
+    //runner = require('./modules/runner');
 
     //form.init(runner.go.bind(runner, msg));
 
@@ -90,6 +90,14 @@
             setTimeout(function () {
                 status.textContent = '';
             }, 750);
+
+            msg.bg('optionsChanged', function (res) {
+                console.log(res);
+            });
+
+            msg.bcast(['ct'], 'optionsChanged', function (res) {
+                console.log(res);
+            });
         });
     }
 

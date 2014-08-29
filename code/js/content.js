@@ -21,6 +21,11 @@
 
     //console.log(storage.options);
 
+    handlers.optionsChanged = function (done) {
+        console.log('BG : Got new options; I\'m content');
+        done("good options");
+    };
+
     msg = msg.init('ct', handlers);
 
 

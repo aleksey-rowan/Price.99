@@ -52,10 +52,15 @@
     handlers.onConnect = logEvent.bind(null, 'onConnect');
     handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
 
+    handlers.optionsChanged = function (done) {
+        console.log('BG : Got new options');
+        done("good options");
+    };
     handlers.getOptions = function (done) {
         console.log('BG : Sending options to tab', this.port.sender.tab.id, storage.options);
         done(storage.options);
     };
+    
     handlers.pricesUpdated = function (info, done) {
         var senderId = this.port.sender.tab.id;
         console.log(info);

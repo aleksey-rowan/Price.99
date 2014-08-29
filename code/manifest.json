@@ -19,7 +19,7 @@
             "38": "images/icon.png"
         },
         "default_title": "Price.99",
-        "default_popup": "options.html"
+        "default_popup": "html/options.html"
     },
 
     "permissions": [

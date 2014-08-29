@@ -15,22 +15,46 @@
     // issue command requests from this context), you may simply omit the
     // `hadnlers` parameter for good when invoking msg.init()
         handlers = require('./modules/handlers').create('ct'),
-        msg = require('./modules/msg').init('ct', handlers),
+        msg = require('./modules/msg'),
         parser = require('./modules/parser'),
         storage = require('./modules/storage');
-    
+
     //console.log(storage.options);
-    
-    parser.parse();
+
+    msg = msg.init('ct', handlers);
+
+
+    function evolution() {
+        var ppUpdated,
+            ppUnchanged,
+            pps;
+
+        parser
+            .parse()
+            .updatePrices();
+
+        pps = parser.getPricePoints();
+        ppUpdated = pps.filter(function (pp) { return pp.isChanged; });
+        ppUnchanged = pps.filter(function (pp) { return !pp.isChanged; });
+
+        msg.bg('pricesUpdated',
+            {
+                updated: ppUpdated.length,
+                unchanged: ppUnchanged.length
+            },
+            function (res) {
+                console.log(res);
+            });
+    }
 
     msg.bg('getOptions', function (res) {
         storage.options = res;
-        
-        parser.updatePrices();
+
+        evolution();
     });
 
     console.log('jQuery version:', $().jquery);
-    
-    
+
+
 
 })();

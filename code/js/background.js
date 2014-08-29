@@ -15,6 +15,7 @@
     // to be able to issue command requests from this context), you may simply
     // omit the `hadnlers` parameter for good when invoking msg.init()
     var handlers = require('./modules/handlers').create('bg'),
+        msg = require('./modules/msg'),
         storage = require('./modules/storage.js'),
         CONST = {
             optionsDefault: {
@@ -25,15 +26,15 @@
                     },
                     dollars: {
                         value: 9,
-                        enabled: true
+                        enabled: false
                     },
                     tens: {
                         value: 9,
-                        enabled: true
+                        enabled: false
                     },
                     hundreds: {
                         value: 1,
-                        enabled: true
+                        enabled: false
                     }
                 },
                 otherRules: {
@@ -42,11 +43,46 @@
                 }
             }
         };
-    
+
     // adding special background notification handlers onConnect / onDisconnect
     function logEvent(ev, context, tabId) {
         console.log(ev + ': context = ' + context + ', tabId = ' + tabId);
     }
+
+    handlers.onConnect = logEvent.bind(null, 'onConnect');
+    handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
+
+    handlers.getOptions = function (done) {
+        console.log('BG : Sending options to tab', this.port.sender.tab.id, storage.options);
+        done(storage.options);
+    };
+    handlers.pricesUpdated = function (info, done) {
+        var senderId = this.port.sender.tab.id;
+        console.log(info);
+
+        if (info.updated > 0 || info.unchanged > 0) {
+            if (info.updated === 0) {
+                chrome.pageAction.show(senderId);
+                chrome.pageAction.setTitle({
+                    tabId: senderId,
+                    title: "No updated prices"
+                });
+            } else {
+                chrome.pageAction.show(senderId);
+                chrome.pageAction.setTitle({
+                    tabId: senderId,
+                    title: "Price.99"
+                });
+            }
+
+        } else {
+            chrome.pageAction.hide(senderId);
+        }
+
+        done("good jo!");
+    };
+
+    msg = msg.init('bg', handlers);
 
     // retrieve options from local storage if any
     chrome.storage.sync.get({
@@ -54,24 +90,11 @@
     }, function (items) {
         console.log('BG : Options loaded', items.options);
         storage.options = items.options;
-    });    
-    
-    
-    handlers.onConnect = logEvent.bind(null, 'onConnect');
-    handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
-    handlers.getOptions = function (done) {
-        /*console.log('Showing icon for', this.port.sender.tab.id);        
-        chrome.pageAction.show(this.port.sender.tab.id);*/
-
-        console.log('BG : Sending options to tab', this.port.sender.tab.id, storage.options);
-        done(storage.options);
-    };
-
-    var msg = require('./modules/msg').init('bg', handlers);
+    });
 
     // issue `echo` command in 10 seconds after invoked,
     // schedule next run in 5 minutes
-    function helloWorld() {
+    /*function helloWorld() {
         console.log('===== will broadcast "hello world!" in 10 seconds');
         setTimeout(function () {
             console.log('>>>>> broadcasting "hello world!" now');
@@ -83,7 +106,7 @@
     }
 
     // start broadcasting loop
-    helloWorld();
+    helloWorld();*/
 
     // old code
 

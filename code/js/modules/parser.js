@@ -60,8 +60,14 @@ module.exports = {
         });
         
         console.log('Price points length', pricePoints.length);
+
+        return this;
     },
     
+    getPricePoints: function () {
+        return pricePoints;
+    },
+
     updatePrices: function () {
         pricePoints.forEach(function (pp) {
             pp.update();

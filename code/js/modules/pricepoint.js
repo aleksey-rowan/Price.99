@@ -147,16 +147,16 @@ module.exports.create = function (text, nodes) {
                 this.parts.whole[i]
                         .text(wholeString[i])
                         .attr({
-                    title: "Old price: " + this.oldPrice.value
-                });
+                            title: "Old price: " + this.oldPrice.value
+                        });
             }
             
             if (this.parts.decimalMark) {
                 this.parts.decimalMark
-                        .attr({
-                    title: "Old price: " + this.oldPrice.value,
-                    class: 'ppnn-invisible'
-                });
+                    .attr({
+                        title: "Old price: " + this.oldPrice.value
+                    })
+                    .addClass('ppnn-invisible');
             }
             
             if (this.parts.fraction.length > 0) {
@@ -164,9 +164,9 @@ module.exports.create = function (text, nodes) {
                     this.parts.fraction[i]
                             .text(fractionString[i])
                             .attr({
-                        title: "Old price: " + this.oldPrice.value,
-                        class: 'ppnn-invisible'
-                    });
+                                title: "Old price: " + this.oldPrice.value
+                            })
+                            .addClass('ppnn-invisible');
                 }
             }
         },
@@ -190,6 +190,7 @@ module.exports.create = function (text, nodes) {
         newPrice: null,
         parts: null,
         nodes: null
+
     }.init(text, nodes));
 }
 

@@ -1,5 +1,5 @@
 ﻿/* global module */
 
 module.exports = {
-    options: {}
+    options: null
 };

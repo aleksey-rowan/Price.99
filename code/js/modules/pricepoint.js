@@ -1,4 +1,4 @@
-﻿/* global require, $, chrome */
+﻿/* global module, require */
 
 //Price.99
 
@@ -16,13 +16,20 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
 
   */
 
-var options = require('./../modules/storage').options,
+//({ a : function() {console.log("ds")}}.a())
+
+var $ = require('./../libs/jquery-1.11.1.min'),
+    storage = require('./../modules/storage'),
     util = require('./../modules/util');
 
-module.export = function () {
+module.exports.testHook = function (j) {
+    $ = j;
+};
+
+module.exports.create = function (text, nodes) {
     
-    return {
-        create: function (text, nodes) {
+    return ({
+        init: function (text, nodes) {
             $.extend(this, {
                 oldPrice: {
                     value: null,
@@ -71,7 +78,7 @@ module.export = function () {
         
         recalculatePrice: function () {
             var isRounded = false,
-                roundRules = options.roundRules,
+                roundRules = storage.options.roundRules,
                 roundedPrice = this.oldPrice.value,
                 temp;
             
@@ -114,18 +121,6 @@ module.export = function () {
             } else {
                 return false;
             }
-
-        /*if (this.oldPrice.fraction > 0.3) {
-            var ps = Math.ceil(this.oldPrice.value).toFixed(2);
-
-            this.setPrice(this.newPrice, ps);
-
-            return true;
-        } else {
-            return false;
-        }*/
-
-        //return isRounded;
         },
         
         synchronize: function (targetPrice) {
@@ -141,6 +136,7 @@ module.export = function () {
                 
                 this.parts.whole.push(nodeClone);
                 node.after(nodeClone);
+
             } else if (targetPrice.decimalMarkIndex < this.parts.whole.length) {
                 this.parts.whole
                         .pop()
@@ -176,7 +172,7 @@ module.export = function () {
         },
         
         update: function () {
-            if (this.recalculatePrice()) {
+            if (this.recalculatePrice() && storage.options) {
                 this.synchronize(this.newPrice);
                 this.isChanged = true;
             }
@@ -194,17 +190,17 @@ module.export = function () {
         newPrice: null,
         parts: null,
         nodes: null
-    };
+    }.init(text, nodes));
 }
-
-
 
 ; (function () {
     "use strict";
     
     console.log('PRICEPOINT MODULE WORKS!');
     
-    var /*buddy,
+    /*
+
+    var buddy,
         CONST = {
             CURRENCY_SIGNS: '$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺'
         },
@@ -212,7 +208,7 @@ module.export = function () {
             GET_OPTIONS: "getOptions",
             OPTIONS_UPDATED: "optionsUpdated",
             RESET: "reset"
-        },*/
+        },
         options,
         pricePoint = {},
             
@@ -226,7 +222,7 @@ module.export = function () {
     
     parser = (function () {
         return {
-};
+        };
     }());
     
     util = (function () {
@@ -328,7 +324,7 @@ module.export = function () {
         
         // release garbage nodes
         unwrapNodes(elm);
-    });
+    });*/
     
 
     // Mutation Observers

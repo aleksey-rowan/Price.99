@@ -18,27 +18,19 @@
         msg = require('./modules/msg').init('ct', handlers),
         parser = require('./modules/parser'),
         storage = require('./modules/storage');
-    //pp = require('./modules/pricepoint.js');
     
-    console.log(storage.options);
-    parser.blah();
-    storage.options = { one : "one" };
+    //console.log(storage.options);
     
-    console.log(storage.options);
-    parser.blah();
+    parser.parse();
+
     msg.bg('getOptions', function (res) {
-        console.log('Options ->', res);
         storage.options = res;
-        console.log(storage.options);
-        parser.blah();
+        
+        parser.updatePrices();
     });
 
     console.log('jQuery version:', $().jquery);
-
-    parser.parse();
     
-    console.log(parser.pricePoints);
-
-    $('ppnn').addClass('p1');
+    
 
 })();

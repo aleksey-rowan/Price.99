@@ -15,8 +15,9 @@
     // to be able to issue command requests from this context), you may simply
     // omit the `hadnlers` parameter for good when invoking msg.init()
     var handlers = require('./modules/handlers').create('bg'),
+        storage = require('./modules/storage.js'),
         CONST = {
-            options: {
+            optionsDefault: {
                 roundRules: {
                     cents: {
                         value: 79,
@@ -41,25 +42,29 @@
                 }
             }
         };
-
+    
     // adding special background notification handlers onConnect / onDisconnect
     function logEvent(ev, context, tabId) {
         console.log(ev + ': context = ' + context + ', tabId = ' + tabId);
     }
+
+    // retrieve options from local storage if any
+    chrome.storage.sync.get({
+        options: CONST.optionsDefault
+    }, function (items) {
+        console.log('BG : Options loaded', items.options);
+        storage.options = items.options;
+    });    
+    
     
     handlers.onConnect = logEvent.bind(null, 'onConnect');
     handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
     handlers.getOptions = function (done) {
-        console.log('Showing icon for', this.port.sender.tab.id);
-        
-        chrome.pageAction.show(this.port.sender.tab.id);
+        /*console.log('Showing icon for', this.port.sender.tab.id);        
+        chrome.pageAction.show(this.port.sender.tab.id);*/
 
-        chrome.storage.sync.get({
-            options: CONST.options
-        }, function (items) {
-            console.log('GetOptions', 'Sending response', items.options);
-            done(items.options);
-        });
+        console.log('BG : Sending options to tab', this.port.sender.tab.id, storage.options);
+        done(storage.options);
     };
 
     var msg = require('./modules/msg').init('bg', handlers);

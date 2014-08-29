@@ -1,10 +1,34 @@
 ﻿var assert = require('assert');
 var p,
     pricepoint = require('./pricepoint'),
-    //jquery = require('./../libs/jquery-1.11.1.min'),
+    storage = require('./../modules/storage'),
     jsdom = require('jsdom'),
     window = jsdom.jsdom().parentWindow;
 
+storage.options = {
+    roundRules: {
+        cents: {
+            value: 79,
+            enabled: true
+        },
+        dollars: {
+            value: 9,
+            enabled: false
+        },
+        tens: {
+            value: 9,
+            enabled: false
+        },
+        hundreds: {
+            value: 1,
+            enabled: false
+        }
+    },
+    otherRules: {
+        hideAllCents: false,
+        hideZeroCents: true
+    }
+};
 
 describe('pricepoint module', function () {
 
@@ -30,6 +54,19 @@ describe('pricepoint module', function () {
         assert.deepEqual(['init', 'isChanged', 'newPrice', 'nodes', 'oldPrice', 'parts', 'recalculatePrice', 'reset', 'setPrice', 'synchronize', 'update'],
             Object.keys(p).sort());
     });
+
+    it('should correctly round the price $9.99 -> $10.00', function () {
+        p = pricepoint.create('$9.79', []);
+        p.recalculatePrice();
+
+        //console.log(p.oldPrice, p.newPrice);
+        assert(10 === p.newPrice.value);
+        assert('10.00' === p.newPrice.valueString);
+        assert(10 === p.newPrice.whole);
+        assert(0 === p.newPrice.fraction);
+        assert(2 === p.newPrice.decimalMarkIndex);
+    });
+
 
     /*it('should create() handler object with 3 commands', function () {
         h = handlers.create('test');

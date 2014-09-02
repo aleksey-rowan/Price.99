@@ -1,21 +1,22 @@
 {
-  "node": true,
-  "curly": true,
-  "eqeqeq": true,
-  "immed": true,
-  "latedef": true,
-  "newcap": true,
-  "noarg": true,
-  "nonew": true,
-  "undef": true,
-  "unused": true,
-  "trailing": true,
-  "boss": true,
-  "eqnull": true,
-  "globals": {
-    "beforeEach": true,
-    "describe": true,
-    "afterEach": true,
-    "it": true
-  }
+    "node": true,
+    "curly": true,
+    "eqeqeq": true,
+    "immed": true,
+    "latedef": true,
+    "newcap": true,
+    "noarg": true,
+    "nonew": true,
+    "undef": true,
+    "unused": true,
+    "trailing": true,
+    "boss": true,
+    "eqnull": true,
+    "multistr": true,
+    "globals": {
+        "beforeEach": true,
+        "describe": true,
+        "afterEach": true,
+        "it": true
+    }
 }

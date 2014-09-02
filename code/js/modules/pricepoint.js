@@ -84,7 +84,8 @@ module.exports.create = function (text, nodes) {
             
             if (roundRules.cents.enabled && 
                     parseFloat((roundedPrice % 1).toFixed(2), 10) >= roundRules.cents.value / 100) {
-                roundedPrice = Math.ceil(roundedPrice);
+                //roundedPrice = Math.ceil(roundedPrice);
+                roundedPrice = Math.floor(roundedPrice + 1);
                 isRounded = true;
             }
             
@@ -119,6 +120,7 @@ module.exports.create = function (text, nodes) {
                 this.setPrice(this.newPrice, parseInt(roundedPrice, 10).toFixed(2));
                 return true;
             } else {
+                this.newPrice = null;
                 return false;
             }
         },

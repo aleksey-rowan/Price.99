@@ -2,7 +2,7 @@
 
 var $ = require('./../libs/jquery-1.11.1.min'),
     pricePoint = require('./../modules/pricepoint'),
-    nodes = $("body").children(":not('script, style')"), //$("body").children().not("script"),
+    nodes = null, //$("body").children(":not('script, style')"), //$("body").children().not("script"),
     garbage,
     array,
     pricePoints = [],
@@ -16,12 +16,18 @@ function unwrapNodes(nodes) {
     });
 }
 
+module.exports.testHook = function (j) {
+    $ = j;
+};
+
 module.exports = {
     
-    parse: function () {
+    parse: function (n) {
         garbage = [];
         array = [];
         
+        nodes = n || nodes;
+
         nodes.highlightRegex(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺.\d]/ig, {
             tagType: 'ppnn'
         });

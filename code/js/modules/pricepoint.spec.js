@@ -247,17 +247,6 @@ describe('pricepoint module', function () {
             assertParts('$', '20', '.', '00');
         });
         
-        it('should correctly round the price $10.00 -> $20.00', function () {
-            var str = '$10.00', ns = nodify(str);
-
-            p = pricepoint.create(str, ns);
-            p.update();
-
-            assertOldPrice(10.0, '10.00', 10, 0.0, 2);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '10', '.', '00');
-        });
-
         it('should correctly round the price $9.00 -> $10.00', function () {
             var str = '$9.00', ns = nodify(str);
 
@@ -269,7 +258,7 @@ describe('pricepoint module', function () {
             assertParts('$', '10', '.', '00');
         });
 
-        it('should not round the price $117.00 -> $118.00', function () {
+        it('should not round the price $117.00 -> $120.00', function () {
             var str = '$117.00', ns = nodify(str);
 
             p = pricepoint.create(str, ns);
@@ -278,6 +267,17 @@ describe('pricepoint module', function () {
             assertOldPrice(117.0, '117.00', 117, 0.0, 3);
             assert.strictEqual(null, p.newPrice);
             assertParts('$', '117', '.', '00');
+        });
+
+        it('should not round the price $10.00 -> $20.00', function () {
+            var str = '$10.00', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(10.0, '10.00', 10, 0.0, 2);
+            assert.strictEqual(null, p.newPrice);
+            assertParts('$', '10', '.', '00');
         });
 
         it('should not round the price $5.00 -> $10.00', function () {
@@ -303,7 +303,92 @@ describe('pricepoint module', function () {
         });
     });
     
+    describe('0 dollars rule', function () {
+        before(function () {
+            storage.options = $.extend(true, {}, optionsDefault);
+            storage.options.roundRules.dollars = {
+                value: 0,
+                enabled: true
+            };
+        });
 
+        it('should correctly round the price $999.00 -> $1000.00', function () {
+            var str = '$999.00', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(999.0, '999.00', 999, 0.0, 3);
+            assertNewPrice(1000, '1000.00', 1000, 0, 4);
+            assertParts('$', '1000', '.', '00');
+        });
+
+        it('should correctly round the price $117.00 -> $120.00', function () {
+            var str = '$117.00', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(117.0, '117.00', 117, 0.0, 3);
+            assertNewPrice(120, '120.00', 120, 0, 3);
+            assertParts('$', '120', '.', '00');
+        });
+
+        it('should correctly round the price $99.00 -> $100.00', function () {
+            var str = '$99.00', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(99.0, '99.00', 99, 0.0, 2);
+            assertNewPrice(100, '100.00', 100, 0, 3);
+            assertParts('$', '100', '.', '00');
+        });
+
+        it('should correctly round the price $19.00 -> $20.00', function () {
+            var str = '$19.00', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(19.0, '19.00', 19, 0.0, 2);
+            assertNewPrice(20, '20.00', 20, 0, 2);
+            assertParts('$', '20', '.', '00');
+        });
+
+        it('should correctly round the price $10.00 -> $20.00', function () {
+            var str = '$10.00', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(10.0, '10.00', 10, 0.0, 2);
+            assertNewPrice(20, '20.00', 20, 0, 2);
+            assertParts('$', '20', '.', '00');
+        });
+
+        it('should correctly round the price $9.00 -> $10.00', function () {
+            var str = '$9.00', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(9.0, '9.00', 9, 0.0, 1);
+            assertNewPrice(10, '10.00', 10, 0, 2);
+            assertParts('$', '10', '.', '00');
+        });
+
+        it('should correctly round the price $0.00 -> $10.00', function () {
+            var str = '$0.00', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(0.0, '0.00', 0, 0.0, 1);
+            assertNewPrice(10, '10.00', 10, 0, 2);
+            assertParts('$', '10', '.', '00');
+        });
+    });
 
     /*it('should create() handler object with 3 commands', function () {
         h = handlers.create('test');

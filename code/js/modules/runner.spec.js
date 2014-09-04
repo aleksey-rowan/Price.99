@@ -48,9 +48,14 @@ describe('runner module', function() {
     assert(msg.bcast.calledWith('echo', 'hello'));
   });
 
-  it('should issue "random" command and ignore provided argument', function() {
+  it.skip('should issue "random" command and ignore provided argument', function() {
     runner.go(msg, { type: 'bcast', cmd: 'random', arg: 'hello', tab: -1, ctx_all: true});
     assert(!msg.bcast.calledWith('random', 'hello'));
+  });
+
+  it('should issue "random" command with provided argument', function () {
+      runner.go(msg, { type: 'bcast', cmd: 'random', arg: 'hello', tab: -1, ctx_all: true });
+      assert(msg.bcast.calledWith('random', 'hello'));
   });
 
   it('should issue "echo" command with tabId = SAME_TAB', function() {

@@ -59,30 +59,30 @@ module.exports.go = function(msg, info) {
       if (-1 === info.tab) { // all tab ids
         if (info.ctx_all) {
           log(">>>>> invoking msg." + info.type + "('" + info.cmd + "', callback)");
-          msg[info.type](info.cmd, callback);
+          msg[info.type](info.cmd, info.arg, callback);
         } else {
           log(">>>>> invoking msg." + info.type + "(" + JSON.stringify(info.ctxs) +
               ", '" + info.cmd + "', callback)");
-          msg[info.type](info.ctxs, info.cmd, callback);
+          msg[info.type](info.ctxs, info.cmd, info.arg, callback);
         }
       } else if (-2 === info.tab) { // same id
         if (info.ctx_all) {
           log(">>>>> invoking msg." + info.type + "(SAME_TAB, '" + info.cmd + "', callback)");
-          msg[info.type](SAME_TAB, info.cmd, callback);
+          msg[info.type](SAME_TAB, info.cmd, info.arg, callback);
         } else {
           log(">>>>> invoking msg." + info.type + "(SAME_TAB, " + JSON.stringify(info.ctxs) +
               ", '" + info.cmd + "', callback)");
-          msg[info.type](SAME_TAB, info.ctxs, info.cmd, callback);
+          msg[info.type](SAME_TAB, info.ctxs, info.cmd, info.arg, callback);
         }
       } else {  // tab id provided
         if (info.ctx_all) {
           log(">>>>> invoking msg." + info.type + "(" + info.tab + ", '" +
               info.cmd + "', callback)");
-          msg[info.type](info.tab, info.cmd, callback);
+          msg[info.type](info.tab, info.cmd, info.arg, callback);
         } else {
           log(">>>>> invoking msg." + info.type + "(" + info.tab + ", " +
               JSON.stringify(info.ctxs) + ", '" + info.cmd + "', callback)");
-          msg[info.type](info.tab, info.ctxs, info.cmd, callback);
+          msg[info.type](info.tab, info.ctxs, info.cmd, info.arg, callback);
         }
       }
     }

@@ -16,11 +16,53 @@
     // `hadnlers` parameter for good when invoking msg.init()
     var $ = require('./libs/jquery-1.11.1.min'),
         handlers = require('./modules/handlers').create('options'),
-        msg = require('./modules/msg').init('options', handlers);//,
+        storage = require('./modules/storage.js'),
+        runner = require('./modules/runner'),
+        msg = require('./modules/msg');//, 
     //form = require('./modules/form'),
-    //runner = require('./modules/runner');
 
     //form.init(runner.go.bind(runner, msg));
+
+    //require('./libs/jquery.maskedinput.min.js');
+    require('./libs/stepper/jquery.fs.stepper.min.js');
+
+    msg = msg.init('options', handlers);
+
+    console.log(storage.options);
+    storage.getOptions(function () {
+        init(runner.go.bind(runner, msg));
+    });
+
+    // retrieve options from local storage if any
+    /*chrome.storage.sync.get({
+        options: CONST.optionsDefault
+    }, function (items) {
+        console.log('Options : Options loaded', items.options);
+        storage.options = items.options;
+    });*/
+
+    function init(callback) {
+        $("#cents-rule input[type=number]")
+            .val(storage.options.roundRules.cents.value.toString())
+            .stepper()
+            .change(function (e) {
+                console.log(e);
+
+                storage.options.roundRules.cents.value = parseInt(e.currentTarget.value, 10);
+
+                var res = {
+                    type: 'bcast',
+                    cmd: 'optionsChanged',
+                    arg: storage.options,
+                    ctxs: ['ct', 'bg'],
+                    tab: -1
+                };
+
+                callback(res);
+            });
+    }
+
+    
 
     // old code
     $(function () {
@@ -91,13 +133,13 @@
                 status.textContent = '';
             }, 750);
 
-            msg.bg('optionsChanged', function (res) {
+            /*msg.bg('optionsChanged', function (res) {
                 console.log(res);
-            });
+            });*/
 
-            msg.bcast(['ct'], 'optionsChanged', function (res) {
-                console.log(res);
-            });
+            storage.options.roundRules.cents.value = 10;
+
+            msg.bcast(['ct', 'bg'], 'optionsChanged', storage.options);
         });
     }
 

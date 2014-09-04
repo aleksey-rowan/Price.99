@@ -64,6 +64,14 @@ module.exports.create = function (text, nodes) {
             this.parts.decimalMark = this.nodes[this.oldPrice.decimalMarkIndex + 1];
             this.parts.fraction = this.nodes.slice(this.oldPrice.decimalMarkIndex + 2);
             
+            if (this.parts.fraction.length === 1) {
+                var node = this.parts.fraction[0],
+                    nodeClone = node.clone().text(0);
+                
+                this.parts.fraction.push(nodeClone);
+                node.after(nodeClone);
+            }
+
             return this;
         },
         
@@ -120,7 +128,6 @@ module.exports.create = function (text, nodes) {
                 this.setPrice(this.newPrice, parseInt(roundedPrice, 10).toFixed(2));
                 return true;
             } else {
-                this.newPrice = null;
                 return false;
             }
         },
@@ -163,6 +170,7 @@ module.exports.create = function (text, nodes) {
             
             if (this.parts.fraction.length > 0) {
                 for (i = 0; i < fractionString.length; i++) {
+                    //console.log(this.parts, fractionString);
                     this.parts.fraction[i]
                             .text(fractionString[i])
                             .attr({
@@ -174,16 +182,30 @@ module.exports.create = function (text, nodes) {
         },
         
         update: function () {
+            this.newPrice = {
+                value: null,
+                valueString: null,
+                whole: null,
+                fraction: null,
+                decimalMarkIndex: null,
+            };
+
             if (this.recalculatePrice() && storage.options) {
                 this.synchronize(this.newPrice);
                 this.isChanged = true;
+            } else if (this.isChanged) {
+                this.reset();
+            } else {
+                this.newPrice = null;
             }
         },
         
         reset: function () {
-            this.setPrice(this.oldPrice);
-            this.synchronize(this.newPrice);
+            this.newPrice = null;
+            this.synchronize(this.oldPrice);
             this.isChanged = false;
+
+            //this.setPrice(this.oldPrice);
         },
         
         isChanged: false,

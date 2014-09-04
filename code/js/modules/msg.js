@@ -523,6 +523,7 @@ Messaging.prototype.onConnect = function (port) {
     if ('function' === typeof (this.handlers.onConnect)) { this.handlers.onConnect(categName, tabId); }
 
     this.handlers.port = port;
+    //this.handlers.port = null;
 };
 
 // create main messaging object, hiding all the complexity from the user

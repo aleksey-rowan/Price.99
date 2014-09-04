@@ -17,17 +17,23 @@
         handlers = require('./modules/handlers').create('ct'),
         msg = require('./modules/msg'),
         parser = require('./modules/parser'),
-        storage = require('./modules/storage');
+        storage = require('./modules/storage'),
+        thisTabId = null;
 
     //console.log(storage.options);
 
-    handlers.optionsChanged = function (done) {
-        console.log('BG : Got new options; I\'m content');
-        done("good options");
+    handlers.rememberTabId = function (id, done) {
+        thisTabId = id;
+        done();
+    };
+
+    handlers.optionsChanged = function (res) {
+        console.log('CT : Got new options', res);
+        storage.options = res;
+        parser.updatePrices();
     };
 
     msg = msg.init('ct', handlers);
-
 
     function evolution() {
         var ppUpdated,
@@ -47,12 +53,14 @@
                 updated: ppUpdated.length,
                 unchanged: ppUnchanged.length
             },
+            thisTabId,
             function (res) {
                 console.log(res);
             });
     }
 
-    msg.bg('getOptions', function (res) {
+    msg.bg('getOptions', thisTabId, function (res) {
+        console.log('CT : Got initial options', storage.options, res);
         storage.options = res;
 
         evolution();

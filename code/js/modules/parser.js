@@ -2,7 +2,7 @@
 
 var $ = require('./../libs/jquery-1.11.1.min'),
     pricePoint = require('./../modules/pricepoint'),
-    nodes = null, //$("body").children(":not('script, style')"), //$("body").children().not("script"),
+    nodes = $("body").children(":not('script, style')"), //$("body").children().not("script"),
     garbage,
     array,
     pricePoints = [],
@@ -28,7 +28,7 @@ module.exports = {
         
         nodes = n || nodes;
 
-        nodes.highlightRegex(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺.\d]/ig, {
+        nodes.highlightRegex(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺.()a\d]/ig, {
             tagType: 'ppnn'
         });
         
@@ -50,7 +50,10 @@ module.exports = {
         
         array.forEach(function (elm) {
             var value = elm.map(function (e) { return e.text(); }).join(""),
-                m = value.match(/^[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺](\d+)((.|,)\d{2})?/ig);
+                //[$](\d{1,5})((\.|,)\d{1,2})?
+
+
+                m = value.match(/^[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺](\d{1,5})((\.)\d{1,2})?/ig);
             
             if (m) {
                 console.log('match', m[0], '->', (parseFloat(m[0].replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, '')) % 1).toFixed(2), '||', value);
@@ -79,6 +82,7 @@ module.exports = {
             pp.update();
             //count += pp.isChanged ? 1 : 0;
         });
+        console.log('CT-Parser : Prices updated');
     },
     
     blah: function () {

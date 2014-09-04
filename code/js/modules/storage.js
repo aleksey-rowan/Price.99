@@ -31,7 +31,7 @@ module.exports = {
     options: null
 };
 
-module.exports.getOptions = function () {
+module.exports.getOptions = function (callback) {
 
     // retrieve options from local storage if any
     chrome.storage.sync.get({
@@ -39,5 +39,7 @@ module.exports.getOptions = function () {
     }, function (items) {
         console.log('Storage : Options loaded', items.options);
         module.exports.options = items.options;
+
+        callback();
     });
 };

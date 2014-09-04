@@ -16,54 +16,37 @@
     // omit the `hadnlers` parameter for good when invoking msg.init()
     var handlers = require('./modules/handlers').create('bg'),
         msg = require('./modules/msg'),
-        storage = require('./modules/storage.js'),
-        CONST = {
-            optionsDefault: {
-                roundRules: {
-                    cents: {
-                        value: 79,
-                        enabled: true
-                    },
-                    dollars: {
-                        value: 9,
-                        enabled: false
-                    },
-                    tens: {
-                        value: 9,
-                        enabled: false
-                    },
-                    hundreds: {
-                        value: 1,
-                        enabled: false
-                    }
-                },
-                otherRules: {
-                    hideAllCents: false,
-                    hideZeroCents: true
-                }
-            }
-        };
+        storage = require('./modules/storage.js');        
 
     // adding special background notification handlers onConnect / onDisconnect
     function logEvent(ev, context, tabId) {
         console.log(ev + ': context = ' + context + ', tabId = ' + tabId);
     }
 
+    /*handlers.onConnect = function (ctxName, tabId) {
+        if (ctxName === 'ct') {
+            msg.cmd(tabId, ['ct'], 'rememberTabId', tabId);
+        }
+
+        logEvent('onConnect', ctxName, tabId);        
+    };*/
     handlers.onConnect = logEvent.bind(null, 'onConnect');
     handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
 
-    handlers.optionsChanged = function (done) {
-        console.log('BG : Got new options');
-        done("good options");
-    };
-    handlers.getOptions = function (done) {
+    handlers.getOptions = function (tabId, done) {
         console.log('BG : Sending options to tab', this.port.sender.tab.id, storage.options);
+        //console.log('BG : Sending options to tab', tabId, storage.options);
         done(storage.options);
     };
-    
-    handlers.pricesUpdated = function (info, done) {
+    handlers.optionsChanged = function (res) {
+        console.log('BG : Got new options', res);
+        storage.options = res;        
+    };
+
+    handlers.pricesUpdated = function (info, tabId, done) {
         var senderId = this.port.sender.tab.id;
-        console.log(info);
+        //var senderId = tabId;
+        console.log(info, senderId, tabId);
 
         if (info.updated > 0 || info.unchanged > 0) {
             if (info.updated === 0) {
@@ -88,14 +71,19 @@
     };
 
     msg = msg.init('bg', handlers);
+    
+    // get stored options
+    storage.getOptions();
 
-    // retrieve options from local storage if any
-    chrome.storage.sync.get({
-        options: CONST.optionsDefault
-    }, function (items) {
-        console.log('BG : Options loaded', items.options);
-        storage.options = items.options;
-    });
+
+
+
+
+
+
+
+    // old code
+
 
     // issue `echo` command in 10 seconds after invoked,
     // schedule next run in 5 minutes
@@ -112,8 +100,6 @@
 
     // start broadcasting loop
     helloWorld();*/
-
-    // old code
 
     chrome.runtime.onMessage.addListener(
     function (request, sender) { //, sendResponse) {
@@ -135,7 +121,7 @@
         }*/
 
         switch (request.action) {
-            case 'getOptions':
+            /*case 'getOptions':
 
                 chrome.storage.sync.get({
                     options: CONST.options
@@ -148,7 +134,7 @@
                     });
                 });
 
-                break;
+                break;*/
 
             case 'pricesChanged':
                 console.log('Prices changed:', request.count);

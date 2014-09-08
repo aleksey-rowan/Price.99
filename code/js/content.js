@@ -22,27 +22,31 @@
 
     //console.log(storage.options);
 
-    handlers.rememberTabId = function (id, done) {
+    handlers.rememberTabId = function (id) {
         thisTabId = id;
-        done();
+        
+        msg.bg('getOptions', thisTabId, function (res) {
+            console.log('CT : Got initial options', storage.options, res);
+            storage.options = res;
+
+            evolution();
+        });
     };
 
     handlers.optionsChanged = function (res) {
         console.log('CT : Got new options', res);
         storage.options = res;
         parser.updatePrices();
+
+        notifyBackground();
     };
 
     msg = msg.init('ct', handlers);
 
-    function evolution() {
+    function notifyBackground() {
         var ppUpdated,
             ppUnchanged,
             pps;
-
-        parser
-            .parse()
-            .updatePrices();
 
         pps = parser.getPricePoints();
         ppUpdated = pps.filter(function (pp) { return pp.isChanged; });
@@ -59,15 +63,14 @@
             });
     }
 
-    msg.bg('getOptions', thisTabId, function (res) {
-        console.log('CT : Got initial options', storage.options, res);
-        storage.options = res;
+    function evolution() {
+        parser
+            .parse()
+            .updatePrices();
 
-        evolution();
-    });
+        notifyBackground();
+    }
 
     console.log('jQuery version:', $().jquery);
-
-
 
 })();

@@ -23,29 +23,33 @@
         console.log(ev + ': context = ' + context + ', tabId = ' + tabId);
     }
 
-    /*handlers.onConnect = function (ctxName, tabId) {
+    handlers.onConnect = function (ctxName, tabId) {
         if (ctxName === 'ct') {
             msg.cmd(tabId, ['ct'], 'rememberTabId', tabId);
         }
 
         logEvent('onConnect', ctxName, tabId);        
-    };*/
-    handlers.onConnect = logEvent.bind(null, 'onConnect');
+    };
+    //handlers.onConnect = logEvent.bind(null, 'onConnect');
     handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
 
     handlers.getOptions = function (tabId, done) {
-        console.log('BG : Sending options to tab', this.port.sender.tab.id, storage.options);
-        //console.log('BG : Sending options to tab', tabId, storage.options);
-        done(storage.options);
+        // get stored options
+        //console.log('BG : Sending options to tab', this.port.sender.tab.id, storage.options);
+        console.log('BG : Sending options to tab', tabId, storage.options);
+        storage.getOptions(function () {            
+            done(storage.options);
+        });
     };
+
     handlers.optionsChanged = function (res) {
         console.log('BG : Got new options', res);
         storage.options = res;        
     };
 
     handlers.pricesUpdated = function (info, tabId, done) {
-        var senderId = this.port.sender.tab.id;
-        //var senderId = tabId;
+        //var senderId = this.port.sender.tab.id;
+        var senderId = tabId;
         console.log(info, senderId, tabId);
 
         if (info.updated > 0 || info.unchanged > 0) {
@@ -72,9 +76,7 @@
 
     msg = msg.init('bg', handlers);
     
-    // get stored options
-    storage.getOptions();
-
+    
 
 
 

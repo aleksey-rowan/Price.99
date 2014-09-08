@@ -54,11 +54,15 @@ function assertNewPrice(value, valueString, whole, fraction, decimalMarkIndex) {
     assert.strictEqual(decimalMarkIndex, p.newPrice.decimalMarkIndex);
 }
 
-function assertParts(currencySign, whole, decimalMark, fraction) {
+function assertParts(currencySign, whole, decimalMark, fraction, centsHidden) {
     assert.strictEqual(currencySign, p.parts.currencySign.text());
     assert.strictEqual(whole, $(p.parts.whole).text());
     assert.strictEqual(decimalMark, p.parts.decimalMark.text());
     assert.strictEqual(fraction, $(p.parts.fraction).text());
+    
+    [].concat(p.parts.decimalMark, p.parts.fraction).forEach(function (n) {
+        assert.strictEqual(centsHidden, n.hasClass('ppnn-invisible'));
+    });
 }
 
 describe('pricepoint module', function () {
@@ -102,7 +106,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(999.99, '999.99', 999, 0.99, 3);
             assertNewPrice(1000, '1000.00', 1000, 0, 4);
-            assertParts('$', '1000', '.', '00');
+            assertParts('$', '1000', '.', '00', false);
         });
 
         it('should correctly round the price $9.99 -> $10.00', function () {
@@ -113,7 +117,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(9.99, '9.99', 9, 0.99, 1);
             assertNewPrice(10, '10.00', 10, 0, 2);
-            assertParts('$', '10', '.', '00');
+            assertParts('$', '10', '.', '00', false);
         });
 
         it('should correctly round the price $0.99 -> $1.00', function () {
@@ -124,7 +128,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(0.99, '0.99', 0, 0.99, 1);
             assertNewPrice(1, '1.00', 1, 0, 1);
-            assertParts('$', '1', '.', '00');
+            assertParts('$', '1', '.', '00', false);
         });
 
         it('should not round the price $9.50 -> $10.00', function () {
@@ -134,8 +138,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(9.50, '9.50', 9, 0.50, 1);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '9', '.', '50');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '9', '.', '50', false);
         });
 
         it('should not round the price $0.00 -> $1.00', function () {
@@ -145,8 +149,20 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(0.0, '0.00', 0, 0.0, 1);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '0', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '0', '.', '00', false);
+        });
+
+        it('should correctly reset the price $9.99 -> $10.00 -> $9.99', function () {
+            var str = '$9.99', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+            p.reset();
+
+            assertOldPrice(9.99, '9.99', 9, 0.99, 1);
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '9', '.', '99', false);
         });
     });
     
@@ -167,7 +183,68 @@ describe('pricepoint module', function () {
 
             assertOldPrice(0.7, '0.7', 0, 0.7, 1);
             assertNewPrice(1, '1.00', 1, 0, 1);
-            assertParts('$', '1', '.', '00');
+            assertParts('$', '1', '.', '00', false);
+        });
+
+        it('should correctly reset the price $0.7 -> $1.00 -> $0.70', function () {
+            var str = '$0.7', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+            assertOldPrice(0.7, '0.7', 0, 0.7, 1);
+            assertNewPrice(1, '1.00', 1, 0, 1);
+            assertParts('$', '1', '.', '00', false);
+
+            p.reset();
+
+            assertOldPrice(0.7, '0.7', 0, 0.7, 1);
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '0', '.', '70', false);
+        });
+    });
+
+    describe('59 cents rule + hideZeroCents', function () {
+        before(function () {
+            storage.options = $.extend(true, {}, optionsDefault);
+            storage.options.roundRules.cents = {
+                value: 59,
+                enabled: true
+            };
+            storage.options.otherRules = {
+                hideZeroCents: true
+            };
+        });
+
+        it('should correctly round the price $0.7 -> $1.00', function () {
+            var str = '$0.7', ns = nodify(str);
+            
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(0.7, '0.7', 0, 0.7, 1);
+            assertNewPrice(1, '1.00', 1, 0, 1);
+            assertParts('$', '1', '.', '00', true);
+            assert.strictEqual(true, p.isChanged);
+        });
+
+        it('should correctly reset the price $0.7 -> $1.00 -> $0.70', function () {
+            var str = '$0.7', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(0.7, '0.7', 0, 0.7, 1);
+            assertNewPrice(1, '1.00', 1, 0, 1);
+            assertParts('$', '1', '.', '00', true);
+            assert.strictEqual(true, p.isChanged);
+
+            p.reset();
+
+            assertOldPrice(0.7, '0.7', 0, 0.7, 1);
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '0', '.', '70', false);
+
+            assert.strictEqual(false, p.isChanged);
         });
     });
 
@@ -188,7 +265,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(999.0, '999.00', 999, 0.0, 3);
             assertNewPrice(1000, '1000.00', 1000, 0, 4);
-            assertParts('$', '1000', '.', '00');
+            assertParts('$', '1000', '.', '00', false);
         });
 
         it('should correctly round the price $9.99 -> $10.00', function () {
@@ -199,7 +276,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(9.99, '9.99', 9, 0.99, 1);
             assertNewPrice(10, '10.00', 10, 0, 2);
-            assertParts('$', '10', '.', '00');
+            assertParts('$', '10', '.', '00', false);
         });
 
         it('should correctly round the price $0.99 -> $1.00', function () {
@@ -210,7 +287,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(0.99, '0.99', 0, 0.99, 1);
             assertNewPrice(1, '1.00', 1, 0, 1);
-            assertParts('$', '1', '.', '00');
+            assertParts('$', '1', '.', '00', false);
         });
 
         it('should correctly round the price $0.00 -> $1.00', function () {
@@ -221,7 +298,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(0.0, '0.00', 0, 0.0, 1);
             assertNewPrice(1, '1.00', 1, 0, 1);
-            assertParts('$', '1', '.', '00');
+            assertParts('$', '1', '.', '00', false);
         });
 
     });
@@ -243,7 +320,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(999.0, '999.00', 999, 0.0, 3);
             assertNewPrice(1000, '1000.00', 1000, 0, 4);
-            assertParts('$', '1000', '.', '00');
+            assertParts('$', '1000', '.', '00', false);
         });
 
         it('should correctly round the price $99.00 -> $100.00', function () {
@@ -254,7 +331,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(99.0, '99.00', 99, 0.0, 2);
             assertNewPrice(100, '100.00', 100, 0, 3);
-            assertParts('$', '100', '.', '00');
+            assertParts('$', '100', '.', '00', false);
         });
 
         it('should correctly round the price $19.00 -> $20.00', function () {
@@ -265,7 +342,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(19.0, '19.00', 19, 0.0, 2);
             assertNewPrice(20, '20.00', 20, 0, 2);
-            assertParts('$', '20', '.', '00');
+            assertParts('$', '20', '.', '00', false);
         });
         
         it('should correctly round the price $9.00 -> $10.00', function () {
@@ -276,7 +353,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(9.0, '9.00', 9, 0.0, 1);
             assertNewPrice(10, '10.00', 10, 0, 2);
-            assertParts('$', '10', '.', '00');
+            assertParts('$', '10', '.', '00', false);
         });
 
         it('should not round the price $117.00 -> $120.00', function () {
@@ -286,8 +363,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(117.0, '117.00', 117, 0.0, 3);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '117', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '117', '.', '00', false);
         });
 
         it('should not round the price $10.00 -> $20.00', function () {
@@ -297,8 +374,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(10.0, '10.00', 10, 0.0, 2);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '10', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '10', '.', '00', false);
         });
 
         it('should not round the price $5.00 -> $10.00', function () {
@@ -308,8 +385,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(5.00, '5.00', 5, 0.00, 1);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '5', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '5', '.', '00', false);
         });
 
         it('should not round the price $0.00 -> $10.00', function () {
@@ -319,8 +396,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(0.0, '0.00', 0, 0.0, 1);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '0', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '0', '.', '00', false);
         });
     });
     
@@ -428,7 +505,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(1090.0, '1090.00', 1090, 0.0, 4);
             assertNewPrice(1100, '1100.00', 1100, 0, 4);
-            assertParts('$', '1100', '.', '00');
+            assertParts('$', '1100', '.', '00', false);
         });
 
         it('should correctly round the price $990.00 -> $1000.00', function () {
@@ -439,7 +516,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(990.0, '990.00', 990, 0.0, 3);
             assertNewPrice(1000, '1000.00', 1000, 0, 4);
-            assertParts('$', '1000', '.', '00');
+            assertParts('$', '1000', '.', '00', false);
         });
 
         it('should correctly round the price $90.00 -> $100.00', function () {
@@ -450,7 +527,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(90.0, '90.00', 90, 0.0, 2);
             assertNewPrice(100, '100.00', 100, 0, 3);
-            assertParts('$', '100', '.', '00');
+            assertParts('$', '100', '.', '00', false);
         });
 
         it('should not round the price $1000.00 -> $1100.00', function () {
@@ -460,8 +537,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(1000.0, '1000.00', 1000, 0.0, 4);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '1000', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '1000', '.', '00', false);
         });
 
         it('should not round the price $100.00 -> $200.00', function () {
@@ -471,8 +548,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(100.0, '100.00', 100, 0.0, 3);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '100', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '100', '.', '00', false);
         });
 
         it('should not round the price $10.00 -> $100.00', function () {
@@ -482,8 +559,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(10.00, '10.00', 10, 0.00, 2);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '10', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '10', '.', '00', false);
         });
 
         it('should not round the price $9.00 -> $100.00', function () {
@@ -493,8 +570,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(9.0, '9.00', 9, 0.0, 1);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '9', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '9', '.', '00', false);
         });
 
         it('should not round the price $0.00 -> $100.00', function () {
@@ -504,8 +581,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(0.0, '0.00', 0, 0.0, 1);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '0', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '0', '.', '00', false);
         });
     });
 
@@ -526,7 +603,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(10900.0, '10900.00', 10900, 0.0, 5);
             assertNewPrice(11000, '11000.00', 11000, 0, 5);
-            assertParts('$', '11000', '.', '00');
+            assertParts('$', '11000', '.', '00', false);
         });
 
         it('should correctly round the price $9900.00 -> $10000.00', function () {
@@ -537,7 +614,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(9900.0, '9900.00', 9900, 0.0, 4);
             assertNewPrice(10000, '10000.00', 10000, 0, 5);
-            assertParts('$', '10000', '.', '00');
+            assertParts('$', '10000', '.', '00', false);
         });
 
         it('should correctly round the price $900.00 -> $1000.00', function () {
@@ -548,7 +625,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(900.0, '900.00', 900, 0.0, 3);
             assertNewPrice(1000, '1000.00', 1000, 0, 4);
-            assertParts('$', '1000', '.', '00');
+            assertParts('$', '1000', '.', '00', false);
         });
 
         it('should not round the price $9000.00 -> $10000.00', function () {
@@ -558,8 +635,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(9000.0, '9000.00', 9000, 0.0, 4);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '9000', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '9000', '.', '00', false);
         });
 
         it('should not round the price $1000.00 -> $2000.00', function () {
@@ -569,8 +646,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(1000.0, '1000.00', 1000, 0.0, 4);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '1000', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '1000', '.', '00', false);
         });
 
         it('should not round the price $100.00 -> $1000.00', function () {
@@ -580,8 +657,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(100.0, '100.00', 100, 0.0, 3);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '100', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '100', '.', '00', false);
         });
 
         it('should not round the price $10.00 -> $100.00', function () {
@@ -591,8 +668,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(10.00, '10.00', 10, 0.00, 2);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '10', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '10', '.', '00', false);
         });
 
         it('should not round the price $9.00 -> $100.00', function () {
@@ -602,8 +679,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(9.0, '9.00', 9, 0.0, 1);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '9', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '9', '.', '00', false);
         });
 
         it('should not round the price $0.00 -> $100.00', function () {
@@ -613,8 +690,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(0.0, '0.00', 0, 0.0, 1);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '0', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '0', '.', '00', false);
         });
     });
 
@@ -639,7 +716,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(108.99, '108.99', 108, 0.99, 3);
             assertNewPrice(110, '110.00', 110, 0, 3);
-            assertParts('$', '110', '.', '00');
+            assertParts('$', '110', '.', '00', false);
         });
 
         it('should correctly round the price $9.99 -> $10.00', function () {
@@ -650,7 +727,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(9.99, '9.99', 9, 0.99, 1);
             assertNewPrice(10, '10.00', 10, 0, 2);
-            assertParts('$', '10', '.', '00');
+            assertParts('$', '10', '.', '00', false);
         });
 
         it('should correctly round the price $9.50 -> $10.00', function () {
@@ -661,7 +738,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(9.50, '9.50', 9, 0.50, 1);
             assertNewPrice(10, '10.00', 10, 0, 2);
-            assertParts('$', '10', '.', '00');
+            assertParts('$', '10', '.', '00', false);
         });
 
         it('should correctly round the price $7.99 -> $8.00', function () {
@@ -672,7 +749,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(7.99, '7.99', 7, 0.99, 1);
             assertNewPrice(8, '8.00', 8, 0, 1);
-            assertParts('$', '8', '.', '00');
+            assertParts('$', '8', '.', '00', false);
         });
 
         it('should correctly round the price $0.99 -> $1.00', function () {
@@ -683,7 +760,7 @@ describe('pricepoint module', function () {
 
             assertOldPrice(0.99, '0.99', 0, 0.99, 1);
             assertNewPrice(1, '1.00', 1, 0, 1);
-            assertParts('$', '1', '.', '00');
+            assertParts('$', '1', '.', '00', false);
         });
 
         it('should not round the price $5.50', function () {
@@ -693,8 +770,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(5.5, '5.50', 5, 0.5, 1);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '5', '.', '50');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '5', '.', '50', false);
         });
 
         it('should not round the price $0.00', function () {
@@ -704,8 +781,8 @@ describe('pricepoint module', function () {
             p.update();
 
             assertOldPrice(0.0, '0.00', 0, 0.0, 1);
-            assert.strictEqual(null, p.newPrice);
-            assertParts('$', '0', '.', '00');
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '0', '.', '00', false);
         });
     });
 

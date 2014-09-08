@@ -31,15 +31,37 @@ module.exports = {
     options: null
 };
 
-module.exports.getOptions = function (callback) {
+module.exports.getOptions = function (callback, force) {
 
-    // retrieve options from local storage if any
-    chrome.storage.sync.get({
-        options: CONST.optionsDefault
-    }, function (items) {
-        console.log('Storage : Options loaded', items.options);
-        module.exports.options = items.options;
+    if (!module.exports.options || force) {
 
-        callback();
+        // retrieve options from local storage if any
+        chrome.storage.sync.get({
+            options: CONST.optionsDefault
+        }, function (items) {
+            console.log('Storage : Options loaded', items.options);
+            module.exports.options = items.options;
+
+            if (callback) {
+                callback();
+            }
+        });
+    } else {
+        if (callback) {
+            callback();
+        }
+    }
+};
+
+module.exports.saveOptions = function (callback) {
+
+    chrome.storage.sync.set({
+        options: module.exports.options
+    }, function () {
+        console.log('Storage : Options Saved', module.exports.options);
+
+        if (callback) {
+            callback();
+        }
     });
 };

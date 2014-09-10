@@ -19,14 +19,29 @@
         storage = require('./modules/storage.js'),
         runner = require('./modules/runner'),
         msg = require('./modules/msg'),
-            
-        centsRule = {
-            enabled: $('#cents-rule input[type=checkbox]'),
-            value: $('#cents-rule input[type=number]')
-        },
-        dollarsRule = $("#dollars-rule input[type=number]"),
-        tensRule = $("#tens-rule input[type=number]"),
-        hundredsRule = $("#hundreds-rule input[type=number]");//, 
+
+        rules = [
+            {
+                enabledControl: $('#cents-rule input[type=checkbox]'),
+                valueControl: $('#cents-rule input[type=number]'),
+                content: 'cents'
+            },
+            {
+                enabledControl: $('#dollars-rule input[type=checkbox]'),
+                valueControl: $('#dollars-rule input[type=number]'),
+                content: 'dollars'
+            },
+            {
+                enabledControl: $('#tens-rule input[type=checkbox]'),
+                valueControl: $('#tens-rule input[type=number]'),
+                content: 'tens'
+            },
+            {
+                enabledControl: $('#hundreds-rule input[type=checkbox]'),
+                valueControl: $('#hundreds-rule input[type=number]'),
+                content: 'hundreds'
+            }
+        ];//, 
     //form = require('./modules/form'),
 
     //form.init(runner.go.bind(runner, msg));
@@ -66,57 +81,30 @@
     function init(callback) {
         var roundRules = storage.options.roundRules;
 
-        centsRule.value
-            .val(roundRules.cents.value.toString())
-            //.stepper()
-            .change(function (e) {
-                console.log(e);
+        rules.forEach(function (rule) {
+            rule.valueControl
+                .val(roundRules[rule.content].value.toString())
+                .prop('disabled', !roundRules[rule.content].enabled)
+                //.stepper()
+                .change(function (e) {
+                    console.log(e);
 
-                roundRules.cents.value = parseInt(e.currentTarget.value, 10);
-                saveOptions(callback);
-            });
-        centsRule.enabled
-            .prop('checked', roundRules.cents.enabled)
-            .change(function (e) {
-                console.log(e);
+                    roundRules[rule.content].value = parseInt(e.currentTarget.value, 10);
+                    saveOptions(callback);
+                });
+            rule.enabledControl
+                .prop('checked', roundRules[rule.content].enabled)
+                .change(function (e) {
+                    console.log(e);
 
-                roundRules.cents.enabled = e.currentTarget.checked;
-                centsRule.value.prop('disabled', !roundRules.cents.enabled);
-                saveOptions(callback);
-            });
-
-        dollarsRule
-            .val(storage.options.roundRules.dollars.value.toString())
-            //.stepper()
-            .change(function (e) {
-                console.log(e);
-
-                storage.options.roundRules.dollars.value = parseInt(e.currentTarget.value, 10);
-                saveOptions(callback);
-            });
-
-        tensRule
-            .val(storage.options.roundRules.tens.value.toString())
-            //.stepper()
-            .change(function (e) {
-                console.log(e);
-
-                storage.options.roundRules.tens.value = parseInt(e.currentTarget.value, 10);
-                saveOptions(callback);
-            });
-
-        hundredsRule
-            .val(storage.options.roundRules.hundreds.value.toString())
-            //.stepper()
-            .change(function (e) {
-                console.log(e);
-
-                storage.options.roundRules.hundreds.value = parseInt(e.currentTarget.value, 10);
-                saveOptions(callback);
-            });
+                    roundRules[rule.content].enabled = e.currentTarget.checked;
+                    rule.valueControl.prop('disabled', !roundRules[rule.content].enabled);
+                    saveOptions(callback);
+                });
+        });
     }
 
-    
+
 
     // old code
     //$(function () {

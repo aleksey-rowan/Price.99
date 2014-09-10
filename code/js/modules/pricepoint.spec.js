@@ -59,7 +59,7 @@ function assertParts(currencySign, whole, decimalMark, fraction, centsHidden) {
     assert.strictEqual(whole, $(p.parts.whole).text());
     assert.strictEqual(decimalMark, p.parts.decimalMark.text());
     assert.strictEqual(fraction, $(p.parts.fraction).text());
-    
+
     [].concat(p.parts.decimalMark, p.parts.fraction).forEach(function (n) {
         assert.strictEqual(centsHidden, n.hasClass('ppnn-invisible'));
     });
@@ -165,7 +165,7 @@ describe('pricepoint module', function () {
             assertParts('$', '9', '.', '99', false);
         });
     });
-    
+
     describe('59 cents rule', function () {
         before(function () {
             storage.options = $.extend(true, {}, optionsDefault);
@@ -173,7 +173,7 @@ describe('pricepoint module', function () {
                 value: 59,
                 enabled: true
             };
-        });       
+        });
 
         it('should correctly round the price $0.7 -> $1.00', function () {
             var str = '$0.7', ns = nodify(str);
@@ -217,7 +217,7 @@ describe('pricepoint module', function () {
 
         it('should correctly round the price $0.7 -> $1.00', function () {
             var str = '$0.7', ns = nodify(str);
-            
+
             p = pricepoint.create(str, ns);
             p.update();
 
@@ -344,7 +344,7 @@ describe('pricepoint module', function () {
             assertNewPrice(20, '20.00', 20, 0, 2);
             assertParts('$', '20', '.', '00', false);
         });
-        
+
         it('should correctly round the price $9.00 -> $10.00', function () {
             var str = '$9.00', ns = nodify(str);
 
@@ -354,6 +354,17 @@ describe('pricepoint module', function () {
             assertOldPrice(9.0, '9.00', 9, 0.0, 1);
             assertNewPrice(10, '10.00', 10, 0, 2);
             assertParts('$', '10', '.', '00', false);
+        });
+
+        it('should correctly round the price $9 -> $10.00', function () {
+            var str = '$9', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(9.0, '9', 9, 0.0, 1);
+            assertNewPrice(10, '10.00', 10, 0, 2);
+            assertParts('$', '10', '', '', false);
         });
 
         it('should not round the price $117.00 -> $120.00', function () {
@@ -400,7 +411,7 @@ describe('pricepoint module', function () {
             assertParts('$', '0', '.', '00', false);
         });
     });
-    
+
     describe.skip('0 dollars rule', function () {
         before(function () {
             storage.options = $.extend(true, {}, optionsDefault);
@@ -786,6 +797,47 @@ describe('pricepoint module', function () {
         });
     });
 
+    describe('60 cents + 4 dollars + 1 tens: cascade', function () {
+        before(function () {
+            storage.options = $.extend(true, {}, optionsDefault);
+            storage.options.roundRules.tens = {
+                value: 1,
+                enabled: true
+            };
+        });
+
+        it('should correctly cascade the price $8.7 -> $100.00 -> $8.7', function () {
+            var str = '$8.7', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(8.7, '8.7', 8, 0.7, 1);
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '8', '.', '70', false);
+            assert.strictEqual(false, p.isChanged);
+
+            storage.options.roundRules.dollars = {
+                value: 4,
+                enabled: true
+            };
+
+            p.update();
+
+            assertOldPrice(8.7, '8.7', 8, 0.7, 1);
+            assertNewPrice(100, '100.00', 100, 0, 3);
+            assertParts('$', '100', '.', '00', false);
+            assert.strictEqual(true, p.isChanged);
+
+            p.reset();
+
+            assertOldPrice(8.7, '8.7', 8, 0.7, 1);
+            assertNewPrice(null,null,null,null,null);
+            assertParts('$', '8', '.', '70', false);
+            assert.strictEqual(false, p.isChanged);
+        });
+
+    });
 
 
     /*it('should create() handler object with 3 commands', function () {

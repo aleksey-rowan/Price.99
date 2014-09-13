@@ -27,7 +27,6 @@ module.exports.testHook = function (j) {
 };
 
 module.exports.create = function (text, nodes) {
-
     function cloneDigit(subj, array, target, text) {
         var clone = subj.clone();
 
@@ -82,6 +81,8 @@ module.exports.create = function (text, nodes) {
                 cloneDigit(node, this.parts.fraction, node, '0');
             }
 
+            this.hideCents(this.oldPrice);
+
             return this;
         },
 
@@ -95,7 +96,6 @@ module.exports.create = function (text, nodes) {
                     decimalMarkIndex: null
                 });
             } else {
-
                 target.valueString = text.replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, "");
                 target.value = parseFloat(target.valueString);
                 target.whole = parseInt(target.valueString, 10);
@@ -160,7 +160,6 @@ module.exports.create = function (text, nodes) {
                 wholeString = targetPrice.valueString.substring(0, targetPrice.decimalMarkIndex),
                 fractionString = targetPrice.valueString.substring(targetPrice.decimalMarkIndex + 1),
                 titleText = isReset ? '' : 'Old price: ' + this.oldPrice.value,
-                hideToggle = storage.options.otherRules.hideZeroCents && targetPrice.fraction === 0,
                 // difference in length of the calculated whole price and the number of node in dom
                 wholeDiff = targetPrice.decimalMarkIndex - this.parts.whole.length;
 
@@ -176,7 +175,7 @@ module.exports.create = function (text, nodes) {
                     .pop()
                     .remove();
             }
-            
+
             // update the whole part
             for (i = 0; i < wholeString.length; i++) {
                 this.parts.whole[i]
@@ -191,11 +190,7 @@ module.exports.create = function (text, nodes) {
                 }
             }
 
-            [].concat(this.parts.decimalMark, this.parts.fraction)
-                .filter(function (elm) { return (elm); }) // filter out not elements
-                .forEach(function (n) {
-                    n.toggleClass('ppnn-invisible', hideToggle);
-                });
+            this.hideCents(targetPrice);
 
             [].concat(this.parts.whole, this.parts.decimalMark, this.parts.fraction)
                 .filter(function (elm) { return (elm); }) // filter out not elements
@@ -206,12 +201,28 @@ module.exports.create = function (text, nodes) {
                 });
         },
 
+        hideCents: function (targetPrice) {
+            var hideToggle;
+
+            if (storage.options) {
+                hideToggle = storage.options.otherRules.hideZeroCents && targetPrice.fraction === 0;
+
+                [].concat(this.parts.decimalMark, this.parts.fraction)
+                    .filter(function (elm) { return (elm); }) // filter out not elements
+                    .forEach(function (n) {
+                        n.toggleClass('ppnn-invisible', hideToggle);
+                    });
+            }
+        },
+
         update: function () {
             if (this.recalculatePrice() && storage.options) {
                 this.synchronize(this.newPrice);
                 this.isChanged = true;
+                // reset the price if no rules applies
             } else if (this.isChanged) {
                 this.reset();
+                // set new price to null if else
             } else {
                 this.setPrice(this.newPrice, null);
             }
@@ -233,7 +244,6 @@ module.exports.create = function (text, nodes) {
         newPrice: null,
         parts: null,
         nodes: null
-
     }.init(text, nodes));
 }
 
@@ -255,7 +265,7 @@ module.exports.create = function (text, nodes) {
         },
         options,
         pricePoint = {},
-            
+
         pricePoints = [],
         garbage = [],
         nodes = $("body").children(":not('script, style')"), //$("body").children().not("script"),
@@ -263,12 +273,12 @@ module.exports.create = function (text, nodes) {
 
         parser,
         util;
-    
+
     parser = (function () {
         return {
         };
     }());
-    
+
     util = (function () {
         return {
             getDigit: function (N, n) {
@@ -276,17 +286,17 @@ module.exports.create = function (text, nodes) {
             }
         };
     }());
-    
+
     function unwrapNodes(nodes) {
         nodes.forEach(function (n) {
             n.contents().unwrap();
         });
     }
-    
+
     console.log("Price.99's here");
-    
+
     chrome.runtime.sendMessage({ action: 'getOptions' });
-    
+
     chrome.runtime.onMessage.addListener(
       function (request, sender) {
         //, sendResponse) {
@@ -294,55 +304,54 @@ module.exports.create = function (text, nodes) {
                       "from a content script:" + sender.tab.url :
                       "from the extension", request);
         var count;
-        switch (request.action) {                
-            
+        switch (request.action) {
             case "optionsChanged":
                 options = request.options;
-                
+
                 console.log('Tab: new options received');
-                
+
                 count = 0;
-                
+
                 pricePoints.forEach(function (pp) {
                     pp.update();
                     count += pp.isChanged ? 1 : 0;
                 });
-                
+
                 chrome.runtime.sendMessage({
                     action: 'pricesChanged',
                     count: count
                 });
-                
+
                 break;
 
             case "reset":
                 count = 0;
-                
+
                 pricePoints.forEach(function (pp) {
                     pp.reset();
                     count += pp.isChanged ? 1 : 0;
                 });
-                
+
                 chrome.runtime.sendMessage({
                     action: 'pricesChanged',
                     count: count
                 });
-                
+
                 break;
 
             default:
                 break;
         }
     });
-    
+
     nodes.highlightRegex(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺.\d]/ig, {
         tagType: "ppnn"
     });
-    
+
     $("ppnn").each(function (i, elm) {
         var t;
         elm = $(elm);
-        
+
         if (elm.text() === "$") {
             array.push([elm]);
         } else if (array.length > 0) {
@@ -352,24 +361,23 @@ module.exports.create = function (text, nodes) {
             garbage.push(elm);
         }
     });
-    
+
     unwrapNodes(garbage);
-    
+
     array.forEach(function (elm) {
         var value = elm.map(function (e) { return e.text(); }).join(""),
             m = value.match(/^[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺](\d+)((.|,)\d{2})?/ig);
-        
+
         if (m) {
             console.log("match", m[0], "->", (parseFloat(m[0].replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, "")) % 1).toFixed(2), "||", value);
             pricePoints.push(Object.create(pricePoint).init(m[0], elm));
         } else {
             console.log("garbage", value);
         }
-        
+
         // release garbage nodes
         unwrapNodes(elm);
     });*/
-
 
     // Mutation Observers
     /*

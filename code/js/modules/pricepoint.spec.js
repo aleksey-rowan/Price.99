@@ -1,4 +1,4 @@
-﻿/* global before, require */
+﻿/* global before, require, it, describe */
 
 var assert = require('assert'),
     p,
@@ -66,7 +66,6 @@ function assertParts(currencySign, whole, decimalMark, fraction, centsHidden) {
 }
 
 describe('pricepoint module', function () {
-
     it('should hook jquery to module without error', function (done) {
         jsdom.jQueryify(window, './../libs/jquery-1.11.1.min.js', function () {
             $ = window.$;
@@ -81,11 +80,11 @@ describe('pricepoint module', function () {
         assert.strictEqual(pricepoint && typeof (pricepoint.create), 'function');
     });
 
-    it('should create() pricepoint object with 11 commands', function () {
+    it('should create() pricepoint object with 12 commands', function () {
         p = pricepoint.create('$0.00', []);
         assert('object' === typeof (p));
-        assert(11 === Object.keys(p).length);
-        assert.deepEqual(['init', 'isChanged', 'newPrice', 'nodes', 'oldPrice', 'parts', 'recalculatePrice', 'reset', 'setPrice', 'synchronize', 'update'],
+        assert(12 === Object.keys(p).length);
+        assert.deepEqual(['hideCents', 'init', 'isChanged', 'newPrice', 'nodes', 'oldPrice', 'parts', 'recalculatePrice', 'reset', 'setPrice', 'synchronize', 'update'],
             Object.keys(p).sort());
     });
 
@@ -300,7 +299,6 @@ describe('pricepoint module', function () {
             assertNewPrice(1, '1.00', 1, 0, 1);
             assertParts('$', '1', '.', '00', false);
         });
-
     });
 
     describe('9 dollars rule', function () {
@@ -832,13 +830,62 @@ describe('pricepoint module', function () {
             p.reset();
 
             assertOldPrice(8.7, '8.7', 8, 0.7, 1);
-            assertNewPrice(null,null,null,null,null);
+            assertNewPrice(null, null, null, null, null);
             assertParts('$', '8', '.', '70', false);
             assert.strictEqual(false, p.isChanged);
         });
-
     });
 
+    describe('HideZeroCents rule', function () {
+        before(function () {
+            storage.options = $.extend(true, {}, optionsDefault);
+            storage.options.roundRules.cents = {
+                value: 59,
+                enabled: true
+            };
+            storage.options.otherRules = {
+                hideZeroCents: true
+            };
+        });
+
+        it('should correctly hide cents $7.00 -> $7', function () {
+            var str = '$7.00', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(7.0, '7.00', 7, 0.0, 1);
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '7', '.', '00', true);
+        });
+
+        it('should correctly hide cents $700.00 -> $700', function () {
+            var str = '$700.00', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(700.0, '700.00', 700, 0.0, 3);
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '700', '.', '00', true);
+        });
+
+        it('should correctly hide cents after reset $7.00 -> $7.00 -> $7.00', function () {
+            var str = '$7.00', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+            assertOldPrice(7.0, '7.00', 7, 0, 1);
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '7', '.', '00', true);
+
+            p.reset();
+
+            assertOldPrice(7, '7.00', 7, 0, 1);
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '7', '.', '00', true);
+        });
+    });
 
     /*it('should create() handler object with 3 commands', function () {
         h = handlers.create('test');
@@ -846,7 +893,7 @@ describe('pricepoint module', function () {
         assert(3 === Object.keys(h).length);
         assert.deepEqual(['echo','random','randomAsync'], Object.keys(h).sort());
     });
-    
+
     it('should "return" random number 0 - 999', function () {
         h.random(function (i) {
             assert('number' === typeof (i));
@@ -854,6 +901,4 @@ describe('pricepoint module', function () {
             assert(i <= 999);
         });
     });*/
-
 });
-

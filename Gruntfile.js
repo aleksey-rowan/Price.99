@@ -98,6 +98,22 @@ module.exports = function (grunt) {
                       'code/**/*.json', '!code/js/libs/*'],
                 tasks: ['light-build']
             }
+        },
+
+        bump: {
+            options: {
+                files: ['package.json'],
+                updateConfigs: [],
+                commit: false,
+                commitMessage: 'Release v%VERSION%',
+                commitFiles: ['package.json'],
+                createTag: false,
+                tagName: 'v%VERSION%',
+                tagMessage: 'Version %VERSION%',
+                push: false,
+                pushTo: 'upstream',
+                gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
+            }
         }
     });
 
@@ -108,6 +124,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-exec');
+    grunt.loadNpmTasks('grunt-bump');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
@@ -151,6 +168,15 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['clean', 'test', 'mkdir:unpacked', 'copy:main', 'manifest',
       'mkdir:js', 'browserify', 'copy:prod', 'uglify', /*'exec',*/ 'circleci']);
 
-    grunt.registerTask('light-build', ['clean', 'test', 'mkdir:unpacked', 'copy:main', 'manifest',
-      'mkdir:js', 'browserify']);
+    grunt.registerTask('light-build',
+        [
+            'clean',
+            'test',
+            'mkdir:unpacked',
+            'copy:main',
+            'manifest',
+            'mkdir:js',
+            'browserify',
+            'bump-only:patch'
+        ]);
 };

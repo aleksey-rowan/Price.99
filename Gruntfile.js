@@ -94,7 +94,7 @@ module.exports = function (grunt) {
                 tasks: ['test']
             },
             update: {
-                files: ['package.json', 'lint-options.json', 'Gruntfile.js', 'code/**/*.js',
+                files: ['!package.json', 'lint-options.json', 'Gruntfile.js', 'code/**/*.js',
                       'code/**/*.json', '!code/js/libs/*'],
                 tasks: ['light-build']
             }

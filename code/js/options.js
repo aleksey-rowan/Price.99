@@ -48,6 +48,7 @@
 
     //require('./libs/jquery.maskedinput.min.js');
     require('./libs/stepper/jquery.fs.stepper.min.js');
+    require('./libs/picker/jquery.fs.picker.js');
 
     msg = msg.init('options', handlers);
 
@@ -55,7 +56,7 @@
     storage.getOptions(function () {
         init(runner.go.bind(runner, msg));
     });
-
+    
     // retrieve options from local storage if any
     /*chrome.storage.sync.get({
         options: CONST.optionsDefault
@@ -78,27 +79,38 @@
         });
     }
 
+
     function init(callback) {
         var roundRules = storage.options.roundRules;
 
         rules.forEach(function (rule) {
             rule.valueControl
                 .val(roundRules[rule.content].value.toString())
-                .prop('disabled', !roundRules[rule.content].enabled)
-                //.stepper()
+                //.prop('disabled', !roundRules[rule.content].enabled)
+                .stepper()
+                .parent().stepper(roundRules[rule.content].enabled ? 'enable' : 'disable')
                 .change(function (e) {
                     console.log(e);
 
-                    roundRules[rule.content].value = parseInt(e.currentTarget.value, 10);
+                    roundRules[rule.content].value = parseInt(e.target.value, 10);
                     saveOptions(callback);
                 });
+            
             rule.enabledControl
                 .prop('checked', roundRules[rule.content].enabled)
+                .picker({
+                    toggle: true,
+                    labels: {
+                        on: rule.content,
+                        off: ''
+                    }
+                })
                 .change(function (e) {
                     console.log(e);
 
                     roundRules[rule.content].enabled = e.currentTarget.checked;
-                    rule.valueControl.prop('disabled', !roundRules[rule.content].enabled);
+                    //rule.valueControl.prop('disabled', !roundRules[rule.content].enabled);
+                    rule.valueControl.parent().stepper(roundRules[rule.content].enabled ? 'enable' : 'disable');
                     saveOptions(callback);
                 });
         });

@@ -1,6 +1,6 @@
 {
   "name": "Price.99",
-  "version": "0.0.6",
+  "version": "0.0.49",
   "description": "This extension demonstrates a browser action with kittens.",
   "dependencies": {},
   "devDependencies": {

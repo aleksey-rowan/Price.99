@@ -7,6 +7,10 @@
     box-sizing: border-box;
 }
 
+.clearfix {
+    clear: both;
+}
+
 .chrome-bootstrap .frame .navigation {
     width: 100px;
 }
@@ -16,7 +20,7 @@
 }
 
 .chrome-bootstrap h1 {
-    height: 52px;
+    height: auto;
 }
 
 .picker {
@@ -28,6 +32,14 @@
     position: absolute !important;
     transition: none !important;
     z-index: -1;
+}
+
+.picker.picker-toggle {
+    padding-top: 16px !important;
+}
+
+.picker.picker-toggle .picker-toggle-label {
+    font-size: 9px !important;
 }
 
 .picker.picker-toggle.checked .picker-handle {
@@ -64,10 +76,15 @@
 .stepper {
     width: auto !important;
     border-radius: 0 !important;
+    margin-bottom: 3px !important;
 }
 
 .stepper .stepper-input {
     border-radius: 0 !important;
+
+    font-size: 15px !important;
+    padding-right: 20px !important;
+    text-align: center;
 }
 
 
@@ -75,4 +92,31 @@
     width: 50px;
     float: left;
     margin-right: 10px;
+}
+
+.rule-container.selected {
+    border-bottom: 4px solid #4e5764;
+}
+
+.details-container {
+    position: relative;
+}
+
+.rule-details {
+    -webkit-margin-start: -20px;
+    -webkit-transition: margin 100ms, opacity 100ms;
+    opacity: 0;
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    display: block;
+}
+
+.rule-details.selected {
+    -webkit-margin-start: 0;
+    -webkit-transition: margin 200ms, opacity 200ms;
+    -webkit-transition-delay: 100ms;
+    position: relative;
+    z-index: 1;
+    opacity: 1;
 }

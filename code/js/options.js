@@ -22,23 +22,31 @@
 
         rules = [
             {
+                container: $('#cents-rule'),
                 enabledControl: $('#cents-rule input[type=checkbox]'),
                 valueControl: $('#cents-rule input[type=number]'),
+                detailsDiv: $('#cents-details'),
                 content: 'cents'
             },
             {
+                container: $('#dollars-rule'),
                 enabledControl: $('#dollars-rule input[type=checkbox]'),
                 valueControl: $('#dollars-rule input[type=number]'),
+                detailsDiv: $('#dollars-details'),
                 content: 'dollars'
             },
             {
+                container: $('#tens-rule'),
                 enabledControl: $('#tens-rule input[type=checkbox]'),
                 valueControl: $('#tens-rule input[type=number]'),
+                detailsDiv: $('#tens-details'),
                 content: 'tens'
             },
             {
+                container: $('#hundreds-rule'),
                 enabledControl: $('#hundreds-rule input[type=checkbox]'),
                 valueControl: $('#hundreds-rule input[type=number]'),
+                detailsDiv: $('#hundreds-details'),
                 content: 'hundreds'
             }
         ];//, 
@@ -56,7 +64,7 @@
     storage.getOptions(function () {
         init(runner.go.bind(runner, msg));
     });
-    
+
     // retrieve options from local storage if any
     /*chrome.storage.sync.get({
         options: CONST.optionsDefault
@@ -95,7 +103,7 @@
                     roundRules[rule.content].value = parseInt(e.target.value, 10);
                     saveOptions(callback);
                 });
-            
+
             rule.enabledControl
                 .prop('checked', roundRules[rule.content].enabled)
                 .picker({
@@ -113,6 +121,23 @@
                     rule.valueControl.parent().stepper(roundRules[rule.content].enabled ? 'enable' : 'disable');
                     saveOptions(callback);
                 });
+
+            rule.container
+                .hover(
+                    function () {
+                        rules.forEach(function (r) {
+                            r.detailsDiv.removeClass('selected');
+                            r.container.removeClass('selected');
+                        });
+
+                        rule.detailsDiv.addClass('selected');
+                        rule.container.addClass('selected');
+                    },
+
+                    function () {
+
+                    }
+                );
         });
     }
 

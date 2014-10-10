@@ -108,8 +108,14 @@ module.exports.create = function (text, nodes) {
         recalculatePrice: function () {
             var isRounded = false,
                 roundRules = storage.options.roundRules,
+                otherRules = storage.options.otherRules,
                 roundedPrice = this.oldPrice.value,
                 temp;
+
+            if (!otherRules.enabled) {
+                this.setPrice(this.newPrice, null);
+                return false;
+            }
 
             if (roundRules.cents.enabled &&
                     parseFloat((roundedPrice % 1).toFixed(2), 10) >= roundRules.cents.value / 100) {
@@ -216,7 +222,7 @@ module.exports.create = function (text, nodes) {
         },
 
         update: function () {
-            if (this.recalculatePrice() && storage.options) {
+            if (storage.options && this.recalculatePrice()) {
                 this.synchronize(this.newPrice);
                 this.isChanged = true;
                 // reset the price if no rules applies

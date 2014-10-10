@@ -27,6 +27,7 @@ var assert = require('assert'),
             }
         },
         otherRules: {
+            enabled: true,
             hideAllCents: false,
             hideZeroCents: false
         }
@@ -209,9 +210,7 @@ describe('pricepoint module', function () {
                 value: 59,
                 enabled: true
             };
-            storage.options.otherRules = {
-                hideZeroCents: true
-            };
+            storage.options.otherRules.hideZeroCents = true;
         });
 
         it('should correctly round the price $0.7 -> $1.00', function () {
@@ -843,9 +842,7 @@ describe('pricepoint module', function () {
                 value: 59,
                 enabled: true
             };
-            storage.options.otherRules = {
-                hideZeroCents: true
-            };
+            storage.options.otherRules.hideZeroCents = true;
         });
 
         it('should correctly hide cents $7.00 -> $7', function () {
@@ -885,6 +882,42 @@ describe('pricepoint module', function () {
             assertNewPrice(null, null, null, null, null);
             assertParts('$', '7', '.', '00', true);
         });
+    });
+
+    describe('enabled rule', function () {
+        before(function () {
+            storage.options = $.extend(true, {}, optionsDefault);
+            storage.options.roundRules.cents = {
+                value: 59,
+                enabled: true
+            };
+            storage.options.otherRules.enabled = false;
+
+            console.log(storage.options);
+        });
+
+        it('should not round the price $9.99 -> $10.00', function () {
+            var str = '$9.99', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(9.99, '9.99', 9, 0.99, 1);
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '9', '.', '99', false);
+        });
+
+        it('should not round the price $0.99 -> $1.00', function () {
+            var str = '$0.99', ns = nodify(str);
+
+            p = pricepoint.create(str, ns);
+            p.update();
+
+            assertOldPrice(0.99, '0.99', 0, 0.99, 1);
+            assertNewPrice(null, null, null, null, null);
+            assertParts('$', '0', '.', '99', false);
+        });
+        
     });
 
     /*it('should create() handler object with 3 commands', function () {

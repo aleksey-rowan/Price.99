@@ -21,6 +21,7 @@ var CONST = {
             }
         },
         otherRules: {
+            enabled: true,
             hideAllCents: false,
             hideZeroCents: true
         }

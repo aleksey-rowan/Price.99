@@ -49,7 +49,14 @@
                 detailsDiv: $('#hundreds-details'),
                 content: 'hundreds'
             }
-        ];//, 
+
+        ],
+
+        globalRule = {
+            container: $('#global-rule'),
+            enabledControl: $('#global-rule input[type=checkbox]'),
+            content: 'global'
+        };//, 
     //form = require('./modules/form'),
 
     //form.init(runner.go.bind(runner, msg));
@@ -89,7 +96,8 @@
 
 
     function init(callback) {
-        var roundRules = storage.options.roundRules;
+        var otherRules = storage.options.otherRules,
+            roundRules = storage.options.roundRules;
 
         rules.forEach(function (rule) {
             rule.valueControl
@@ -113,6 +121,7 @@
                         off: ''
                     }
                 })
+                .picker(otherRules.enabled ? "enable" : "disable") // enable or disabled control according to the global rule's state
                 .change(function (e) {
                     console.log(e);
 
@@ -138,6 +147,46 @@
 
                     }
                 );
+        });
+
+        globalRule.enabledControl
+            .prop('checked', otherRules.enabled)
+            .picker({
+                toggle: true
+            })
+            .change(function (e) {
+                console.log(e);
+
+                otherRules.enabled = e.currentTarget.checked;
+                //rule.valueControl.prop('disabled', !roundRules[rule.content].enabled);
+
+                rules.forEach(function (r) {
+                    r.enabledControl.picker(otherRules.enabled ? "enable" : "disable");
+                });
+
+                saveOptions(callback);
+            });
+
+        $('.menu a').click(function (ev) {
+            ev.preventDefault();
+            var selected = 'selected';
+
+            $('.mainview > *').removeClass(selected);
+            $('.menu li').removeClass(selected);
+            setTimeout(function () {
+                $('.mainview > *:not(.selected)').css('display', 'none');
+            }, 100);
+
+            $(ev.currentTarget).parent().addClass(selected);
+            var currentView = $($(ev.currentTarget).attr('href'));
+            currentView.css('display', 'block');
+            setTimeout(function () {
+                currentView.addClass(selected);
+            }, 0);
+
+            setTimeout(function () {
+                $('body')[0].scrollTop = 0;
+            }, 200);
         });
     }
 

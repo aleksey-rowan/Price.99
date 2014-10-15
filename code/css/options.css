@@ -1,6 +1,6 @@
 ﻿body {
-    width: 450px;
-    height: 500px;
+    width: 355px;
+    height: 300px;
 }
 
 *, :before, :after {
@@ -17,6 +17,12 @@
 
 .chrome-bootstrap .frame .view {
     -webkit-margin-start: 100px;
+    width: auto;
+}
+
+.chrome-bootstrap .frame .content {
+    width: 255px;
+    overflow-x: initial;
 }
 
 .chrome-bootstrap header {
@@ -28,8 +34,15 @@
 }
 
 .chrome-bootstrap h2 {
-    padding: 15px 0 0 0;
-    margin: 0;
+    /*padding: 15px 0 10px 0;
+    margin: 0;*/
+    font-size: 16px;
+}
+
+.chrome-bootstrap h3 {
+    /*padding: 15px 0 10px 0;
+    margin: 0;*/
+    font-size: 14px;
 }
 
 .chrome-bootstrap input[type='checkbox'].picker-element:disabled {
@@ -110,22 +123,30 @@
     width: 50px;
     float: left;
     margin-right: 10px;
+    border-bottom: 4px solid transparent;
 }
 
 .rule-container.selected {
-    border-bottom: 4px solid #4e5764;
+    border-bottom-color: #4e5764;
 }
 
 .details-container {
     position: relative;
 }
 
+#separator-dot {
+    font-size: 41px;
+    width: 8px;
+    margin: 21px 5px 0 -5px;
+}
+
 #global-rule {
-    position: fixed;
+    /*position: fixed;
     top: 7px;
     right: 14px;
+    z-index: 10;*/
     width: 50px;
-    z-index: 10;
+    float: right;
 }
 
 #global-rule .picker.picker-toggle .picker-handle {
@@ -136,6 +157,23 @@
     background: #27ae60;
 }
 
+#global-rule-title {
+    float: left;
+}
+
+#global-rule-title h2 {
+
+}
+
+.option-item {
+    padding-right: 13px;
+
+    border-right: 4px solid transparent;
+}
+
+.option-item.selected {
+    border-right-color: #4e5764;
+}
 
 .rule-details {
     -webkit-margin-start: -20px;
@@ -151,7 +189,7 @@
     -webkit-margin-start: 0;
     -webkit-transition: margin 200ms, opacity 200ms;
     -webkit-transition-delay: 100ms;
-    position: relative;
+    position: absolute;
     z-index: 1;
     opacity: 1;
 }

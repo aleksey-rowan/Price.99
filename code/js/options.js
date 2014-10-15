@@ -144,10 +144,23 @@
                     },
 
                     function () {
-
+                        rules.forEach(function (r) {
+                            r.detailsDiv.removeClass('selected');
+                            r.container.removeClass('selected');
+                        });
                     }
                 );
         });
+
+        $('.option-item').hover(
+            function () {
+                var node = $(this);
+                node.addClass('selected');
+            },
+            function () {
+                var node = $(this);
+                node.removeClass('selected');
+            });
 
         globalRule.enabledControl
             .prop('checked', otherRules.enabled)

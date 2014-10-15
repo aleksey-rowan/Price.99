@@ -39,76 +39,93 @@
         </div>
 
         <div class="mainview view">
+
             <div id="options" class="selected">
                 <header>
                     <h1>Options</h1>
                 </header>
                 <div class="content">
 
-                    <div class="rule-container" id="hundreds-rule">
-                        <div class="rule-toggle">
-                            <label for="hundreds-rule-toggle">Hundred</label>
-                            <input type="checkbox" id="hundreds-rule-toggle" />
+                    <div class="option-item">
+                        <div id="global-rule-title">
+                            <h3>Enabled</h3>
                         </div>
-                        <div class="rule-content">
-                            <input type="number" min="1" max="9" step="1" />
+
+                        <div id="global-rule" class="rule-toggle">
+                            <label for="global-rule-toggle">Enabled</label>
+                            <input type="checkbox" id="global-rule-toggle" />
                         </div>
+
+                        <div class="clearfix"></div>
                     </div>
 
-                    <div class="rule-container" id="tens-rule">
-                        <div class="rule-toggle">
-                            <label for="tens-rule-toggle">Tens</label>
-                            <input type="checkbox" id="tens-rule-toggle" />
+                    <h2>Rules</h2>
+                    <div>
+                        <div class="rule-container" id="hundreds-rule">
+                            <div class="rule-toggle">
+                                <label for="hundreds-rule-toggle">Hundred</label>
+                                <input type="checkbox" id="hundreds-rule-toggle" />
+                            </div>
+                            <div class="rule-content">
+                                <input type="number" min="1" max="9" step="1" />
+                            </div>
                         </div>
-                        <div class="rule-content">
-                            <input type="number" min="1" max="9" step="1" />
-                        </div>
-                    </div>
 
-                    <div class="rule-container" id="dollars-rule">
-                        <div class="rule-toggle">
-                            <label for="dollars-rule-toggle">Dollars</label>
-                            <input type="checkbox" id="dollars-rule-toggle" />
+                        <div class="rule-container" id="tens-rule">
+                            <div class="rule-toggle">
+                                <label for="tens-rule-toggle">Tens</label>
+                                <input type="checkbox" id="tens-rule-toggle" />
+                            </div>
+                            <div class="rule-content">
+                                <input type="number" min="1" max="9" step="1" />
+                            </div>
                         </div>
-                        <div class="rule-content">
-                            <input type="number" min="1" max="9" step="1" />
-                        </div>
-                    </div>
 
-                    <div class="rule-container" id="dollars-rule">
-                        <span>.</span>                        
-                    </div>
-
-                    <div class="rule-container selected" id="cents-rule">
-                        <div class="rule-toggle">
-                            <label for="cents-rule-toggle">Cents</label>
-                            <input type="checkbox" id="cents-rule-toggle" />
+                        <div class="rule-container" id="dollars-rule">
+                            <div class="rule-toggle">
+                                <label for="dollars-rule-toggle">Dollars</label>
+                                <input type="checkbox" id="dollars-rule-toggle" />
+                            </div>
+                            <div class="rule-content">
+                                <input type="number" min="1" max="9" step="1" />
+                            </div>
                         </div>
-                        <div class="rule-content">
-                            <input type="number" min="1" max="99" step="1" />
-                        </div>
-                    </div>
 
-                    <div class="clearfix"></div>                      
+                        <div class="rule-container" id="separator-dot">
+                            <span>.</span>
+                        </div>
+
+                        <div class="rule-container" id="cents-rule">
+                            <div class="rule-toggle">
+                                <label for="cents-rule-toggle">Cents</label>
+                                <input type="checkbox" id="cents-rule-toggle" />
+                            </div>
+                            <div class="rule-content">
+                                <input type="number" min="1" max="99" step="1" />
+                            </div>
+                        </div>
+
+                        <div class="clearfix"></div>
+                    </div>
 
                     <div class="details-container">
                         <div class="rule-details" id="hundreds-details">
-                            <h2>Hundreds Rule</h2>
+                            <h3>Hundreds Rule</h3>
                             <p>rules xp lantion 1</p>
                         </div>
 
                         <div class="rule-details" id="tens-details">
-                            <h2>Tens Rule</h2>
+                            <h3>Tens Rule</h3>
                             <p>rules xp lantion 2</p>
                         </div>
-                        
+
                         <div class="rule-details" id="dollars-details">
-                            <h2>Dollars Rule</h2>
+                            <h3>Dollars Rule</h3>
                             <p>rules xp lantion 3</p>
                         </div>
 
-                        <div class="rule-details selected" id="cents-details">
-                            <h2>Cents Rule</h2>
+                        <div class="rule-details" id="cents-details">
+                            <h3>Cents Rule</h3>
                             <p>rules xp lantion 4</p>
                         </div>
 
@@ -138,9 +155,8 @@
                         <input type="checkbox" id="like">
                         I like colors.
                     </label>-->
-
-                    <div id="status"></div>
-                    <button id="save">Save</button>
+                    <!--<div id="status"></div>
+                    <button id="save">Save</button>-->
                 </div>
             </div>
 
@@ -154,10 +170,7 @@
             </div>
         </div>
 
-        <div id="global-rule" class="rule-toggle">
-            <label for="global-rule-toggle">Cents</label>
-            <input type="checkbox" id="global-rule-toggle" />
-        </div>
+
 
     </div>
 

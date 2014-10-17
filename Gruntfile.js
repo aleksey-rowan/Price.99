@@ -1,3 +1,5 @@
+/* global module */
+
 module.exports = function (grunt) {
     var pkg = grunt.file.readJSON('package.json');
     var mnf = grunt.file.readJSON('code/manifest.json');
@@ -95,7 +97,10 @@ module.exports = function (grunt) {
             },
             update: {
                 files: ['!package.json', 'lint-options.json', 'Gruntfile.js', 'code/**/*.js',
-                      'code/**/*.json', '!code/js/libs/*'],
+                    'code/**/*.json', '!code/js/libs/*',
+                    'code/css/**/*.css',
+                    'code/html/**/*.html'
+                ],
                 tasks: ['light-build']
             }
         },

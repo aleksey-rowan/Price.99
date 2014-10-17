@@ -52,11 +52,15 @@
 
         ],
 
-        globalRule = {
+        pauseButton = $('#pause-button'),
+
+        /*globalRule = {
             container: $('#global-rule'),
             enabledControl: $('#global-rule input[type=checkbox]'),
             content: 'global'
-        };//, 
+        },*/
+        
+        defaultDetails = $('#default-details');//, 
     //form = require('./modules/form'),
 
     //form.init(runner.go.bind(runner, msg));
@@ -137,6 +141,7 @@
                         rules.forEach(function (r) {
                             r.detailsDiv.removeClass('selected');
                             r.container.removeClass('selected');
+                            defaultDetails.removeClass('selected');
                         });
 
                         rule.detailsDiv.addClass('selected');
@@ -148,6 +153,8 @@
                             r.detailsDiv.removeClass('selected');
                             r.container.removeClass('selected');
                         });
+
+                        defaultDetails.addClass('selected');
                     }
                 );
         });
@@ -162,7 +169,23 @@
                 node.removeClass('selected');
             });
 
-        globalRule.enabledControl
+        pauseButton
+            .text(otherRules.enabled ? "pause rounding" : "resume rounding")
+            .click(function (e) {
+                var node = $(this);
+                console.log(e);
+
+                otherRules.enabled = !otherRules.enabled;                
+                node.text(otherRules.enabled ? "pause rounding" : "resume rounding");
+
+                rules.forEach(function (r) {
+                    r.enabledControl.picker(otherRules.enabled ? "enable" : "disable");
+                });
+
+                saveOptions(callback);
+            });
+
+        /*globalRule.enabledControl
             .prop('checked', otherRules.enabled)
             .picker({
                 toggle: true
@@ -179,6 +202,7 @@
 
                 saveOptions(callback);
             });
+        */
 
         $('.menu a').click(function (ev) {
             ev.preventDefault();

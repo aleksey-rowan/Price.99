@@ -16,7 +16,7 @@
     // omit the `hadnlers` parameter for good when invoking msg.init()
     var handlers = require('./modules/handlers').create('bg'),
         msg = require('./modules/msg'),
-        storage = require('./modules/storage.js');        
+        storage = require('./modules/storage.js');
 
     // adding special background notification handlers onConnect / onDisconnect
     function logEvent(ev, context, tabId) {
@@ -28,7 +28,7 @@
             msg.cmd(tabId, ['ct'], 'rememberTabId', tabId);
         }
 
-        logEvent('onConnect', ctxName, tabId);        
+        logEvent('onConnect', ctxName, tabId);
     };
     //handlers.onConnect = logEvent.bind(null, 'onConnect');
     handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
@@ -37,14 +37,14 @@
         // get stored options
         //console.log('BG : Sending options to tab', this.port.sender.tab.id, storage.options);
         console.log('BG : Sending options to tab', tabId, storage.options);
-        storage.getOptions(function () {            
+        storage.getOptions(function () {
             done(storage.options);
         });
     };
 
     handlers.optionsChanged = function (res) {
         console.log('BG : Got new options', res);
-        storage.options = res;        
+        storage.options = res;
     };
 
     handlers.pricesUpdated = function (info, tabId, done) {
@@ -66,7 +66,6 @@
                     title: "Price.99"
                 });
             }
-
         } else {
             chrome.pageAction.hide(senderId);
         }
@@ -74,18 +73,23 @@
         done("good jo!");
     };
 
+    handlers.openOptionsPage = function (done) {
+        var optionsUrl = chrome.extension.getURL('html/options.html');
+
+        chrome.tabs.query({ url: optionsUrl }, function (tabs) {
+            if (tabs.length) {
+                chrome.tabs.update(tabs[0].id, { active: true });
+            } else {
+                chrome.tabs.create({ url: optionsUrl });
+            }
+
+            done("Options page opened!");
+        });
+    };
+
     msg = msg.init('bg', handlers);
-    
-    
-
-
-
-
-
-
 
     // old code
-
 
     // issue `echo` command in 10 seconds after invoked,
     // schedule next run in 5 minutes

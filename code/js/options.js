@@ -53,14 +53,15 @@
         ],
 
         pauseButton = $('#pause-button'),
+        optionsButton = $('#options-button'),
 
         /*globalRule = {
             container: $('#global-rule'),
             enabledControl: $('#global-rule input[type=checkbox]'),
             content: 'global'
         },*/
-        
-        defaultDetails = $('#default-details');//, 
+
+        defaultDetails = $('#default-details');//,
     //form = require('./modules/form'),
 
     //form.init(runner.go.bind(runner, msg));
@@ -97,7 +98,6 @@
             callback(res);
         });
     }
-
 
     function init(callback) {
         var otherRules = storage.options.otherRules,
@@ -169,13 +169,21 @@
                 node.removeClass('selected');
             });
 
+        optionsButton
+            .click(function () {
+                msg.bg('openOptionsPage',
+                    function (res) {
+                        console.log('Response to openOptionsPage command', res);
+                    });
+            });
+
         pauseButton
             .text(otherRules.enabled ? "pause rounding" : "resume rounding")
             .click(function (e) {
                 var node = $(this);
                 console.log(e);
 
-                otherRules.enabled = !otherRules.enabled;                
+                otherRules.enabled = !otherRules.enabled;
                 node.text(otherRules.enabled ? "pause rounding" : "resume rounding");
 
                 rules.forEach(function (r) {
@@ -226,8 +234,6 @@
             }, 200);
         });
     }
-
-
 
     // old code
     //$(function () {
@@ -297,7 +303,6 @@
     //        setTimeout(function () {
     //            status.textContent = '';
     //        }, 750);
-
 
     //        storage.options.roundRules.cents.value = 10;
 

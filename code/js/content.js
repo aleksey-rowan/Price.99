@@ -1,4 +1,4 @@
-/* global require */
+/* global require, window, document */
 
 ; (function () {
     console.log('CONTENT SCRIPT WORKS!');
@@ -41,6 +41,8 @@
         notifyBackground();
     };
 
+    parser.init();
+
     msg = msg.init('ct', handlers);
 
     function notifyBackground() {
@@ -69,8 +71,44 @@
             .updatePrices();
 
         notifyBackground();
+
+        startMutant();
     }
 
     console.log('jQuery version:', $().jquery);
+
+
+    function startMutant() {
+
+        // Mutation Observers
+
+        var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+        var timeOutFlag;
+
+        console.log("Mutation wathc started");
+
+        var observer = new MutationObserver(function (mutations, observer) {
+            console.log(mutations, observer);
+
+            if (timeOutFlag) {
+                window.clearTimeout(timeOutFlag);
+            }
+
+            timeOutFlag = window.setTimeout(function () {
+                console.log('Mutations finished');
+
+                observer.disconnect();
+                evolution();
+            }, 300);
+        });
+
+        // define what element should be observed by the observer
+        // and what types of mutations trigger the callback
+        observer.observe(document, {
+            subtree: true,
+            childList: true
+        });
+    }
 
 })();

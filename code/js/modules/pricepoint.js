@@ -251,12 +251,12 @@ module.exports.create = function (text, nodes) {
         parts: null,
         nodes: null
     }.init(text, nodes));
-}
+};
 
-; (function () {
+/*; (function () {
     "use strict";
 
-    console.log('PRICEPOINT MODULE WORKS!');
+    console.log('PRICEPOINT MODULE WORKS!');*/
 
     /*
 
@@ -410,4 +410,4 @@ module.exports.create = function (text, nodes) {
         childList: true
     });
     */
-}());
+/*}());*/

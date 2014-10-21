@@ -893,7 +893,7 @@ describe('pricepoint module', function () {
             };
             storage.options.otherRules.enabled = false;
 
-            console.log(storage.options);
+            //console.log(storage.options);
         });
 
         it('should not round the price $9.99 -> $10.00', function () {

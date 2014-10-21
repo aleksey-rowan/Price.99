@@ -83,17 +83,17 @@ module.exports = {
     },
 
     purge: function () {
-        var ar = [];
+        var array = [];
         
         pricePoints.forEach(function (pp) {
-            if (!util.containsInDom(pp.parts.currencySign)) {
-                ar.push(pp);                
+            if (!util.containsInDom(pp.parts.currencySign[0])) {
+                array.push(pp);                
             }
         });
 
-        ar.forEach(function (pp) {
+        array.forEach(function (pp) {
             util.removeFromArray(pricePoints, pp);
-        });
+        });        
 
         return this;
     },

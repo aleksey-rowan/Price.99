@@ -1,4 +1,4 @@
-/* global require, window, document */
+/* global require */
 
 ; (function () {
     console.log('CONTENT SCRIPT WORKS!');
@@ -18,6 +18,7 @@
         msg = require('./modules/msg'),
         parser = require('./modules/parser'),
         storage = require('./modules/storage'),
+        mutant = require('./modules/mutant'),
         thisTabId = null;
 
     //console.log(storage.options);
@@ -36,12 +37,20 @@
     handlers.optionsChanged = function (res) {
         console.log('CT : Got new options', res);
         storage.options = res;
-        parser.updatePrices();
+        mutant.stop();
 
+        parser.updatePrices();
         notifyBackground();
+
+        mutant.start();
     };
 
     parser.init();
+    mutant.init(function () {
+        mutant.stop();
+        parser.purge();
+        evolution();
+    });
 
     msg = msg.init('ct', handlers);
 
@@ -72,43 +81,8 @@
 
         notifyBackground();
 
-        startMutant();
+        mutant.start();
     }
 
     console.log('jQuery version:', $().jquery);
-
-
-    function startMutant() {
-
-        // Mutation Observers
-
-        var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-
-        var timeOutFlag;
-
-        console.log("Mutation wathc started");
-
-        var observer = new MutationObserver(function (mutations, observer) {
-            console.log(mutations, observer);
-
-            if (timeOutFlag) {
-                window.clearTimeout(timeOutFlag);
-            }
-
-            timeOutFlag = window.setTimeout(function () {
-                console.log('Mutations finished');
-
-                observer.disconnect();
-                evolution();
-            }, 300);
-        });
-
-        // define what element should be observed by the observer
-        // and what types of mutations trigger the callback
-        observer.observe(document, {
-            subtree: true,
-            childList: true
-        });
-    }
-
 })();

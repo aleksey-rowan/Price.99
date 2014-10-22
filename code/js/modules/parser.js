@@ -35,6 +35,11 @@ module.exports = {
         garbage = [];
         array = [];
 
+        // do not parse the page if the extension is paused
+        if (!storage.options.otherRules.enabled) {
+            return this;
+        }
+
         nodes = n || nodes;
 
         nodes.highlightRegex(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺.()a\d]/ig, {
@@ -61,16 +66,14 @@ module.exports = {
             var value = elm.map(function (e) { return e.text(); }).join(""),
                 //[$](\d{1,5})((\.|,)\d{1,2})?
 
-
                 m = value.match(/^[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺](\d{1,5})((\.)\d{1,2})?/ig);
 
             if (m) {
-                console.log('match', m[0], '->', (parseFloat(m[0].replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, '')) % 1).toFixed(2), '||', value);
+                /// console.log('match', m[0], '->', (parseFloat(m[0].replace(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/, '')) % 1).toFixed(2), '||', value);
 
                 pricePoints.push(pricePoint.create(m[0], elm));
-                //pricePoints.push(Object.create(pricePoint).init(m[0], elm));
             } else {
-                console.log('garbage', value);
+                /// console.log('garbage', value);
             }
 
             // release garbage nodes
@@ -103,11 +106,18 @@ module.exports = {
     },
 
     updatePrices: function () {
+        // do not update prices if the extension is paused
+        if (!storage.options.otherRules.enabled) {
+            return this;
+        }
+
         pricePoints.forEach(function (pp) {
             pp.update();
             //count += pp.isChanged ? 1 : 0;
         });
         console.log('CT-Parser : Prices updated');
+
+        return this;
     },
 
     blah: function () {

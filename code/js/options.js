@@ -19,49 +19,14 @@
         storage = require('./modules/storage.js'),
         runner = require('./modules/runner'),
         msg = require('./modules/msg'),
-
-        rules = [
-            {
-                container: $('#cents-rule'),
-                enabledControl: $('#cents-rule input[type=checkbox]'),
-                valueControl: $('#cents-rule input[type=number]'),
-                detailsDiv: $('#cents-details'),
-                content: 'cents'
-            },
-            {
-                container: $('#dollars-rule'),
-                enabledControl: $('#dollars-rule input[type=checkbox]'),
-                valueControl: $('#dollars-rule input[type=number]'),
-                detailsDiv: $('#dollars-details'),
-                content: 'dollars'
-            },
-            {
-                container: $('#tens-rule'),
-                enabledControl: $('#tens-rule input[type=checkbox]'),
-                valueControl: $('#tens-rule input[type=number]'),
-                detailsDiv: $('#tens-details'),
-                content: 'tens'
-            },
-            {
-                container: $('#hundreds-rule'),
-                enabledControl: $('#hundreds-rule input[type=checkbox]'),
-                valueControl: $('#hundreds-rule input[type=number]'),
-                detailsDiv: $('#hundreds-details'),
-                content: 'hundreds'
-            }
-
-        ],
-
-        pauseButton = $('#pause-button'),
+        priceRules = require('./modules/priceRules.js');
 
         /*globalRule = {
             container: $('#global-rule'),
             enabledControl: $('#global-rule input[type=checkbox]'),
             content: 'global'
         },*/
-        
-        defaultDetails = $('#default-details');//, 
-    //form = require('./modules/form'),
+            //form = require('./modules/form'),
 
     //form.init(runner.go.bind(runner, msg));
 
@@ -98,65 +63,10 @@
         });
     }
 
-
     function init(callback) {
-        var otherRules = storage.options.otherRules,
-            roundRules = storage.options.roundRules;
-
-        rules.forEach(function (rule) {
-            rule.valueControl
-                .val(roundRules[rule.content].value.toString())
-                //.prop('disabled', !roundRules[rule.content].enabled)
-                .stepper()
-                .parent().stepper(roundRules[rule.content].enabled ? 'enable' : 'disable')
-                .change(function (e) {
-                    console.log(e);
-
-                    roundRules[rule.content].value = parseInt(e.target.value, 10);
-                    saveOptions(callback);
-                });
-
-            rule.enabledControl
-                .prop('checked', roundRules[rule.content].enabled)
-                .picker({
-                    toggle: true,
-                    labels: {
-                        on: rule.content,
-                        off: ''
-                    }
-                })
-                .picker(otherRules.enabled ? "enable" : "disable") // enable or disabled control according to the global rule's state
-                .change(function (e) {
-                    console.log(e);
-
-                    roundRules[rule.content].enabled = e.currentTarget.checked;
-                    //rule.valueControl.prop('disabled', !roundRules[rule.content].enabled);
-                    rule.valueControl.parent().stepper(roundRules[rule.content].enabled ? 'enable' : 'disable');
-                    saveOptions(callback);
-                });
-
-            rule.container
-                .hover(
-                    function () {
-                        rules.forEach(function (r) {
-                            r.detailsDiv.removeClass('selected');
-                            r.container.removeClass('selected');
-                            defaultDetails.removeClass('selected');
-                        });
-
-                        rule.detailsDiv.addClass('selected');
-                        rule.container.addClass('selected');
-                    },
-
-                    function () {
-                        rules.forEach(function (r) {
-                            r.detailsDiv.removeClass('selected');
-                            r.container.removeClass('selected');
-                        });
-
-                        defaultDetails.addClass('selected');
-                    }
-                );
+        
+        priceRules.init(function () {
+            saveOptions(callback);
         });
 
         $('.option-item').hover(
@@ -169,23 +79,7 @@
                 node.removeClass('selected');
             });
 
-        pauseButton
-            .text(otherRules.enabled ? "pause rounding" : "resume rounding")
-            .click(function (e) {
-                var node = $(this);
-                console.log(e);
-
-                otherRules.enabled = !otherRules.enabled;                
-                node.text(otherRules.enabled ? "pause rounding" : "resume rounding");
-
-                rules.forEach(function (r) {
-                    r.enabledControl.picker(otherRules.enabled ? "enable" : "disable");
-                });
-
-                saveOptions(callback);
-            });
-
-        /*globalRule.enabledControl
+                /*globalRule.enabledControl
             .prop('checked', otherRules.enabled)
             .picker({
                 toggle: true

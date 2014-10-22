@@ -6,7 +6,9 @@ var MutationObserver = window.MutationObserver || window.WebKitMutationObserver,
 
 module.exports = {
 
-    init: function (callback) {
+    init: function (callback, delay) {
+        delay = delay || 700;
+
         observer = new MutationObserver(function (mutations, observer) {
             //console.log(mutations, observer);
 
@@ -20,7 +22,7 @@ module.exports = {
                 //module.exports.stop();
                 //observer.disconnect();
                 callback(mutations, observer);
-            }, 300);
+            }, delay);
         });
     },
 

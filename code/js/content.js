@@ -30,6 +30,11 @@
             console.log('CT : Got initial options', storage.options, res);
             storage.options = res;
 
+            mutant.init(function () {
+                parser.purge();
+                evolution();
+            });
+
             evolution();
         });
     };
@@ -37,6 +42,8 @@
     handlers.optionsChanged = function (res) {
         console.log('CT : Got new options', res);
         storage.options = res;
+
+
         mutant.stop();
 
         parser.updatePrices();
@@ -46,11 +53,6 @@
     };
 
     parser.init();
-    mutant.init(function () {
-        mutant.stop();
-        parser.purge();
-        evolution();
-    });
 
     msg = msg.init('ct', handlers);
 
@@ -75,6 +77,8 @@
     }
 
     function evolution() {
+        mutant.stop();
+
         parser
             .parse()
             .updatePrices();

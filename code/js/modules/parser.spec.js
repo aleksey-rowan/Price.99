@@ -53,7 +53,7 @@ describe('parser module', function () {
         assert.strictEqual(parser && typeof (parser.init), 'function');
     });
 
-    describe('parser r', function () {
+    describe('parser behaviour', function () {
         before(function () {
             storage.options = $.extend(true, {}, optionsDefault);
             storage.options.roundRules.cents = {
@@ -63,7 +63,7 @@ describe('parser module', function () {
         });
 
         it('should correctly detect a price', function () {
-            var ns = $('body').append("<span>price $45.56</span>"),
+            var ns = $('body').empty().append("<span>price $45.56</span>"),
                 pps;
 
             pps = parser
@@ -83,6 +83,54 @@ describe('parser module', function () {
                 .getPricePoints();
 
             assert(0 === pps.length);
+        });
+    });
+
+    describe('parser enable/disable options', function () {
+        before(function () {
+            storage.options = $.extend(true, {}, optionsDefault);
+            storage.options.roundRules.cents = {
+                value: 99,
+                enabled: true
+            };
+
+            storage.options.otherRules.enabled = false;
+        });
+
+        it('should correctly not run and detect a price', function () {
+            var ns = $('body').empty().append("<span>price $45.56</span>"),
+                pps;
+
+            pps = parser
+                .parse(ns)
+                .getPricePoints();
+
+            assert(0 === pps.length);
+        });
+
+        it('should correctly not update prices when paused', function () {
+            var pps, ppUpdated, ppUnchanged,
+                ns = $('body').empty().append("<span>price $45.56</span>");
+
+            storage.options.otherRules.enabled = true;
+
+            pps = parser
+                .parse(ns)
+                .getPricePoints();
+
+            storage.options.otherRules.enabled = false;
+
+            pps = parser
+                .updatePrices()
+                .getPricePoints();
+
+            pps = parser.getPricePoints();
+            ppUpdated = pps.filter(function (pp) { return pp.isChanged; });
+            ppUnchanged = pps.filter(function (pp) { return !pp.isChanged; });
+
+            console.log(pps.length, ppUpdated.length, ppUnchanged.length);
+
+            assert(pps.length === ppUnchanged.length);
         });
     });
 

@@ -174,39 +174,34 @@ button.fs-button.button-white:hover {
   height: 120px;
 }
 body {
-  width: 550px;
-  margin: auto !important;
+  height: 300px;
 }
-/*header {
-    width: auto !important;
-    margin: 0 10px;
-    position: relative !important;
-    border-bottom: 1px solid #eee;
-    height: 54px;
-
-    .logo {
-        width: 32px;
-        height: 32px;
-        top: 10px;
-        position: absolute;
-    }
-
-    h1 {
-        margin-left: 40px !important;
-        border: none !important;
-        padding: 16px 0 13px !important;
-    }
+header {
+  width: auto !important;
+  margin: 0 10px;
+  position: relative !important;
+  border-bottom: 1px solid #eee;
+  height: 54px;
 }
-
+header .logo {
+  width: 32px;
+  height: 32px;
+  top: 10px;
+  position: absolute;
+}
+header h1 {
+  margin-left: 40px !important;
+  border: none !important;
+  padding: 16px 0 13px !important;
+}
 main {
-    margin: 0 10px 10px;    
+  margin: 0 10px 10px;
 }
-
 footer {
-    background-color: #494c51;
-    height: 40px;
-    position: relative;
-}*/
+  background-color: #494c51;
+  height: 40px;
+  position: relative;
+}
 #options-button {
   position: absolute;
   top: 10px;
@@ -218,29 +213,17 @@ footer {
   top: 5px;
   width: calc(100% - 10px);
 }
-.chrome-bootstrap header {
-  width: 400px !important;
+.chrome-bootstrap .frame .navigation {
+  width: 100px;
 }
-.chrome-bootstrap .mainview.view {
-  width: 400px !important;
-}
-.chrome-bootstrap .content {
-  width: 400px !important;
-}
-/*.chrome-bootstrap .frame .navigation {
-    width: 100px;
-}
-
 .chrome-bootstrap .frame .view {
-    -webkit-margin-start: 100px;
-    width: auto;
+  -webkit-margin-start: 100px;
+  width: auto;
 }
-
 .chrome-bootstrap .frame .content {
-    width: 255px;
-    overflow-x: initial;
+  width: 255px;
+  overflow-x: initial;
 }
-
 .chrome-bootstrap header {
-    width: 100%;
-}*/
+  width: 100%;
+}

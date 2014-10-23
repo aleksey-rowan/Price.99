@@ -1,0 +1,22 @@
+﻿.chrome-bootstrap h1 {
+  font-size: 20px;
+  height: auto !important;
+}
+.chrome-bootstrap h2 {
+  /*padding: 15px 0 10px 0;
+    margin: 0;*/
+  font-size: 18px;
+}
+.chrome-bootstrap h3 {
+  /*padding: 15px 0 10px 0;
+    margin: 0;*/
+  font-size: 16px;
+}
+*,
+:before,
+:after {
+  box-sizing: border-box;
+}
+.clearfix {
+  clear: both;
+}

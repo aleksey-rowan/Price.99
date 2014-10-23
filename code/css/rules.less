@@ -1,0 +1,29 @@
+﻿.rules-container {
+    display: table;
+    margin: 0 5px 0 15px;
+
+    .rule-container {
+        padding-right: 10px;
+        display: table-cell;
+
+        .rule-toggle {
+            width: 50px;
+        }
+
+        .rule-content {
+            border-bottom: 4px solid transparent;
+            width: 50px;
+        }
+
+        &.selected {
+            .rule-content {
+                border-bottom-color: #4e5764;
+            }
+        }
+    }
+}
+
+.details-container {
+    position: relative;
+    height: 120px;
+}

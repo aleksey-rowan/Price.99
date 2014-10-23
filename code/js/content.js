@@ -18,7 +18,7 @@
         msg = require('./modules/msg'),
         parser = require('./modules/parser'),
         storage = require('./modules/storage'),
-        mutant = require('./modules/mutant'),
+        //mutant = require('./modules/mutant'),
         thisTabId = null;
 
     //console.log(storage.options);
@@ -30,10 +30,10 @@
             console.log('CT : Got initial options', storage.options, res);
             storage.options = res;
 
-            mutant.init(function () {
+            /*mutant.init(function () {
                 parser.purge();
                 evolution();
-            });
+            });*/
 
             evolution();
         });
@@ -44,12 +44,12 @@
         storage.options = res;
 
 
-        mutant.stop();
+        //mutant.stop();
 
         parser.updatePrices();
         notifyBackground();
 
-        mutant.start();
+        //mutant.start();
     };
 
     parser.init();
@@ -77,7 +77,7 @@
     }
 
     function evolution() {
-        mutant.stop();
+        //mutant.stop();
 
         parser
             .parse()
@@ -85,7 +85,7 @@
 
         notifyBackground();
 
-        mutant.start();
+        //mutant.start();
     }
 
     console.log('jQuery version:', $().jquery);

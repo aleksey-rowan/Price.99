@@ -165,6 +165,7 @@ button.fs-button.button-white:hover {
 }
 .rules-container .rule-container .rule-content {
   border-bottom: 4px solid transparent;
+  width: 50px;
 }
 .rules-container .rule-container.selected .rule-content {
   border-bottom-color: #4e5764;

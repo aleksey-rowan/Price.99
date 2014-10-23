@@ -97,7 +97,7 @@ describe('parser module', function () {
             storage.options.otherRules.enabled = false;
         });
 
-        it('should correctly not run and detect a price', function () {
+        it.skip('should correctly not run and detect a price', function () {
             var ns = $('body').empty().append("<span>price $45.56</span>"),
                 pps;
 

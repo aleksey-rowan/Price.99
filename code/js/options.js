@@ -19,7 +19,10 @@
         storage = require('./modules/storage.js'),
         runner = require('./modules/runner'),
         msg = require('./modules/msg'),
+
 		optionsButton = $('#options-button'),
+        
+        optionRules = require('./modules/optionRules.js'),
         priceRules = require('./modules/priceRules.js');
 
         /*globalRule = {
@@ -60,6 +63,8 @@
             };
 
             callback(res);
+
+            priceRules.updateRuleControls();
         });
     }
 
@@ -68,6 +73,11 @@
         priceRules.init(function () {
             saveOptions(callback);
         });
+
+        optionRules.init(function () {
+            saveOptions(callback);
+        });
+
 
         $('.option-item').hover(
             function () {
@@ -86,6 +96,9 @@
                         console.log('Response to openOptionsPage command', res);
                     });
             });
+        
+
+
 
                 /*globalRule.enabledControl
             .prop('checked', otherRules.enabled)

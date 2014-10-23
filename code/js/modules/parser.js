@@ -36,9 +36,9 @@ module.exports = {
         array = [];
 
         // do not parse the page if the extension is paused
-        if (!storage.options.otherRules.enabled) {
+        /*if (!storage.options.otherRules.enabled) {
             return this;
-        }
+        }*/
 
         nodes = n || nodes;
 
@@ -107,9 +107,9 @@ module.exports = {
 
     updatePrices: function () {
         // do not update prices if the extension is paused
-        if (!storage.options.otherRules.enabled) {
+        /*if (!storage.options.otherRules.enabled) {
             return this;
-        }
+        }*/
 
         pricePoints.forEach(function (pp) {
             pp.update();

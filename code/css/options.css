@@ -165,6 +165,7 @@ button.fs-button.button-white:hover {
 }
 .rules-container .rule-container .rule-content {
   border-bottom: 4px solid transparent;
+  width: 50px;
 }
 .rules-container .rule-container.selected .rule-content {
   border-bottom-color: #4e5764;
@@ -244,3 +245,19 @@ footer {
 .chrome-bootstrap header {
     width: 100%;
 }*/
+.content .rules-container {
+  margin-top: 15px;
+}
+.option-item .option-item-title {
+  float: left;
+}
+.option-item .option-item-control {
+  float: right;
+  width: 50px;
+}
+.rules-container {
+  margin: 0 5px 0 15px;
+}
+.rules-container .rule-container {
+  padding-right: 20px;
+}

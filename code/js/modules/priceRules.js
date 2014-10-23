@@ -104,10 +104,18 @@ module.exports.init = function (callback) {
             otherRules.enabled = !otherRules.enabled;
             node.text(otherRules.enabled ? "pause rounding" : "resume rounding");
 
-            rules.forEach(function (r) {
+            /*rules.forEach(function (r) {
                 r.enabledControl.picker(otherRules.enabled ? "enable" : "disable");
-            });
+            });*/
 
             callback();
         });
+};
+
+module.exports.updateRuleControls = function () {
+    var otherRules = storage.options.otherRules;
+
+    rules.forEach(function (r) {
+        r.enabledControl.picker(otherRules.enabled ? "enable" : "disable");
+    });
 };

@@ -4,7 +4,16 @@
 
 body {
     width: 550px;
-    margin: auto !important;
+    margin: 7px auto auto auto !important;
+    position: relative;
+
+    .logo {
+        width: 48px;
+        height: 48px;
+        position: absolute;
+        left: -30px;
+        top: 7px;
+    }
 }
 
 /*header {
@@ -14,12 +23,7 @@ body {
     border-bottom: 1px solid #eee;
     height: 54px;
 
-    .logo {
-        width: 32px;
-        height: 32px;
-        top: 10px;
-        position: absolute;
-    }
+    
 
     h1 {
         margin-left: 40px !important;
@@ -93,11 +97,16 @@ footer {
 
     .option-item-title {
         float: left;
+        
+        h3 {
+            margin-bottom: 0;
+        }
     }
 
     .option-item-control {
         float: right;
         width: 50px;
+        margin-top: 7px;
     }
 }
 

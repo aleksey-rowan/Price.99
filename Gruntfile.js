@@ -42,7 +42,13 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: 'code/',
-                    src: ['**', '!js/**', '!**/*.md'],
+                    src: [
+                        '**', '!js/**',
+                        '!**/*.md',
+                        
+                        '!**/*.less',
+                        '!**/*.map'
+                    ],
                     dest: 'build/unpacked-dev/'
                 }]
             },

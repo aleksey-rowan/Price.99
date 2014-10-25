@@ -96,20 +96,23 @@ module.exports.init = function (callback) {
     });
 
     pauseButton
-        .text(otherRules.enabled ? "pause rounding" : "resume rounding")
         .click(function (e) {
             var node = $(this);
             console.log(e);
 
             otherRules.enabled = !otherRules.enabled;
-            node.text(otherRules.enabled ? "pause rounding" : "resume rounding");
+            node
+                .text(otherRules.enabled ? "pause" : "resume")
+                .toggleClass('pause', otherRules.enabled);
 
             /*rules.forEach(function (r) {
                 r.enabledControl.picker(otherRules.enabled ? "enable" : "disable");
             });*/
 
             callback();
-        });
+        })
+        .text(otherRules.enabled ? 'pause' : 'resume')
+        .toggleClass('pause', otherRules.enabled);
 };
 
 module.exports.updateRuleControls = function () {

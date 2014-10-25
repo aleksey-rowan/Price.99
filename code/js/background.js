@@ -55,20 +55,20 @@
         if (info.updated > 0 || info.unchanged > 0) {
             if (info.updated === 0) {
                 chrome.pageAction.show(senderId);
-                chrome.pageAction.setIcon({
+                /*chrome.pageAction.setIcon({
                     tabId: senderId,
                     path: 'images/icon_off.png'
-                });
+                });*/
                 chrome.pageAction.setTitle({
                     tabId: senderId,
                     title: "No updated prices"
                 });
             } else {
                 chrome.pageAction.show(senderId);
-                chrome.pageAction.setIcon({
+                /*chrome.pageAction.setIcon({
                     tabId: senderId,
                     path: 'images/icon_on.png'
-                });
+                });*/
                 chrome.pageAction.setTitle({
                     tabId: senderId,
                     title: "Price.99"

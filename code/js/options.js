@@ -144,7 +144,6 @@
         $('[i18n-content]').each(function (index, element) {
             element = $(this);
             element.text(chrome.i18n.getMessage(element.attr('i18n-content')));
-            // $element.innerHTML = chrome.i18n.getMessage($(this).attr('i18n-content'));
         });
     }
 

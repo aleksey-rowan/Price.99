@@ -24,7 +24,9 @@
         "message": "Use rules to set the desired effect."
     },
     
-
+    "optButtonLabel": {
+        "message": "OPTIONS"
+    },
     "pauseButtonLabel": {
         "message": "PAUSE"
     },

@@ -1,13 +1,12 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>My Test Extension Options</title>
+    <title i18n-content="extName">chrome.i18n.getMessage("extName") chrome.i18n.getMessage("optionsTitle")</title>
     <link href="../css/libs/chrome-bootstrap.min.css" rel="stylesheet" />
     <link href="../css/popup.css" rel="stylesheet" />
     <link href="../css/libs/stepper/jquery.fs.stepper.css" rel="stylesheet" />
     <link href="../css/libs/picker/jquery.fs.picker.css" rel="stylesheet" />
     <!--<link href="../css/libs/animate.css/animate.min.css" rel="stylesheet">-->
-
     <!--<script src="../js/libs/jquery-1.11.1.min.js" type="text/javascript"></script>
     <script src="../js/libs/jquery.maskedinput.min.js" type="text/javascript"></script>
     <script src="../js/libs/stepper/jquery.fs.stepper.min.js" type="text/javascript"></script>
@@ -18,8 +17,8 @@
 
     <header>
         <img class="logo" src="../images/i_128.png" />
-        <h1>Price.99</h1>
-        <button class="fs-button" id="options-button">OPTIONS</button>
+        <h1 i18n-content="extName">Price.99</h1>
+        <button class="fs-button" id="options-button" i18n-content="optButtonLabel">OPTIONS</button>
     </header>
 
     <main>
@@ -27,22 +26,22 @@
 
             <div class="option-item" style="display: none;">
                 <div id="global-rule-title">
-                    <h3>Enabled</h3>
+                    <h3 i18n-content="enbOptLabel">Enabled</h3>
                 </div>
 
                 <div id="global-rule" class="rule-toggle">
-                    <label for="global-rule-toggle">Enabled</label>
+                    <label for="global-rule-toggle" i18n-content="enbOptLabel">Enabled</label>
                     <input type="checkbox" id="global-rule-toggle" />
                 </div>
 
                 <div class="clearfix"></div>
             </div>
 
-            <h2>Rules</h2>
+            <h2 i18n-content="rulesLabel">Rules</h2>
             <div class="rules-container">
                 <div class="rule-container" id="hundreds-rule">
                     <div class="rule-toggle">
-                        <label for="hundreds-rule-toggle">Hundred</label>
+                        <label for="hundreds-rule-toggle" i18n-content="hundRuleLabel">Hundred</label>
                         <input type="checkbox" id="hundreds-rule-toggle" />
                     </div>
                     <div class="rule-content">
@@ -52,7 +51,7 @@
 
                 <div class="rule-container" id="tens-rule">
                     <div class="rule-toggle">
-                        <label for="tens-rule-toggle">Tens</label>
+                        <label for="tens-rule-toggle" i18n-content="tenRuleLabel">Tens</label>
                         <input type="checkbox" id="tens-rule-toggle" />
                     </div>
                     <div class="rule-content">
@@ -62,7 +61,7 @@
 
                 <div class="rule-container" id="dollars-rule">
                     <div class="rule-toggle">
-                        <label for="dollars-rule-toggle">Dollars</label>
+                        <label for="dollars-rule-toggle" i18n-content="dolRuleLabel">Dollars</label>
                         <input type="checkbox" id="dollars-rule-toggle" />
                     </div>
                     <div class="rule-content">
@@ -76,7 +75,7 @@
 
                 <div class="rule-container" id="cents-rule">
                     <div class="rule-toggle">
-                        <label for="cents-rule-toggle">Cents</label>
+                        <label for="cents-rule-toggle" i18n-content="centRuleLabel">Cents</label>
                         <input type="checkbox" id="cents-rule-toggle" />
                     </div>
                     <div class="rule-content">
@@ -89,32 +88,27 @@
 
             <div class="details-container">
                 <div class="rule-details selected" id="default-details">
-                    <p>Similarly, the characterisation of specific criteria effects a significant implementation of the subsystem compatibility testing. Similarly, the characterisation of specific criteria effects a significant implementation of the subsystem compatibility testing. </p>
-                </div>
-                
-                <div class="rule-details" id="hundreds-details">
-                    <h3>Hundreds Rule</h3>
-                    <p>rules xp lantion 1</p>
+                    <p i18n-content="rulesInfoText">Similarly, the characterisation of specific criteria effects a significant implementation of the subsystem compatibility testing. Similarly, the characterisation of specific criteria effects a significant implementation of the subsystem compatibility testing. </p>
                 </div>
 
                 <div class="rule-details" id="hundreds-details">
-                    <h3>Hundreds Rule</h3>
-                    <p>rules xp lantion 1</p>
+                    <h3 i18n-content="hundRuleFullLabel">Hundreds Rule</h3>
+                    <p i18n-content="hundRuleInfo">rules xp lantion 1</p>
                 </div>
 
                 <div class="rule-details" id="tens-details">
-                    <h3>Tens Rule</h3>
-                    <p>rules xp lantion 2</p>
+                    <h3 i18n-content="tenRuleFullLabel">Tens Rule</h3>
+                    <p i18n-content="tenRuleInfo">rules xp lantion 2</p>
                 </div>
 
                 <div class="rule-details" id="dollars-details">
-                    <h3>Dollars Rule</h3>
-                    <p>rules xp lantion 3</p>
+                    <h3 i18n-content="dolRuleFullLabel">Dollars Rule</h3>
+                    <p i18n-content="dolRuleInfo">rules xp lantion 3</p>
                 </div>
 
                 <div class="rule-details" id="cents-details">
-                    <h3>Cents Rule</h3>
-                    <p>rules xp lantion 4</p>
+                    <h3 i18n-content="centRuleFullLabel">Cents Rule</h3>
+                    <p i18n-content="centRuleInfo">rules xp lantion 4</p>
                 </div>
 
             </div>
@@ -124,7 +118,7 @@
     </main>
 
     <footer>
-        <button class="fs-button button-white pause" id="pause-button">
+        <button class="fs-button button-white pause" id="pause-button" i18n-content="pauseButtonLabel">
             PAUSE
         </button>
     </footer>

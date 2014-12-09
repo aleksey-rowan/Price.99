@@ -1,4 +1,4 @@
-/* global require */
+/* global require, chrome */
 
 ; (function () {
     "use strict";
@@ -19,7 +19,7 @@
         storage = require('./modules/storage.js'),
         runner = require('./modules/runner'),
         msg = require('./modules/msg'),
-
+        
 		optionsButton = $('#options-button'),
 
         priceRules = require('./modules/priceRules.js');
@@ -74,5 +74,10 @@
                     });
             });
 
+        
+        $('[i18n-content]').each(function (index, element) {
+            element = $(this);
+            element.text(chrome.i18n.getMessage(element.attr('i18n-content')));
+        });
     }
 })();

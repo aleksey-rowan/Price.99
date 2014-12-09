@@ -5,6 +5,8 @@
     "description": "This extension rounds up prices.",
     "version": "0.0.1",
 
+    "default_locale": "en",
+
     "icons": { "128": "images/i_128.png" },
 
     "background": {

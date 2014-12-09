@@ -1,0 +1,95 @@
+﻿{
+    "extName": {
+        "message": "Price.99"
+    },
+
+    "optLabel": {
+        "message": "Options"
+    },
+    "optInfoText": {
+        "message": "blah-blah-blah"
+    },
+    
+    "aboutLabel": {
+        "message": "About"
+    },
+    "aboutInfoText": {
+        "message": "About stuff."
+    },
+
+    "rulesLabel": {
+        "message": "Rules"
+    },
+    "rulesInfoText": {
+        "message": "Use rules to set the desired effect."
+    },
+    
+
+    "pauseButtonLabel": {
+        "message": "PAUSE"
+    },
+    "resumeButtonLabel": {
+        "message": "RESUME"
+    },
+
+
+    "enbOptLabel": {
+        "message": "Enabled"
+    },
+    "enbOptInfo": {
+        "message": "Enables price rounding."
+    },
+
+    "hideZerpOptLabel": {
+        "message": "Hide Zero Cents"
+    },
+    "hideZerpOptInfo": {
+        "message": "This will hide cents for whole prices."
+    },
+
+    "hundRuleLabel":{
+        "message": "Hundred"
+    },
+    "hundRuleFullLabel":{
+        "message": "Hundreds Rule"
+    },
+    "hundRuleInfo":{
+        "message": ""
+    },
+
+    "tenRuleLabel":{
+        "message": "Tens"
+    },
+    "tenRuleFullLabel":{
+        "message": "Tens Rule"
+    },
+    "tenRuleInfo":{
+        "message": ""
+    },
+
+    "dolRuleLabel":{
+        "message": "Dollars"
+    },
+    "dolRuleFullLabel":{
+        "message": "Dollars Rule"
+    },
+    "dolRuleInfo":{
+        "message": ""
+    },
+
+    "centRuleLabel":{
+        "message": "Cents"
+    },
+    "centRuleFullLabel":{
+        "message": "Cents Rule"
+    },
+    "centRuleInfo":{
+        "message": "Round up the price up from the specified number of cents."
+    },
+
+
+
+    "fds": { 
+        "message": ""
+    }
+}

@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>My Test Extension Options</title>
+    <title i18n-content="extName"></title>
     <link href="../css/libs/chrome-bootstrap.min.css" rel="stylesheet" />
     <link href="../css/options.css" rel="stylesheet" />
     <link href="../css/libs/stepper/jquery.fs.stepper.css" rel="stylesheet" />
@@ -26,19 +26,19 @@
         <div class="navigation">
             <h1>
                 <img class="logo" src="../images/i_128.png" />
-                Price.99
+                <span i18n-content="extName">Price.99</span>
             </h1>
             <ul class="menu">
                 <li class="selected">
-                    <a href="#options">Options</a>
+                    <a href="#options" i18n-content="optLabel">Options</a>
                 </li>
                 <li class="">
-                    <a href="#rules">Rules</a>
+                    <a href="#rules" i18n-content="rulesLabel">Rules</a>
                 </li>
             </ul>
             <ul class="menu">
                 <li>
-                    <a href="#about">About</a>
+                    <a href="#about" i18n-content="aboutLabel">About</a>
                 </li>
             </ul>
         </div>
@@ -47,21 +47,21 @@
 
             <div id="options" class="selected">
                 <header>
-                    <h1>Options</h1>
+                    <h1 i18n-content="optLabel">Options</h1>
                 </header>
                 <div class="content">
 
-                    <p>Some blah-blah.</p>
+                    <p i18n-content ="optInfoText">Some blah-blah.</p>
 
                     <div class="option-item">
                         <div id="global-rule-title" class="option-item-title">
-                            <h3>Enabled</h3>
-                            <span>Enables price rounding.</span>
+                            <h3 i18n-content="enbOptLabel">Enabled</h3>
+                            <span i18n-content="enbOptInfo">Enables price rounding.</span>
                         </div>
 
                         <div class="option-item-control">
                             <div id="global-rule" class="rule-toggle">
-                                <label for="global-rule-toggle">Enabled</label>
+                                <label for="global-rule-toggle" i18n-content="enbOptLabel">Enabled</label>
                                 <input type="checkbox" id="global-rule-toggle" />
                             </div>
                         </div>
@@ -71,13 +71,13 @@
 
                     <div class="option-item">
                         <div class="option-item-title">
-                            <h3>Hide Zero Cents</h3>
-                            <span>This will hide cents for whole prices.</span>
+                            <h3 i18n-content="hideZerpOptLabel">Hide Zero Cents</h3>
+                            <span i18n-content="hideZerpOptInfo">This will hide cents for whole prices.</span>
                         </div>
 
                         <div class="option-item-control">
                             <div id="hide-zero-cents" class="rule-toggle">
-                                <label for="hide-zero-cents-toggle">Enabled</label>
+                                <label for="hide-zero-cents-toggle" i18n-content="enbOptLabel">Enabled</label>
                                 <input type="checkbox" id="hide-zero-cents-toggle" />
                             </div>
                         </div>
@@ -85,21 +85,21 @@
                         <div class="clearfix"></div>
                     </div>
 
-                    <footer>
-                        <button class="fs-button button-white" id="pause-button">PAUSE</button>
-                    </footer>
+                    <!--<footer>
+                        <button class="fs-button button-white" id="pause-button" i18n-content="pauseButtonLabel">PAUSE</button>
+                    </footer>-->
                 </div>
             </div>
 
             <div id="rules">
                 <header>
-                    <h1>Rules</h1>
+                    <h1 i18n-content="rulesLabel">Rules</h1>
                 </header>
                 <div class="content">
                     <div class="rules-container">
                         <div class="rule-container" id="hundreds-rule">
                             <div class="rule-toggle">
-                                <label for="hundreds-rule-toggle">Hundred</label>
+                                <label for="hundreds-rule-toggle" i18n-content="hundRuleLabel">Hundred</label>
                                 <input type="checkbox" id="hundreds-rule-toggle" />
                             </div>
                             <div class="rule-content">
@@ -109,7 +109,7 @@
 
                         <div class="rule-container" id="tens-rule">
                             <div class="rule-toggle">
-                                <label for="tens-rule-toggle">Tens</label>
+                                <label for="tens-rule-toggle" i18n-content="tenRuleLabel">Tens</label>
                                 <input type="checkbox" id="tens-rule-toggle" />
                             </div>
                             <div class="rule-content">
@@ -119,7 +119,7 @@
 
                         <div class="rule-container" id="dollars-rule">
                             <div class="rule-toggle">
-                                <label for="dollars-rule-toggle">Dollars</label>
+                                <label for="dollars-rule-toggle" i18n-content="dolRuleLabel">Dollars</label>
                                 <input type="checkbox" id="dollars-rule-toggle" />
                             </div>
                             <div class="rule-content">
@@ -133,7 +133,7 @@
 
                         <div class="rule-container" id="cents-rule">
                             <div class="rule-toggle">
-                                <label for="cents-rule-toggle">Cents</label>
+                                <label for="cents-rule-toggle" i18n-content="centRuleLabel">Cents</label>
                                 <input type="checkbox" id="cents-rule-toggle" />
                             </div>
                             <div class="rule-content">
@@ -146,27 +146,27 @@
 
                     <div class="details-container">
                         <div class="rule-details selected" id="default-details">
-                            <p>Similarly, the characterisation of specific criteria effects a significant implementation of the subsystem compatibility testing. Similarly, the characterisation of specific criteria effects a significant implementation of the subsystem compatibility testing. </p>
+                            <p i18n-content="rulesInfoText">Similarly, the characterisation of specific criteria effects a significant implementation of the subsystem compatibility testing. Similarly, the characterisation of specific criteria effects a significant implementation of the subsystem compatibility testing. </p>
                         </div>
 
                         <div class="rule-details" id="hundreds-details">
-                            <h3>Hundreds Rule</h3>
-                            <p>rules xp lantion 1</p>
+                            <h3 i18n-content="hundRuleFullLabel">Hundreds Rule</h3>
+                            <p i18n-content="hundRuleInfo">rules xp lantion 1</p>
                         </div>
 
                         <div class="rule-details" id="tens-details">
-                            <h3>Tens Rule</h3>
-                            <p>rules xp lantion 2</p>
+                            <h3 i18n-content="tenRuleFullLabel">Tens Rule</h3>
+                            <p i18n-content="tenRuleInfo">rules xp lantion 2</p>
                         </div>
 
                         <div class="rule-details" id="dollars-details">
-                            <h3>Dollars Rule</h3>
-                            <p>rules xp lantion 3</p>
+                            <h3 i18n-content="dolRuleFullLabel">Dollars Rule</h3>
+                            <p i18n-content="dolRuleInfo">rules xp lantion 3</p>
                         </div>
 
                         <div class="rule-details" id="cents-details">
-                            <h3>Cents Rule</h3>
-                            <p>rules xp lantion 4</p>
+                            <h3 i18n-content="centRuleFullLabel">Cents Rule</h3>
+                            <p i18n-content="centRuleInfo">rules xp lantion 4</p>
                         </div>
 
                     </div>
@@ -177,10 +177,10 @@
 
             <div id="about">
                 <header>
-                    <h1>About</h1>
+                    <h1 i18n-content="aboutLabel">About</h1>
                 </header>
                 <div class="content">
-                    <p>About stuff.</p>
+                    <p i18n-content="aboutInfoText">About stuff.</p>
                 </div>
             </div>
         </div>

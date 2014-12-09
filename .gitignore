@@ -166,3 +166,6 @@ build/*.crx
 build/unpacked-dev
 build/unpacked-prod
 *.swp
+
+
+/code/css/*.min.css

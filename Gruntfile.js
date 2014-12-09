@@ -37,6 +37,22 @@ module.exports = function (grunt) {
             files: ['code/**/*.spec.js']
         },
 
+        less: {
+            main: {
+                options: {
+                    cleancss: true
+                },
+                
+                expand: true,
+                cwd: 'code/css/',
+                src: '*.less',
+                dest: 'code/css/',
+                rename: function(dest, src) {
+                        return dest + src.replace('.less', '.min.css');
+                        }
+            }
+        },
+
         copy: {
             main: {
                 files: [{
@@ -104,7 +120,7 @@ module.exports = function (grunt) {
             update: {
                 files: ['!package.json', 'lint-options.json', 'Gruntfile.js', 'code/**/*.js',
                     'code/**/*.json', '!code/js/libs/*',
-                    'code/css/**/*.css',
+                    'code/css/**/*.less',
                     'code/html/**/*.html'
                 ],
                 tasks: ['light-build']
@@ -129,6 +145,7 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-mkdir');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-mocha-test');
@@ -176,13 +193,14 @@ module.exports = function (grunt) {
     // DEFAULT
     //
 
-    grunt.registerTask('default', ['clean', 'test', 'mkdir:unpacked', 'copy:main', 'manifest',
+    grunt.registerTask('default', ['clean', 'test', 'less', 'mkdir:unpacked', 'copy:main', 'manifest',
       'mkdir:js', 'browserify', 'copy:prod', 'uglify', /*'exec',*/ 'circleci']);
 
     grunt.registerTask('light-build',
         [
             'clean',
             'test',
+            'less',
             'mkdir:unpacked',
             'copy:main',
             'manifest',

@@ -1,6 +1,6 @@
 {
   "name": "Price.99",
-  "version": "0.0.281",
+  "version": "0.0.317",
   "description": "This extension rounds up prices.",
   "dependencies": {},
   "devDependencies": {
@@ -20,7 +20,8 @@
     "sinon": "~1.10.0",
     "mocha": "~1.21.4",
     "expect": "~0.1.1",
-    "jsdom": "~1.0.0"
+    "jsdom": "~1.0.0",
+    "grunt-contrib-less": "~0.12.0"
   },
   "engines": {
     "node": ">= 0.10.0"

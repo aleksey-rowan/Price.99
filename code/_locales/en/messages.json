@@ -1,6 +1,10 @@
-﻿{
+{
     "extName": {
         "message": "Price.99"
+    },
+
+    "currSymbol": {
+        "message": "$$"    
     },
 
     "optLabel": {
@@ -56,7 +60,7 @@
         "message": "Hundreds Rule"
     },
     "hundRuleInfo":{
-        "message": ""
+        "message": "Prices ending with 5 or more hundreds will be rounded up to the nearest thousand."
     },
 
     "tenRuleLabel":{

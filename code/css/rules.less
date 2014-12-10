@@ -27,3 +27,124 @@
     position: relative;
     height: 120px;
 }
+
+.rule-example {
+    text-align: center;
+    font-size: larger;
+    color: #808080;
+    font-family: monospace;
+
+    .currency-symbol {
+        font-size: smaller;
+        margin-right: 3px;
+    }
+
+    .hundreds-value,
+    .roundup-value {
+        font-size: larger;
+        font-weight: bold;
+        color: black;
+    }
+
+    .example-item {
+        display: block;
+        width: 20%;
+        float: left;
+    }
+
+    .r0, .r1, .r2, .r3, .r4, .r5, .r6, .r7, .r8, .r9 {
+        display: none;
+        color: black;
+        font-weight: bold;
+    }
+
+    &.v1 {
+        .r1, .r2, .r3, .r4, .r5, .r6, .r7, .r8, .r9 {
+            display: block;
+        }
+
+        .i1, .i2, .i3, .i4, .i5, .i6, .i7, .i8, .i9 {
+            display: none;
+        }
+    }
+
+    &.v2 {
+        .r2, .r3, .r4, .r5, .r6, .r7, .r8, .r9 {
+            display: block;
+        }
+
+        .i2, .i3, .i4, .i5, .i6, .i7, .i8, .i9 {
+            display: none;
+        }
+    }
+
+    &.v3 {
+        .r3, .r4, .r5, .r6, .r7, .r8, .r9 {
+            display: block;
+        }
+
+        .i3, .i4, .i5, .i6, .i7, .i8, .i9 {
+            display: none;
+        }
+    }
+
+    &.v4 {
+        .r4, .r5, .r6, .r7, .r8, .r9 {
+            display: block;
+        }
+
+        .i4, .i5, .i6, .i7, .i8, .i9 {
+            display: none;
+        }
+    }
+
+    &.v5 {
+        .r5, .r6, .r7, .r8, .r9 {
+            display: block;
+        }
+
+        .i5, .i6, .i7, .i8, .i9 {
+            display: none;
+        }
+    }
+
+    &.v6 {
+        .r6, .r7, .r8, .r9 {
+            display: block;
+        }
+
+        .i6, .i7, .i8, .i9 {
+            display: none;
+        }
+    }
+
+    &.v7 {
+        .r7, .r8, .r9 {
+            display: block;
+        }
+
+        .i7, .i8, .i9 {
+            display: none;
+        }
+    }
+
+    &.v8 {
+        .r8, .r9 {
+            display: block;
+        }
+
+        .i8, .i9 {
+            display: none;
+        }
+    }
+
+    &.v9 {
+        .r9 {
+            display: block;
+        }
+
+        .i9 {
+            display: none;
+        }
+    }
+}

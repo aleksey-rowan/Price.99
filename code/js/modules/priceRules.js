@@ -10,28 +10,32 @@ var $ = require('./../libs/jquery-1.11.1.min'),
             enabledControl: $('#cents-rule input[type=checkbox]'),
             valueControl: $('#cents-rule input[type=number]'),
             detailsDiv: $('#cents-details'),
-            content: 'cents'
+            content: 'cents',
+            exampleSpan: $('.cents-value')
         },
         {
             container: $('#dollars-rule'),
             enabledControl: $('#dollars-rule input[type=checkbox]'),
             valueControl: $('#dollars-rule input[type=number]'),
             detailsDiv: $('#dollars-details'),
-            content: 'dollars'
+            content: 'dollars',
+            exampleSpan: $('.dollars-value')
         },
         {
             container: $('#tens-rule'),
             enabledControl: $('#tens-rule input[type=checkbox]'),
             valueControl: $('#tens-rule input[type=number]'),
             detailsDiv: $('#tens-details'),
-            content: 'tens'
+            content: 'tens',
+            exampleSpan: $('.tens-value')
         },
         {
             container: $('#hundreds-rule'),
             enabledControl: $('#hundreds-rule input[type=checkbox]'),
             valueControl: $('#hundreds-rule input[type=number]'),
             detailsDiv: $('#hundreds-details'),
-            content: 'hundreds'
+            content: 'hundreds',
+            exampleSpan: $('#hundreds-details .rule-example')
         }
     ];
 
@@ -49,8 +53,11 @@ module.exports.init = function (callback) {
                 console.log(e);
 
                 roundRules[rule.content].value = parseInt(e.target.value, 10);
+                rule.exampleSpan.removeClass().addClass("rule-example v" + roundRules[rule.content].value); // comment
                 callback();
             });
+
+        rule.exampleSpan.removeClass().addClass("rule-example v" + roundRules[rule.content].value); // comment
 
         rule.enabledControl
             .prop('checked', roundRules[rule.content].enabled)

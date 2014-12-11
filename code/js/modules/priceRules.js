@@ -11,7 +11,8 @@ var $ = require('./../libs/jquery-1.11.1.min'),
             valueControl: $('#cents-rule input[type=number]'),
             detailsDiv: $('#cents-details'),
             content: 'cents',
-            exampleSpan: $('.cents-value')
+            exampleValueClass: '.cents-value',
+            exampleDiv: $('#cents-details .rule-example')
         },
         {
             container: $('#dollars-rule'),
@@ -19,7 +20,8 @@ var $ = require('./../libs/jquery-1.11.1.min'),
             valueControl: $('#dollars-rule input[type=number]'),
             detailsDiv: $('#dollars-details'),
             content: 'dollars',
-            exampleSpan: $('.dollars-value')
+            exampleValueClass: '.dollars-value',
+            exampleDiv: $('#dollars-details .rule-example')
         },
         {
             container: $('#tens-rule'),
@@ -27,7 +29,8 @@ var $ = require('./../libs/jquery-1.11.1.min'),
             valueControl: $('#tens-rule input[type=number]'),
             detailsDiv: $('#tens-details'),
             content: 'tens',
-            exampleSpan: $('.tens-value')
+            exampleValueClass: '.tens-value',
+            exampleDiv: $('#tens-details .rule-example')
         },
         {
             container: $('#hundreds-rule'),
@@ -35,17 +38,24 @@ var $ = require('./../libs/jquery-1.11.1.min'),
             valueControl: $('#hundreds-rule input[type=number]'),
             detailsDiv: $('#hundreds-details'),
             content: 'hundreds',
-            exampleSpan: $('#hundreds-details .rule-example')
+            exampleValueClass: '.hundreds-value',
+            exampleDiv: $('#hundreds-details .rule-example')
         }
     ];
 
 function updateExamples(rule) {
     var roundRule = storage.options.roundRules[rule.content];
+        //value = roundRule.value.toString()[0] === 0 ? 1;
+        //value = ('0' + roundRule.value).slice(-2)[0]; // get the first number of the value; pad values <10 with 0.
+    
+    rule.detailsDiv
+        .find(rule.exampleValueClass)
+        .text(roundRule.value);
 
     if (roundRule.enabled) {
-        rule.exampleSpan.removeClass().addClass("rule-example v" + roundRule.value); // comment
+        rule.exampleDiv.removeClass().addClass("rule-example v" + roundRule.value); // comment
     } else {
-        rule.exampleSpan.removeClass().addClass("rule-example");
+        rule.exampleDiv.removeClass().addClass("rule-example");
     }
 }
 

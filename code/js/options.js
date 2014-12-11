@@ -70,6 +70,12 @@
 
     function init(callback) {
         
+        $('[i18n-content]').each(function () {
+            var element = $(this);
+            //element.text(chrome.i18n.getMessage(element.attr('i18n-content')));
+            element.html(chrome.i18n.getMessage(element.attr('i18n-content')));
+        });
+
         priceRules.init(function () {
             saveOptions(callback);
         });
@@ -139,11 +145,6 @@
             setTimeout(function () {
                 $('body')[0].scrollTop = 0;
             }, 200);
-        });
-
-        $('[i18n-content]').each(function (index, element) {
-            element = $(this);
-            element.text(chrome.i18n.getMessage(element.attr('i18n-content')));
         });
     }
 

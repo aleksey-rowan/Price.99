@@ -39,6 +39,16 @@ var $ = require('./../libs/jquery-1.11.1.min'),
         }
     ];
 
+function updateExamples(rule) {
+    var roundRule = storage.options.roundRules[rule.content];
+
+    if (roundRule.enabled) {
+        rule.exampleSpan.removeClass().addClass("rule-example v" + roundRule.value); // comment
+    } else {
+        rule.exampleSpan.removeClass().addClass("rule-example");
+    }
+}
+
 module.exports.init = function (callback) {
     var otherRules = storage.options.otherRules,
         roundRules = storage.options.roundRules;
@@ -53,11 +63,9 @@ module.exports.init = function (callback) {
                 console.log(e);
 
                 roundRules[rule.content].value = parseInt(e.target.value, 10);
-                rule.exampleSpan.removeClass().addClass("rule-example v" + roundRules[rule.content].value); // comment
+                updateExamples(rule);
                 callback();
             });
-
-        rule.exampleSpan.removeClass().addClass("rule-example v" + roundRules[rule.content].value); // comment
 
         rule.enabledControl
             .prop('checked', roundRules[rule.content].enabled)
@@ -75,6 +83,7 @@ module.exports.init = function (callback) {
                 roundRules[rule.content].enabled = e.currentTarget.checked;
                 //rule.valueControl.prop('disabled', !roundRules[rule.content].enabled);
                 rule.valueControl.parent().stepper(roundRules[rule.content].enabled ? 'enable' : 'disable');
+                updateExamples(rule);
                 callback();
             });
 
@@ -100,6 +109,8 @@ module.exports.init = function (callback) {
                     defaultDetails.addClass('selected');
                 }
             );
+
+        updateExamples(rule);
     });
 
     pauseButton

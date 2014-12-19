@@ -25,7 +25,7 @@
         "message": "Rules"
     },
     "rulesInfoText": {
-        "message": "Use rules to set the desired effect."
+        "message": "Price.99 rounds prices according to rules. Select a rule and adjust the cut-off value for rounding. Hover over rules for more information."
     },
     
     "optButtonLabel": {
@@ -93,9 +93,7 @@
         "message": "Prices ending in <span class='cents-value'></span><span class='rule-info-more'> or more</span> cents will be rounded up to the nearest dollar."
     },
 
-
-
-    "fds": { 
-        "message": ""
+    "copy": {
+        "message": "© 2014, IronBox, Some Rights Reserved"
     }
 }

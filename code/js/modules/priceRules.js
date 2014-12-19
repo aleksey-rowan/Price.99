@@ -45,6 +45,7 @@ var $ = require('./../libs/jquery-1.11.1.min'),
 
 function updateExamples(rule) {
     var roundRule = storage.options.roundRules[rule.content],
+        hideMore = false,
         value,
         temp;
 
@@ -54,16 +55,23 @@ function updateExamples(rule) {
 
             value = parseInt(temp.slice(0, 1), 10) +
                     parseInt(temp.slice(1, 2) !== "0" ? 1 : 0, 10);
+
+            hideMore = roundRule.value === 99 ? true : false;
             break;
 
         default:
             value = roundRule.value;
+            hideMore = roundRule.value === 9 ? true : false;
             break;
     }
 
     rule.detailsDiv
         .find(rule.exampleValueClass)
-        .text(roundRule.value);
+        .text(roundRule.value)
+        .end()
+        .find(".rule-info-more")
+        .toggle(!hideMore);
+
 
     if (roundRule.enabled) {
         rule.exampleDiv.removeClass().addClass("rule-example v" + value); // comment

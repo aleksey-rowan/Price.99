@@ -70,7 +70,7 @@
         "message": "Tens Rule"
     },
     "tenRuleInfo":{
-        "message": "Prices ending in <span class='tens-value'></span> or more tens will be rounded up to the nearest hundred."
+        "message": "Prices ending in <span class='tens-value'></span><span class='rule-info-more'> or more</span> tens will be rounded up to the nearest hundred."
     },
 
     "dolRuleLabel":{
@@ -80,7 +80,7 @@
         "message": "Dollars Rule"
     },
     "dolRuleInfo":{
-        "message": "Prices ending in <span class='dollars-value'></span> or more dollars will be rounded up to the nearest ten."
+        "message": "Prices ending in <span class='dollars-value'></span><span class='rule-info-more'> or more</span> dollars will be rounded up to the nearest ten."
     },
 
     "centRuleLabel":{
@@ -90,7 +90,7 @@
         "message": "Cents Rule"
     },
     "centRuleInfo":{
-        "message": "Prices ending in <span class='cents-value'></span> or more cents will be rounded up to the nearest dollar."
+        "message": "Prices ending in <span class='cents-value'></span><span class='rule-info-more'> or more</span> cents will be rounded up to the nearest dollar."
     },
 
 

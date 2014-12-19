@@ -44,16 +44,29 @@ var $ = require('./../libs/jquery-1.11.1.min'),
     ];
 
 function updateExamples(rule) {
-    var roundRule = storage.options.roundRules[rule.content];
-        //value = roundRule.value.toString()[0] === 0 ? 1;
-        //value = ('0' + roundRule.value).slice(-2)[0]; // get the first number of the value; pad values <10 with 0.
-    
+    var roundRule = storage.options.roundRules[rule.content],
+        value,
+        temp;
+
+    switch (rule.content) {
+        case 'cents':
+            temp = ('0' + roundRule.value).slice(-2);
+
+            value = parseInt(temp.slice(0, 1), 10) +
+                    parseInt(temp.slice(1, 2) !== "0" ? 1 : 0, 10);
+            break;
+
+        default:
+            value = roundRule.value;
+            break;
+    }
+
     rule.detailsDiv
         .find(rule.exampleValueClass)
         .text(roundRule.value);
 
     if (roundRule.enabled) {
-        rule.exampleDiv.removeClass().addClass("rule-example v" + roundRule.value); // comment
+        rule.exampleDiv.removeClass().addClass("rule-example v" + value); // comment
     } else {
         rule.exampleDiv.removeClass().addClass("rule-example");
     }

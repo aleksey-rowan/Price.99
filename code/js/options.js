@@ -20,7 +20,7 @@
         runner = require('./modules/runner'),
         msg = require('./modules/msg'),
         
-		optionsButton = $('#options-button'),
+        optionsButton = $('#options-button'),
         
         optionRules = require('./modules/optionRules.js'),
         priceRules = require('./modules/priceRules.js');
@@ -94,8 +94,8 @@
                 var node = $(this);
                 node.removeClass('selected');
             });
-		
-		optionsButton
+        
+        optionsButton
             .click(function () {
                 msg.bg('openOptionsPage',
                     function (res) {

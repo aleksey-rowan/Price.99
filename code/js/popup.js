@@ -20,7 +20,7 @@
         runner = require('./modules/runner'),
         msg = require('./modules/msg'),
         
-		optionsButton = $('#options-button'),
+        optionsButton = $('#options-button'),
 
         priceRules = require('./modules/priceRules.js');
 

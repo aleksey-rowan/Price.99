@@ -42,14 +42,14 @@ module.exports = function (grunt) {
                 options: {
                     cleancss: true
                 },
-                
+
                 expand: true,
                 cwd: 'code/css/',
                 src: '*.less',
                 dest: 'code/css/',
-                rename: function(dest, src) {
-                        return dest + src.replace('.less', '.min.css');
-                        }
+                rename: function (dest, src) {
+                    return dest + src.replace('.less', '.min.css');
+                }
             }
         },
 
@@ -61,7 +61,7 @@ module.exports = function (grunt) {
                     src: [
                         '**', '!js/**',
                         '!**/*.md',
-                        
+
                         '!**/*.less',
                         '!**/*.map'
                     ],

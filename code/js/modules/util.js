@@ -7,6 +7,9 @@ module.exports = {
         };
     },
 
+    /**
+     * Returns true if the supplied element is in the dom.
+     */
     containsInDom: function(el) {
         return $.contains(document.documentElement, el);
     },
@@ -22,5 +25,22 @@ module.exports = {
         if (i !== -1) {
             array.splice(i, 1);
         }
+    },
+
+    walk: function walk(node, func) {
+        var keepGoing;
+    
+        keepGoing  = func.call(this, node);
+        node = node.firstChild;
+        while (node) {
+            if (!keepGoing) {
+                return false;
+            }
+        
+            keepGoing = walk.call(this, node, func);
+            node = node.nextSibling;
+        }
+    
+        return keepGoing;
     }
 };

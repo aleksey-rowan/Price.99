@@ -17,6 +17,41 @@ function unwrapNodes(nodes) {
     });
 }
 
+function peekPricesHelper(node) {
+    var text,
+        re,
+        flag = false;
+
+    if (node.nodeType === 3) {
+        text = node.textContent || node.innerText || "";
+
+        if (text !== "") {
+            re = new RegExp(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺](\d{1,5})((\.)\d{1,2})?/ig);
+            flag = re.test(text);
+        }
+
+    }
+
+    return !flag;
+}
+
+function peekPrices(nodes) {
+    var flag,
+        i, node;
+
+    for (i = 0; i < nodes.length; i++) {
+        node = nodes[i];
+
+        flag = util.walk(node, peekPricesHelper);
+
+        if (!flag) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 module.exports = {
 
     testHook: function (j, d) {
@@ -25,7 +60,7 @@ module.exports = {
         pricePoint.testHook($);
         util.testHook(d);
     },
-    
+
     init: function () {
         highlightRegex.main($, document);
         nodes = $("body").children(":not('script, style')");
@@ -41,6 +76,13 @@ module.exports = {
         }*/
 
         nodes = n || nodes;
+
+        if (!peekPrices(nodes)) {
+            console.log("No prices found");
+            return this;
+        } else {
+            console.log("Found at least one price. Run the full parser.");
+        }
 
         nodes.highlightRegex(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺.()a\d]/ig, {
             tagType: 'ppnn'
@@ -87,16 +129,16 @@ module.exports = {
 
     purge: function () {
         var array = [];
-        
+
         pricePoints.forEach(function (pp) {
             if (!util.containsInDom(pp.parts.currencySign[0])) {
-                array.push(pp);                
+                array.push(pp);
             }
         });
 
         array.forEach(function (pp) {
             util.removeFromArray(pricePoints, pp);
-        });        
+        });
 
         return this;
     },

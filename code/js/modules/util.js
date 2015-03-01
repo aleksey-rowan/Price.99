@@ -30,18 +30,24 @@ module.exports = {
     /**
      * Walks the dom and executes a specified function which takes a current node and returns true to continue or false to stop walking.
      */
-    walk: function walk(node, func) {
+    walk: function walk(node, func, ignoreTags) {
         var keepGoing;
-    
-        keepGoing  = func.call(this, node);
-        node = node.firstChild;
-        while (node) {
-            if (!keepGoing) {
-                return false;
-            }
         
-            keepGoing = walk.call(this, node, func);
-            node = node.nextSibling;
+        ignoreTags = ignoreTags || [];
+
+        if (ignoreTags.indexOf(node.tagName) === -1) {
+            keepGoing = func.call(this, node);
+            node = node.firstChild;
+            while (node) {
+                if (!keepGoing) {
+                    return false;
+                }
+
+                keepGoing = walk.call(this, node, func, ignoreTags);
+                node = node.nextSibling;
+            }
+        } else {
+            keepGoing = true;
         }
     
         return keepGoing;

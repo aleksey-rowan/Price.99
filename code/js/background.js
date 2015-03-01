@@ -36,20 +36,29 @@
     handlers.getOptions = function (tabId, done) {
         // get stored options
         //console.log('BG : Sending options to tab', this.port.sender.tab.id, storage.options);
-        console.log('BG : Sending options to tab', tabId, storage.options);
+        console.log('PPNN - BG: Sending options to tab', tabId, storage.options);
         storage.getOptions(function () {
             done(storage.options);
         });
     };
 
     handlers.optionsChanged = function (res) {
-        console.log('BG : Got new options', res);
+        console.log('PPNN - BG: Got new options', res);
         storage.options = res;
     };
 
-    //handlers.pricesDetected = function (isDetected, tabId, done) {
+    handlers.pricesDetected = function (info, tabId, done) {
+        var senderId = tabId;
+        console.log(info, senderId, tabId);
 
-    //};
+        if (info.detected) {
+            chrome.pageAction.show(senderId);
+        } else {
+            chrome.pageAction.hide(senderId);
+        }
+
+        done("PPNN - BG: Price Detected update received");
+    };
 
     handlers.pricesUpdated = function (info, tabId, done) {
         //var senderId = this.port.sender.tab.id;
@@ -95,7 +104,7 @@
                 chrome.tabs.create({ url: optionsUrl });
             }
 
-            done("Options page opened!");
+            done("PPNN - Options page opened!");
         });
     };
 
@@ -119,58 +128,59 @@
     // start broadcasting loop
     helloWorld();*/
 
-    chrome.runtime.onMessage.addListener(
-    function (request, sender) { //, sendResponse) {
-        console.log(sender.tab ?
-                    "from a content script:" + sender.tab.url :
-                    "from the extension", request);
+    //chrome.runtime.onMessage.addListener(
+    //    function (request, sender) { //, sendResponse) {
+    //        console.log(sender.tab ?
+    //                    "from a content script:" + sender.tab.url :
+    //                    "from the extension", request);
 
-        /*if (request.greeting == "hello") {
-            sendResponse({ farewell: "goodbye" });
+    //        /*if (request.greeting == "hello") {
+    //            sendResponse({ farewell: "goodbye" });
 
-            chrome.tabs.query({}, function (tabs) {
-                var message = {
-                    method: "clearLoop"
-                };
-                for (var i = 0; i < tabs.length; ++i) {
-                    chrome.tabs.sendMessage(tabs[i].id, message);
-                }
-            });
-        }*/
+    //            chrome.tabs.query({}, function (tabs) {
+    //                var message = {
+    //                    method: "clearLoop"
+    //                };
+    //                for (var i = 0; i < tabs.length; ++i) {
+    //                    chrome.tabs.sendMessage(tabs[i].id, message);
+    //                }
+    //            });
+    //        }*/
 
-        switch (request.action) {
-            /*case 'getOptions':
+    //        switch (request.action) {
+    //            /*case 'getOptions':
 
-                chrome.storage.sync.get({
-                    options: CONST.options
-                }, function (items) {
-                    console.log('Sending response');
-                    //sendResponse(items);
-                    chrome.tabs.sendMessage(sender.tab.id, {
-                        action: 'optionsChanged',
-                        options: items.options
-                    });
-                });
+    //                chrome.storage.sync.get({
+    //                    options: CONST.options
+    //                }, function (items) {
+    //                    console.log('Sending response');
+    //                    //sendResponse(items);
+    //                    chrome.tabs.sendMessage(sender.tab.id, {
+    //                        action: 'optionsChanged',
+    //                        options: items.options
+    //                    });
+    //                });
 
-                break;*/
+    //                break;*/
 
-            case 'pricesChanged':
-                console.log('Prices changed:', request.count);
+    //            case 'pricesChanged':
+    //                console.log('Prices changed:', request.count);
 
-                if (request.count > 0) {
-                    chrome.pageAction.show(sender.tab.id);
-                    /*chrome.pageAction.setTitle({
-                        tabId: sender.tab.id,
-                        title: 'Hey'
-                    });*/
-                } else {
-                    chrome.pageAction.hide(sender.tab.id);
-                }
+    //                if (request.count > 0) {
+    //                    chrome.pageAction.show(sender.tab.id);
+    //                    /*chrome.pageAction.setTitle({
+    //                        tabId: sender.tab.id,
+    //                        title: 'Hey'
+    //                    });*/
+    //                } else {
+    //                    chrome.pageAction.hide(sender.tab.id);
+    //                }
 
-                break;
+    //                break;
 
-            default:
-                break;
-        }
-    });
+    //            default:
+    //                break;
+    //        }
+    //    }
+    //);
 })();

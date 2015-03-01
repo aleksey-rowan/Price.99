@@ -2,7 +2,7 @@
 
 var $ = require('./../libs/jquery-1.11.1.min'),
     pricePoint = require('./../modules/pricepoint'),
-    nodes,
+    //nodes,
     //nodes = $("body").children(":not('script, style')"), //$("body").children().not("script"),
     garbage,
     array,
@@ -17,7 +17,7 @@ function unwrapNodes(nodes) {
     });
 }
 
-function peekPricesHelper(node) {
+function peekHelper(node) {
     var text,
         re,
         flag = false;
@@ -26,7 +26,7 @@ function peekPricesHelper(node) {
         text = node.textContent || node.innerText || "";
 
         if (text !== "") {
-            re = new RegExp(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺](\d{1,5})((\.)\d{1,2})?/ig);
+            re = new RegExp(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/ig);
             flag = re.test(text);
         }
 
@@ -35,21 +35,12 @@ function peekPricesHelper(node) {
     return !flag;
 }
 
-function peekPrices(nodes) {
-    var flag,
-        i, node;
+function getPeekingNodes() {
+    return $("body > :not('script, style'):not([data-ppnn='peeked'])");
+}
 
-    for (i = 0; i < nodes.length; i++) {
-        node = nodes[i];
-
-        flag = util.walk(node, peekPricesHelper);
-
-        if (!flag) {
-            return true;
-        }
-    }
-
-    return false;
+function getParsingNodes() {
+    return $("body > :not('script, style')[data-ppnn='peeked']:not([data-ppnn='parsed'])");
 }
 
 module.exports = {
@@ -63,10 +54,37 @@ module.exports = {
 
     init: function () {
         highlightRegex.main($, document);
-        nodes = $("body").children(":not('script, style')");
+        //nodes = $("body").children(":not('script, style')");
+    },
+
+    peek: function(n) {
+        var nodes = n || getPeekingNodes(),
+            flag,
+            i, node;
+
+        for (i = 0; i < nodes.length; i++) {
+            node = nodes[i];
+
+            // peekHelper returns false when it finds a price
+            flag = util.walk(node, peekHelper);
+
+            // price found
+            if (!flag) {
+                // TODO: peek into each node and mark it separatelly, not all together.
+                // marked this set of nodes as peeked, to be parsed
+                nodes.attr("data-ppnn", "peeked");
+
+                return true;
+            }
+        }
+
+        return false;
+
     },
 
     parse: function (n) {
+        var nodes;
+
         garbage = [];
         array = [];
 
@@ -75,18 +93,21 @@ module.exports = {
             return this;
         }*/
 
-        nodes = n || nodes;
-
-        if (!peekPrices(nodes)) {
+        if (!this.peek()) {
             console.log("No prices found");
             return this;
         } else {
             console.log("Found at least one price. Run the full parser.");
         }
 
-        nodes.highlightRegex(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺.()a\d]/ig, {
-            tagType: 'ppnn'
-        });
+        nodes = n || getParsingNodes();
+
+        nodes
+            .highlightRegex(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺.()a\d]/ig, {
+                tagType: 'ppnn'
+            })
+            .attr('data-ppnn-parsed', true)
+        ;
 
         nodes.find('ppnn:not(.ppnn-parsed)').each(function (i, elm) {
             var t;

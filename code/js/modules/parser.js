@@ -29,7 +29,6 @@ function peekHelper(node) {
             re = new RegExp(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/ig);
             flag = re.test(text);
         }
-
     }
 
     return !flag;
@@ -57,10 +56,15 @@ module.exports = {
         //nodes = $("body").children(":not('script, style')");
     },
 
-    peek: function(n) {
+    /**
+     * Peek at the page and try to find a money sign. If found, assume the page has prices - can parse. If not found, don't parse.
+     */
+    peek: function (n) {
         var nodes = n || getPeekingNodes(),
             flag,
             i, node;
+
+        console.log('PPNN - CT-Parser: Peeking at the page');
 
         for (i = 0; i < nodes.length; i++) {
             node = nodes[i];
@@ -72,12 +76,14 @@ module.exports = {
             if (!flag) {
                 // TODO: peek into each node and mark it separatelly, not all together.
                 // marked this set of nodes as peeked, to be parsed
-                nodes.attr("data-ppnn", "peeked");
-
+                nodes.attr('data-ppnn', 'peeked');
+                
+                console.log('PPNN - CT-Parser: Prices detected');
                 return true;
             }
         }
 
+        console.log('PPNN - CT-Parser: No prices detected');
         return false;
 
     },
@@ -89,24 +95,27 @@ module.exports = {
         array = [];
 
         // do not parse the page if the extension is paused
-        /*if (!storage.options.otherRules.enabled) {
+        if (!storage.options.otherRules.enabled) {
+            console.log('PPNN - CT-Parser: Extension paused.');
             return this;
-        }*/
-
-        if (!this.peek()) {
-            console.log("No prices found");
-            return this;
-        } else {
-            console.log("Found at least one price. Run the full parser.");
         }
 
+        //if (!this.peek()) {
+        //    console.log("No prices found");
+        //    return this;
+        //} else {
+        //    console.log("Found at least one price. Run the full parser.");
+        //}
+
         nodes = n || getParsingNodes();
+
+        console.log('PPNN - CT-Parser: Start parsing', nodes.length, 'new nodes');
 
         nodes
             .highlightRegex(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺.()a\d]/ig, {
                 tagType: 'ppnn'
             })
-            .attr('data-ppnn-parsed', true)
+            .attr('data-ppnn', 'parsed')
         ;
 
         nodes.find('ppnn:not(.ppnn-parsed)').each(function (i, elm) {
@@ -143,11 +152,14 @@ module.exports = {
             unwrapNodes(elm);
         });
 
-        console.log('Price points length', pricePoints.length);
+        console.log('PPNN - CT-Parser: Total price points catalogued', pricePoints.length);
 
         return this;
     },
 
+    /**
+     * Check if any of the stored price points are no longer present in the dom and remove them from memory.
+     */
     purge: function () {
         var array = [];
 
@@ -178,7 +190,7 @@ module.exports = {
             pp.update();
             //count += pp.isChanged ? 1 : 0;
         });
-        console.log('CT-Parser : Prices updated');
+        console.log('PPNN - CT-Parser : Prices updated');
 
         return this;
     },

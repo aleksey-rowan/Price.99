@@ -44,7 +44,27 @@
 
     handlers.optionsChanged = function (res) {
         console.log('PPNN - BG: Got new options', res);
-        storage.options = res;
+        
+        storage.options = res;        
+    };
+
+    handlers.enabledChanged = function (info, tabId, done) {
+        var senderId = tabId;
+        console.log(info, senderId, tabId);
+
+        if (info.enabled) {
+            chrome.pageAction.setIcon({
+                tabId: senderId,
+                path: 'images/i_19.png'
+            });
+        } else {
+            chrome.pageAction.setIcon({
+                tabId: senderId,
+                path: 'images/i_19_g.png'
+            });
+        }
+
+        done("PPNN - BG: Pause / Resume state change received");
     };
 
     handlers.pricesDetected = function (info, tabId, done) {

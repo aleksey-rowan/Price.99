@@ -23,11 +23,28 @@
 
     //console.log(storage.options);
 
+    function toggleIcon(enabled) {
+        // TODO: have individual settings for each page
+        // notify bg to turn the icon on the page grey
+        msg.bg('enabledChanged',
+            {
+                enabled: enabled
+            },
+            thisTabId,
+            function (res) {
+                console.log(res);
+            }
+        );
+    }
+
     handlers.rememberTabId = function (id) {
         thisTabId = id;
         
         msg.bg('getOptions', thisTabId, function (res) {
             console.log('PPNN - CT : Got initial options', storage.options, res);
+
+            toggleIcon(res.otherRules.enabled);
+
             storage.options = res;
 
             /*mutant.init(function () {
@@ -41,7 +58,12 @@
 
     handlers.optionsChanged = function (res) {
         console.log('PPNN - CT : Got new options', res);
-        storage.options = res;        
+
+        if (storage.options.otherRules.enabled !== res.otherRules.enabled) {
+            toggleIcon(res.otherRules.enabled);
+        }
+
+        storage.options = res;
 
         //mutant.stop();
 

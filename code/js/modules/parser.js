@@ -36,7 +36,7 @@ function peekHelper(node) {
         }
 
         if (flag) {
-            console.log('PPNN - CT-Parser: Price found', node, text);
+            console.log('PPNN - CT-Parser: First price found', node, text);
         }
     }
     
@@ -79,6 +79,7 @@ module.exports = {
         for (i = 0; i < nodes.length; i++) {
             node = nodes[i];
 
+            //TODO: imporove ignoring stuff; for example google images have loads of metadata in some divs that might have money signs in it; need to ignore as well. or maybe ignore that using whitelisting/blacklisting later.
             // peekHelper returns false when it finds a price
             flag = util.walk(node, peekHelper, ignoreTags);
 

@@ -27,7 +27,7 @@
         thisTabId = id;
         
         msg.bg('getOptions', thisTabId, function (res) {
-            console.log('CT : Got initial options', storage.options, res);
+            console.log('PPNN - CT : Got initial options', storage.options, res);
             storage.options = res;
 
             /*mutant.init(function () {
@@ -40,14 +40,17 @@
     };
 
     handlers.optionsChanged = function (res) {
-        console.log('CT : Got new options', res);
-        storage.options = res;
-
+        console.log('PPNN - CT : Got new options', res);
+        storage.options = res;        
 
         //mutant.stop();
 
-        parser.updatePrices();
-        notifyBackground();
+        parser
+            .parse()
+            .updatePrices()
+        ;
+        // we don't notify background with found/updated prices yet
+        //notifyBackground();
 
         //mutant.start();
     };
@@ -56,19 +59,29 @@
 
     msg = msg.init('ct', handlers);
 
-    function notifyBackground() {
-        var ppUpdated,
-            ppUnchanged,
-            pps;
+    function notifyBackground(arePricesDetected) {
+        // maybe use this later for some inforamtional update; ignore now
+        //var ppUpdated,
+        //    ppUnchanged,
+        //    pps;
 
-        pps = parser.getPricePoints();
-        ppUpdated = pps.filter(function (pp) { return pp.isChanged; });
-        ppUnchanged = pps.filter(function (pp) { return !pp.isChanged; });
+        //pps = parser.getPricePoints();
+        //ppUpdated = pps.filter(function (pp) { return pp.isChanged; });
+        //ppUnchanged = pps.filter(function (pp) { return !pp.isChanged; });
 
-        msg.bg('pricesUpdated',
+        //msg.bg('pricesUpdated',
+        //    {
+        //        updated: ppUpdated.length,
+        //        unchanged: ppUnchanged.length
+        //    },
+        //    thisTabId,
+        //    function (res) {
+        //        console.log(res);
+        //    });
+
+        msg.bg('pricesDetected',
             {
-                updated: ppUpdated.length,
-                unchanged: ppUnchanged.length
+                detected: arePricesDetected
             },
             thisTabId,
             function (res) {
@@ -78,15 +91,16 @@
 
     function evolution() {
         //mutant.stop();
+        var arePricesDetected = parser.peek();
 
         parser
             .parse()
             .updatePrices();
 
-        notifyBackground();
+        notifyBackground(arePricesDetected);
 
         //mutant.start();
     }
 
-    console.log('jQuery version:', $().jquery);
+    console.log('PPNN - CT: jQuery version:', $().jquery);
 })();

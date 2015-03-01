@@ -47,6 +47,10 @@
         storage.options = res;
     };
 
+    //handlers.pricesDetected = function (isDetected, tabId, done) {
+
+    //};
+
     handlers.pricesUpdated = function (info, tabId, done) {
         //var senderId = this.port.sender.tab.id;
         var senderId = tabId;

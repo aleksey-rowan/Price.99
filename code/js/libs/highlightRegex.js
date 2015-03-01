@@ -52,6 +52,7 @@ module.exports.main = function (j, document) {
         options.tagType = options.tagType || 'span'
         options.attrs = options.attrs || {}
 
+        // what is this for??? maybe to restore nodes
         if (typeof regex === 'undefined' || regex.source === '') {
             $(this)
                     .find(options.tagType + options.jClassName)

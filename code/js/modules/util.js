@@ -27,6 +27,9 @@ module.exports = {
         }
     },
 
+    /**
+     * Walks the dom and executes a specified function which takes a current node and returns true to continue or false to stop walking.
+     */
     walk: function walk(node, func) {
         var keepGoing;
     

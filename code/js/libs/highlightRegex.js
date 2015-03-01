@@ -66,6 +66,7 @@ module.exports.main = function (j, document) {
                 var elt = $(this).get(0)
                 //normalize(elt)
 
+                //TODO: ignore other useless tags
                 switch (this.tagName) {
                     case 'SCRIPT':
                         return;

@@ -7,6 +7,10 @@ var $ = require('./../libs/jquery-1.11.1.min'),
     garbage,
     array,
     pricePoints = [],
+
+    // tags to ignore when peeking and parsing
+    ignoreTags = ['STYLE', 'SCRIPT', 'NOSCRIPT', 'TEXTAREA'],
+
     util = require('../modules/util.js'),
     storage = require('./../modules/storage'),
     highlightRegex = require('./../libs/highlightRegex');
@@ -23,14 +27,20 @@ function peekHelper(node) {
         flag = false;
 
     if (node.nodeType === 3) {
-        text = node.textContent || node.innerText || "";
+
+        text = (node.data || node.textContent || node.innerText || "").trim();
 
         if (text !== "") {
             re = new RegExp(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺]/ig);
             flag = re.test(text);
         }
-    }
 
+        if (flag) {
+            console.log('PPNN - CT-Parser: Price found', node, text);
+        }
+    }
+    
+    // true - continue; false - stop
     return !flag;
 }
 
@@ -64,13 +74,13 @@ module.exports = {
             flag,
             i, node;
 
-        console.log('PPNN - CT-Parser: Peeking at the page');
+        console.log('PPNN - CT-Parser: Peeking at the page;', nodes.length, 'nodes to peek at');
 
         for (i = 0; i < nodes.length; i++) {
             node = nodes[i];
 
             // peekHelper returns false when it finds a price
-            flag = util.walk(node, peekHelper);
+            flag = util.walk(node, peekHelper, ignoreTags);
 
             // price found
             if (!flag) {
@@ -109,7 +119,7 @@ module.exports = {
 
         nodes = n || getParsingNodes();
 
-        console.log('PPNN - CT-Parser: Start parsing', nodes.length, 'new nodes');
+        console.log('PPNN - CT-Parser: Start parsing;', nodes.length, 'new nodes to parse');
 
         nodes
             .highlightRegex(/[$£€￥₠₡₢₣₤₥₦₧₨₩₪₫₭₮₯₰₱₲₳₴₵₶₷₸₹₺.()a\d]/ig, {

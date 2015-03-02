@@ -1,4 +1,4 @@
-﻿/* global module, require, document */
+﻿/* global module, require, document, window */
 
 var $ = require('./../libs/jquery-1.11.1.min'),
     pricePoint = require('./../modules/pricepoint'),
@@ -52,6 +52,15 @@ function getParsingNodes() {
     return $("body > :not('script, style')[data-ppnn='peeked']:not([data-ppnn='parsed'])");
 }
 
+/**
+ * Checks if the page is Google images search.
+ */
+function googleTest() {
+    var gi = new RegExp(/google\.([^\/]+)\/(ima?g|.*[?&]tbm=isch|.*[?&]site=images)/i);
+
+    return gi.test(window.location.href);
+}
+
 module.exports = {
 
     testHook: function (j, d) {
@@ -74,23 +83,29 @@ module.exports = {
             flag,
             i, node;
 
-        console.log('PPNN - CT-Parser: Peeking at the page;', nodes.length, 'nodes to peek at');
+        // ignore if the page is Google image search
+        // TODO: move into whitelist/blacklist functionality
+        if (googleTest()) {
+            console.log('PPNN - CT-Parser: Google images - ignore...');
+        } else {
+            console.log('PPNN - CT-Parser: Peeking at the page;', nodes.length, 'nodes to peek at');
 
-        for (i = 0; i < nodes.length; i++) {
-            node = nodes[i];
+            for (i = 0; i < nodes.length; i++) {
+                node = nodes[i];
 
-            //TODO: imporove ignoring stuff; for example google images have loads of metadata in some divs that might have money signs in it; need to ignore as well. or maybe ignore that using whitelisting/blacklisting later.
-            // peekHelper returns false when it finds a price
-            flag = util.walk(node, peekHelper, ignoreTags);
+                //TODO: improve ignoring stuff; for example Google images have loads of metadata in some divs that might have money signs in it; need to ignore as well. or maybe ignore that using whitelisting/blacklisting later.
+                // peekHelper returns false when it finds a price
+                flag = util.walk(node, peekHelper, ignoreTags);
 
-            // price found
-            if (!flag) {
-                // TODO: peek into each node and mark it separatelly, not all together.
-                // marked this set of nodes as peeked, to be parsed
-                nodes.attr('data-ppnn', 'peeked');
-                
-                console.log('PPNN - CT-Parser: Prices detected');
-                return true;
+                // price found
+                if (!flag) {
+                    // TODO: peek into each node and mark it separatelly, not all together.
+                    // marked this set of nodes as peeked, to be parsed
+                    nodes.attr('data-ppnn', 'peeked');
+
+                    console.log('PPNN - CT-Parser: Prices detected');
+                    return true;
+                }
             }
         }
 
@@ -163,7 +178,7 @@ module.exports = {
             unwrapNodes(elm);
         });
 
-        console.log('PPNN - CT-Parser: Total price points catalogued', pricePoints.length);
+        console.log('PPNN - CT-Parser: Total price points cataloged', pricePoints.length);
 
         return this;
     },

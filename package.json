@@ -1,6 +1,6 @@
 {
     "name": "Price.99",
-    "version": "0.0.450",
+    "version": "0.0.455",
     "description": "This extension rounds up prices.",
     "dependencies": { },
     "devDependencies": {

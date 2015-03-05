@@ -108,6 +108,16 @@ module.exports = function (grunt) {
         },
 
         uglify: {
+            options: {
+                compress: {
+                    drop_console: true
+                },
+                report: 'min',
+                sourceMap: false,
+                sourceMapIncludeSources: false,
+                preserveComments: false,
+            },
+
             min: { files: fileMaps.uglify }
         },
 

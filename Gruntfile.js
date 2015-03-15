@@ -1,8 +1,12 @@
 /* global module */
 
 module.exports = function (grunt) {
-    var pkg = grunt.file.readJSON('package.json');
-    var mnf = grunt.file.readJSON('code/manifest.json');
+    var pkg = grunt.file.readJSON('package.json'),
+        mnf = grunt.file.readJSON('code/manifest.json');
+
+    require('jit-grunt')(grunt, {
+        'bump-only': 'grunt-bump'
+    });
 
     var fileMaps = { browserify: {}, uglify: {} };
     var file, files = grunt.file.expand({ cwd: 'code/js' }, ['*.js']);
@@ -153,18 +157,6 @@ module.exports = function (grunt) {
             }
         }
     });
-
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-contrib-less');
-    grunt.loadNpmTasks('grunt-mkdir');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-browserify');
-    grunt.loadNpmTasks('grunt-exec');
-    grunt.loadNpmTasks('grunt-bump');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    grunt.loadNpmTasks('grunt-contrib-watch');
 
     //
     // custom tasks

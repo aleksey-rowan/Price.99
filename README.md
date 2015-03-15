@@ -21,3 +21,7 @@ __INSTALLATION PERMISSIONS:__ When installing Price.99, the extension will ask f
 - Price detection in dynamically loaded content
 - Whitelist / blacklist; individual rulesets
 - Support for different currencies
+
+### Resources:
+- [Psychological Pricing](http://www.wikiwand.com/en/Psychological_pricing)
+

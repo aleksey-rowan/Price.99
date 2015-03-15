@@ -59,6 +59,13 @@
         "message": "Support for different currencies"
     },
 
+    "aboutResources": {
+        "message": "Resources:"
+    },
+    "aboutResources1": {
+        "message": "<a href='http://www.wikiwand.com/en/Psychological_pricing' target='_blank'>Psychological Pricing</a>"
+    },
+
     "rulesLabel": {
         "message": "Rules"
     },

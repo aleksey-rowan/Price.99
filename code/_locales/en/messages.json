@@ -27,7 +27,7 @@
         "message": "Don’t like psychological pricing? Round all prices ending in .99 to the nearest dollar."
     },
     "aboutInfoText3": {
-        "message": "Want to reduce clutter and see nice, round prices? Round up everything to the nearest $10."
+        "message": "Want to reduce clutter and see nice, round prices? Round up everything to the nearest $$10."
     },
     "aboutInfoText4": {
         "message": "Shopping for a new gadget and need a quick-and-dirty way to compare prices? Round them up to the nearest hundred, or even to the nearest thousand."

@@ -20,6 +20,44 @@
     "aboutInfoText": {
         "message": "About stuff."
     },
+    "aboutInfoText1": {
+        "message": "Price.99 gives your control over how prices are displayed on the page using a set of rounding rules."
+    },
+    "aboutInfoText2": {
+        "message": "Don’t like psychological pricing? Round all prices ending in .99 to the nearest dollar."
+    },
+    "aboutInfoText3": {
+        "message": "Want to reduce clutter and see nice, round prices? Round up everything to the nearest $10."
+    },
+    "aboutInfoText4": {
+        "message": "Shopping for a new gadget and need a quick-and-dirty way to compare prices? Round them up to the nearest hundred, or even to the nearest thousand."
+    },
+    "aboutInfoText5": {
+        "message": "Price.99 <strong>DOES NOT</strong> change the actual price. You will not pay more."
+    },
+    
+    "aboutFeatures": {
+        "message": "Features:"
+    },
+    "aboutFeatures1": {
+        "message": "Accurate price detection"
+    },
+    "aboutFeatures2": {
+        "message": "Customizable price rounding from the nearest dollar to the nearest thousand"
+    },
+
+    "aboutFeaturesDev": {
+        "message": "Features in development:"
+    },
+    "aboutFeaturesDev1": {
+        "message": "Price detection in dynamically loaded content"
+    },
+    "aboutFeaturesDev2": {
+        "message": "Whitelist / blacklist; individual rulesets"
+    },
+    "aboutFeaturesDev3": {
+        "message": "Support for different currencies"
+    },
 
     "rulesLabel": {
         "message": "Rules"

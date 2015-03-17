@@ -39,9 +39,10 @@
         );
     }
 
-    handlers.rememberTabId = function (id) {
-        thisTabId = id;
-        
+    handlers.rememberTabId = function (data) {
+        thisTabId = data.id;
+        isActive = data.isActive;
+
         msg.bg('getOptions', thisTabId, function (res) {
             console.log('PPNN - CT : Got initial options', storage.options, res);
 
@@ -56,6 +57,7 @@
 
             // do not parse on creation
             //evolution();
+            evolution();
         });
     };
 
@@ -69,7 +71,10 @@
         console.log('PPNN - CT: I\'active', value);
 
         if (isActive) {
-            evolution();
+            parser
+                .parse()
+                .updatePrices()
+            ;
         }
     };
 
@@ -129,13 +134,16 @@
             });
     }
 
+    // isActive set to false, means only peeking to see if there are prices
     function evolution() {
         //mutant.stop();
         var arePricesDetected = parser.peek();
 
-        parser
-            .parse()
-            .updatePrices();
+        if (isActive) {
+            parser
+                .parse()
+                .updatePrices();
+        }
 
         notifyBackground(arePricesDetected);
 

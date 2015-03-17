@@ -18,7 +18,7 @@
         msg = require('./modules/msg'),
         storage = require('./modules/storage.js'),
         
-        activeTabId;
+        chWindows = {};
 
     // adding special background notification handlers onConnect / onDisconnect
     function logEvent(ev, context, tabId) {
@@ -27,7 +27,11 @@
 
     handlers.onConnect = function (ctxName, tabId) {
         if (ctxName === 'ct') {
-            msg.cmd(tabId, ['ct'], 'rememberTabId', tabId);
+            msg.cmd(tabId, ['ct'], 'rememberTabId', 
+                {
+                    id: tabId,
+                    isActive: isTabActive(tabId)
+                });
         }
 
         logEvent('onConnect', ctxName, tabId);
@@ -130,18 +134,41 @@
         });
     };
 
+    // store which tab is active in what window
     chrome.tabs.onActiveChanged.addListener(function (tabId, windowId) {
+        windowId = windowId.windowId;
         console.log('PPNN - BG: Active tab changed', tabId, windowId);
 
-        if (activeTabId) {
-            msg.cmd(activeTabId, ['ct'], 'setActive', false);
+        // if there is already active tab in this window, make it inactive
+        if (chWindows[windowId]) {
+        //if (activeTabId) {
+            setActiveTab(chWindows[windowId], false);
         }
 
+        // if it's a tab, store it's id with a corresponding windwow and make it active
         if (tabId) {
-            activeTabId = tabId;
-            msg.cmd(activeTabId, ['ct'], 'setActive', true);
+            chWindows[windowId] = tabId;
+            //activeTabId = tabId;
+            setActiveTab(chWindows[windowId], true);
         }
     });
+
+    function setActiveTab(tabId, isActive) {
+        msg.cmd(tabId, ['ct'], 'setActive', isActive);
+    }
+
+    // checks if the given tabid is active
+    function isTabActive(tabId) {
+        for (var chWin in chWindows) {
+            if (chWindows.hasOwnProperty(chWin)) {
+                if (chWindows[chWin] === tabId) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     msg = msg.init('bg', handlers);
 

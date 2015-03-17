@@ -19,7 +19,9 @@
         parser = require('./modules/parser'),
         storage = require('./modules/storage'),
         //mutant = require('./modules/mutant'),
-        thisTabId = null;
+
+        thisTabId = null,
+        isActive = false;
 
     //console.log(storage.options);
 
@@ -52,12 +54,27 @@
                 evolution();
             });*/
 
-            evolution();
+            // do not parse on creation
+            //evolution();
         });
     };
 
+    /**
+     * Handles setting tab active or inactive.
+     * 
+     */
+    handlers.setActive = function (value) {
+        isActive = value;
+
+        console.log('PPNN - CT: I\'active', value);
+
+        if (isActive) {
+            evolution();
+        }
+    };
+
     handlers.optionsChanged = function (res) {
-        console.log('PPNN - CT : Got new options', res);
+        console.log('PPNN - CT: Got new options', res);
 
         if (storage.options.otherRules.enabled !== res.otherRules.enabled) {
             toggleIcon(res.otherRules.enabled);
@@ -66,11 +83,12 @@
         storage.options = res;
 
         //mutant.stop();
-
-        parser
-            .parse()
-            .updatePrices()
-        ;
+        if (isActive) {
+            parser
+                .parse()
+                .updatePrices()
+            ;
+        }
         // we don't notify background with found/updated prices yet
         //notifyBackground();
 
@@ -82,7 +100,7 @@
     msg = msg.init('ct', handlers);
 
     function notifyBackground(arePricesDetected) {
-        // maybe use this later for some inforamtional update; ignore now
+        // maybe use this later for some informational update; ignore now
         //var ppUpdated,
         //    ppUnchanged,
         //    pps;

@@ -16,7 +16,9 @@
     // omit the `hadnlers` parameter for good when invoking msg.init()
     var handlers = require('./modules/handlers').create('bg'),
         msg = require('./modules/msg'),
-        storage = require('./modules/storage.js');
+        storage = require('./modules/storage.js'),
+        
+        activeTabId;
 
     // adding special background notification handlers onConnect / onDisconnect
     function logEvent(ev, context, tabId) {
@@ -44,8 +46,8 @@
 
     handlers.optionsChanged = function (res) {
         console.log('PPNN - BG: Got new options', res);
-        
-        storage.options = res;        
+
+        storage.options = res;
     };
 
     handlers.enabledChanged = function (info, tabId, done) {
@@ -127,6 +129,19 @@
             done("PPNN - Options page opened!");
         });
     };
+
+    chrome.tabs.onActiveChanged.addListener(function (tabId, windowId) {
+        console.log('PPNN - BG: Active tab changed', tabId, windowId);
+
+        if (activeTabId) {
+            msg.cmd(activeTabId, ['ct'], 'setActive', false);
+        }
+
+        if (tabId) {
+            activeTabId = tabId;
+            msg.cmd(activeTabId, ['ct'], 'setActive', true);
+        }
+    });
 
     msg = msg.init('bg', handlers);
 

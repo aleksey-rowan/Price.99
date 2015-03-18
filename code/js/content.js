@@ -139,13 +139,13 @@
             isNew = false;
             // if the page is new, peek and parse it
             arePricesDetected = parser.peek();
+            notifyBackground(arePricesDetected);
 
             parser
                 .parse()
                 .updatePrices()
             ;
 
-            notifyBackground(arePricesDetected);
 
         } else if (mutantNodes && isActive) {
             // for future use with mutations

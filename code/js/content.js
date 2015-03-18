@@ -21,7 +21,11 @@
         //mutant = require('./modules/mutant'),
 
         thisTabId = null,
-        isActive = false;
+
+        isNew = true,
+        isActive = false,
+            
+        mutantNodes;
 
     //console.log(storage.options);
 
@@ -55,8 +59,6 @@
                 evolution();
             });*/
 
-            // do not parse on creation
-            //evolution();
             evolution();
         });
     };
@@ -70,12 +72,7 @@
 
         console.log('PPNN - CT: I\'active', value);
 
-        if (isActive) {
-            parser
-                .parse()
-                .updatePrices()
-            ;
-        }
+        evolution();
     };
 
     handlers.optionsChanged = function (res) {
@@ -90,7 +87,6 @@
         //mutant.stop();
         if (isActive) {
             parser
-                .parse()
                 .updatePrices()
             ;
         }
@@ -137,16 +133,36 @@
     // isActive set to false, means only peeking to see if there are prices
     function evolution() {
         //mutant.stop();
-        var arePricesDetected = parser.peek();
+        var arePricesDetected;
+        
+        if (isNew) {
+            isNew = false;
+            // if the page is new, peek and parse it
+            arePricesDetected = parser.peek();
 
-        if (isActive) {
             parser
                 .parse()
-                .updatePrices();
+                .updatePrices()
+            ;
+
+            notifyBackground(arePricesDetected);
+
+        } else if (mutantNodes && isActive) {
+            // for future use with mutations
+            /*
+            parser
+                .peek()
+                .parse()
+                .updatePrices()
+            ;
+            */
+        } else if (isActive) {
+            // udpate prices if the tab is active
+            parser
+                .updatePrices()
+            ;
         }
-
-        notifyBackground(arePricesDetected);
-
+        
         //mutant.start();
     }
 

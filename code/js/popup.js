@@ -37,11 +37,11 @@
     function saveOptions(callback) {
         storage.saveOptions(function () {
             var res = {
-                type: 'bcast',
+                type: 'bg',
                 cmd: 'optionsChanged',
-                arg: storage.options,
-                ctxs: ['ct', 'bg'],
-                tab: -1
+                arg: storage.options//,
+                //ctxs: ['ct', 'bg'],
+                //tab: -1
             };
 
             callback(res);

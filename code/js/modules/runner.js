@@ -19,6 +19,9 @@ module.exports.go = function(msg, info) {
     } else if ('random' === info.cmd) {
       log(">>>>> invoking msg.bg('random', callback)");
       msg.bg('random', callback);
+    } else if (info.cmd) {
+        log(">>>>> invoking msg." + info.type + "('" + info.cmd + "', callback)");
+        msg.bg(info.cmd, info.arg, callback);
     } else {
       log(">>>>> invoking msg.bg('randomAsync', callback) ... 15 sec delay");
       msg.bg('randomAsync', callback);

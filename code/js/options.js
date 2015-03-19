@@ -53,13 +53,14 @@
     });*/
 
     function saveOptions(callback) {
+        // notify all the tabs and background that options changed
         storage.saveOptions(function () {
             var res = {
-                type: 'bg',
+                type: 'bcast',
                 cmd: 'optionsChanged',
-                arg: storage.options//,
-                //ctxs: ['ct', 'bg'],
-                //tab: -1
+                arg: storage.options,
+                ctxs: ['ct', 'bg'],
+                tab: -1
             };
 
             callback(res);

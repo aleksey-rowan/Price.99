@@ -29,11 +29,18 @@
 
     //console.log(storage.options);
 
+    /**
+     * When the tab is new and gets it's id, it requests options from the background.
+     * 
+     */
     handlers.rememberTabId = function (data) {
         thisTabId = data.id;
         isActive = data.isActive;
 
-        getNewOptions();
+        storeNewOptions(data.options);
+
+        evolution();
+        //getNewOptions();
     };
 
     /**
@@ -45,14 +52,13 @@
 
         console.log('PPNN - CT: I\'active', value);
 
-        getNewOptions();
+        evolution();
     };
 
     handlers.optionsChanged = function (res) {
         console.log('PPNN - CT: Got new options', res);
 
-        toggleIcon(res.otherRules.enabled);
-        storage.options = res;
+        storeNewOptions(res);
 
         //mutant.stop();
 
@@ -72,16 +78,30 @@
         msg.bg('getOptions', thisTabId, function (res) {
             console.log('PPNN - CT : Got options', storage.options, res);
 
-            toggleIcon(res.otherRules.enabled);
-            storage.options = res;
+            storeNewOptions(res);
 
-            /*mutant.init(function () {
-                parser.purge();
-                evolution();
-            });*/
+            //mutant.init(function () {
+            //    parser.purge();
+            //    evolution();
+            //});
 
             evolution();
         });
+    }
+
+    /**
+     * Stores received options.
+     * If passed object is empty - request options from background.
+     * This only happens on the first tab loaded in a windows as the background didn't retrieve options yet.
+     * 
+     */
+    function storeNewOptions(res) {
+        if (res) {
+            toggleIcon(res.otherRules.enabled);
+            storage.options = res;
+        } else {
+            getNewOptions();
+        }
     }
 
     /**
@@ -142,7 +162,8 @@
         //mutant.stop();
         var arePricesDetected;
         
-        if (isNew) {
+        // parse if new and active; not just new
+        if (isNew && isActive) {
             isNew = false;
             // if the page is new, peek and parse it
             arePricesDetected = parser.peek();

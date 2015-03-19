@@ -30,7 +30,8 @@
             msg.cmd(tabId, ['ct'], 'rememberTabId',
                 {
                     id: tabId,
-                    isActive: isTabActive(tabId)
+                    isActive: isTabActive(tabId),
+                    options: storage.options
                 });
         }
 
@@ -40,26 +41,27 @@
     handlers.onDisconnect = logEvent.bind(null, 'onDisconnect');
 
     handlers.getOptions = function (tabId, done) {
-        // get stored options
-        //console.log('BG : Sending options to tab', this.port.sender.tab.id, storage.options);
-        console.log('PPNN - BG: Sending options to tab', tabId, storage.options);
-        storage.getOptions(function () {
+        // return options
+        
+        if (storage.options) {
+            // send options if you have them
+            console.log('PPNN - BG: Sending options to tab', tabId, storage.options);
             done(storage.options);
-        });
+        } else {
+            // get options and store them if you don't
+            console.log('PPNN - BG: Getting options from store');
+            storage.getOptions(function () {
+                console.log('PPNN - BG: Sending options to tab', tabId, storage.options);
+                done(storage.options);
+            });
+        }
     };
 
+    // when options change, background stores to pass to newly opened tabs
     handlers.optionsChanged = function (res) {
         console.log('PPNN - BG: Got new options', res);
 
         storage.options = res;
-
-        for (var chWin in chWindows) {
-            if (chWindows.hasOwnProperty(chWin)) {
-
-                console.log('PPNN - BG: Sending new options to tab', chWindows[chWin]);
-                msg.cmd(chWindows[chWin], ['ct'], 'optionsChanged', storage.options);
-            }
-        }
     };
 
     handlers.enabledChanged = function (info, tabId, done) {

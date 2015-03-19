@@ -29,38 +29,11 @@
 
     //console.log(storage.options);
 
-    function toggleIcon(enabled) {
-        // TODO: have individual settings for each page
-        // notify bg to turn the icon on the page grey
-        msg.bg('enabledChanged',
-            {
-                enabled: enabled
-            },
-            thisTabId,
-            function (res) {
-                console.log(res);
-            }
-        );
-    }
-
     handlers.rememberTabId = function (data) {
         thisTabId = data.id;
         isActive = data.isActive;
 
-        msg.bg('getOptions', thisTabId, function (res) {
-            console.log('PPNN - CT : Got initial options', storage.options, res);
-
-            toggleIcon(res.otherRules.enabled);
-
-            storage.options = res;
-
-            /*mutant.init(function () {
-                parser.purge();
-                evolution();
-            });*/
-
-            evolution();
-        });
+        getNewOptions();
     };
 
     /**
@@ -72,24 +45,19 @@
 
         console.log('PPNN - CT: I\'active', value);
 
-        evolution();
+        getNewOptions();
     };
 
     handlers.optionsChanged = function (res) {
         console.log('PPNN - CT: Got new options', res);
 
-        if (storage.options.otherRules.enabled !== res.otherRules.enabled) {
-            toggleIcon(res.otherRules.enabled);
-        }
-
+        toggleIcon(res.otherRules.enabled);
         storage.options = res;
 
         //mutant.stop();
-        if (isActive) {
-            parser
-                .updatePrices()
-            ;
-        }
+
+        evolution();
+
         // we don't notify background with found/updated prices yet
         //notifyBackground();
 
@@ -99,6 +67,45 @@
     parser.init();
 
     msg = msg.init('ct', handlers);
+
+    function getNewOptions() {
+        msg.bg('getOptions', thisTabId, function (res) {
+            console.log('PPNN - CT : Got options', storage.options, res);
+
+            toggleIcon(res.otherRules.enabled);
+            storage.options = res;
+
+            /*mutant.init(function () {
+                parser.purge();
+                evolution();
+            });*/
+
+            evolution();
+        });
+    }
+
+    /**
+     * 
+     * @param {Boolean} enabled new global rule enabled value
+     */
+    function toggleIcon(enabled) {
+
+        // change icon only if the enabled option changed or if it's a new page - toggle icon
+        if (!storage.options || storage.options.otherRules.enabled !== enabled) {
+
+            // TODO: have individual settings for each page
+            // notify bg to turn the icon on the page grey
+            msg.bg('enabledChanged',
+                {
+                    enabled: enabled
+                },
+                thisTabId,
+                function (res) {
+                    console.log(res);
+                }
+            );
+        }
+    }
 
     function notifyBackground(arePricesDetected) {
         // maybe use this later for some informational update; ignore now
@@ -157,7 +164,7 @@
             ;
             */
         } else if (isActive) {
-            // udpate prices if the tab is active
+            // update prices if the tab is active
             parser
                 .updatePrices()
             ;

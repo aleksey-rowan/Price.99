@@ -17,7 +17,7 @@
     var handlers = require('./modules/handlers').create('bg'),
         msg = require('./modules/msg'),
         storage = require('./modules/storage.js'),
-        
+
         chWindows = {};
 
     // adding special background notification handlers onConnect / onDisconnect
@@ -27,7 +27,7 @@
 
     handlers.onConnect = function (ctxName, tabId) {
         if (ctxName === 'ct') {
-            msg.cmd(tabId, ['ct'], 'rememberTabId', 
+            msg.cmd(tabId, ['ct'], 'rememberTabId',
                 {
                     id: tabId,
                     isActive: isTabActive(tabId)
@@ -52,6 +52,14 @@
         console.log('PPNN - BG: Got new options', res);
 
         storage.options = res;
+
+        for (var chWin in chWindows) {
+            if (chWindows.hasOwnProperty(chWin)) {
+
+                console.log('PPNN - BG: Sending new options to tab', chWindows[chWin]);
+                msg.cmd(chWindows[chWin], ['ct'], 'optionsChanged', storage.options);
+            }
+        }
     };
 
     handlers.enabledChanged = function (info, tabId, done) {
@@ -141,7 +149,7 @@
 
         // if there is already active tab in this window, make it inactive
         if (chWindows[windowId]) {
-        //if (activeTabId) {
+            //if (activeTabId) {
             setActiveTab(chWindows[windowId], false);
         }
 

@@ -155,6 +155,13 @@ module.exports = function (grunt) {
                 pushTo: 'upstream',
                 gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
             }
+        },
+
+        version_bump: {
+            files: [
+                'package.json'
+            ],
+            versionStructureFile: 'ppnnvs.json'
         }
     });
 
@@ -208,6 +215,7 @@ module.exports = function (grunt) {
             'manifest',
             'mkdir:js',
             'browserify',
-            'bump-only:patch'
+            //'bump-only:prerelease'
+            'version_bump'
         ]);
 };

@@ -38,8 +38,6 @@
         isActive = data.isActive;
 
         storeNewOptions(data.options);
-
-        evolution();
         //getNewOptions();
     };
 
@@ -62,8 +60,6 @@
 
         //mutant.stop();
 
-        evolution();
-
         // we don't notify background with found/updated prices yet
         //notifyBackground();
 
@@ -84,8 +80,6 @@
             //    parser.purge();
             //    evolution();
             //});
-
-            evolution();
         });
     }
 
@@ -99,6 +93,8 @@
         if (res) {
             toggleIcon(res.otherRules.enabled);
             storage.options = res;
+
+            evolution();
         } else {
             getNewOptions();
         }

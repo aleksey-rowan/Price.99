@@ -155,6 +155,21 @@ module.exports = function (grunt) {
                 pushTo: 'upstream',
                 gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
             }
+        },
+        compress: {
+            prod: {
+                options: {
+                    mode: 'zip',
+                    level: 9,
+                    pretty: true,
+                    archive: 'build/' + pkg.name + '-' + pkg.version.replace("-", ".") + '.zip'
+                },
+                files: [{
+                    expand: true,
+                    cwd: 'build/unpacked-prod/',
+                    src: ['**/*']
+                }]
+            }
         }
     });
 
@@ -198,8 +213,21 @@ module.exports = function (grunt) {
     // DEFAULT
     //
 
-    grunt.registerTask('default', ['clean', 'test', 'less', 'mkdir:unpacked', 'copy:main', 'manifest',
-      'mkdir:js', 'browserify', 'copy:prod', 'uglify', /*'exec',*/ 'circleci']);
+    grunt.registerTask('default', [
+        'clean',
+        'test',
+        'less',
+        'mkdir:unpacked',
+        'copy:main',
+        'manifest',
+        'mkdir:js',
+        'browserify',
+        'copy:prod',
+        'uglify',
+        /*'exec',*/
+        'circleci',
+        'compress:prod'
+    ]);
 
     grunt.registerTask('light-build',
         [

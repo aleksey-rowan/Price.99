@@ -155,13 +155,6 @@ module.exports = function (grunt) {
                 pushTo: 'upstream',
                 gitDescribeOptions: '--tags --always --abbrev=1 --dirty=-d'
             }
-        },
-
-        version_bump: {
-            files: [
-                'package.json'
-            ],
-            versionStructureFile: 'ppnnvs.json'
         }
     });
 
@@ -177,6 +170,9 @@ module.exports = function (grunt) {
               var field = fields[i];
               mnf[field] = pkg[field];
           }
+
+          mnf.version = mnf.version.replace("-", ".");
+
           grunt.file.write('build/unpacked-dev/manifest.json', JSON.stringify(mnf, null, 4) + '\n');
           grunt.log.ok('manifest.json generated');
       }
@@ -215,7 +211,6 @@ module.exports = function (grunt) {
             'manifest',
             'mkdir:js',
             'browserify',
-            //'bump-only:prerelease'
-            'version_bump'
+            'bump-only:prerelease'
         ]);
 };

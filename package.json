@@ -1,6 +1,6 @@
 {
     "name": "Price.99",
-    "version": "0.1.1.39",
+    "version": "0.1.1-42",
     "description": "Round up prices automatically to avoid psychological pricing, reduce clutter, and make easy comparisons.",
     "dependencies": {},
     "devDependencies": {
@@ -22,8 +22,7 @@
         "expect": "~0.1.1",
         "jsdom": "~1.0.0",
         "grunt-contrib-less": "~0.12.0",
-        "jit-grunt": "~0.9.1",
-        "grunt-version-bump": "~1.0.5"
+        "jit-grunt": "~0.9.1"
     },
     "engines": {
         "node": ">= 0.10.0"

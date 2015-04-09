@@ -1,35 +1,60 @@
 ﻿/* global module, chrome */
 
-var CONST = {
-    optionsDefault: {
-        roundRules: {
-            cents: {
-                value: 79,
-                enabled: true
+var $ = require('./../libs/jquery-1.11.1.min'),
+    CONST = {
+        optionsDefault: {
+            roundRules: {
+                cents: {
+                    value: 79,
+                    enabled: true
+                },
+                dollars: {
+                    value: 9,
+                    enabled: false
+                },
+                tens: {
+                    value: 9,
+                    enabled: false
+                },
+                hundreds: {
+                    value: 1,
+                    enabled: false
+                }
             },
-            dollars: {
-                value: 9,
-                enabled: false
+            otherRules: {
+                enabled: true,
+                hideAllCents: false,
+                hideZeroCents: true
             },
-            tens: {
-                value: 9,
-                enabled: false
-            },
-            hundreds: {
-                value: 1,
-                enabled: false
+            whitelist: {
+                enabled: true,
+                defaultsEnabled: true,
+                items: [
+                    {
+                        url: 'rbc.ca'
+                    }
+                ]
             }
         },
-        otherRules: {
-            enabled: true,
-            hideAllCents: false,
-            hideZeroCents: true
+        whitelistDefault: {
+            items: [
+                {
+                    url: 'rbc.ca'
+                }
+            ]
+        },
+        ignorelistDefault: {
+            items: [
+                {
+                    reg: /google\.([^\/]+)\/(ima?g|.*[?&]tbm=isch|.*[?&]site=images)/i
+                }
+            ]
         }
-    }
-};
+    };
 
 module.exports = {
-    options: null
+    options: null,
+    defaults: CONST
 };
 
 module.exports.getOptions = function (callback, force) {
@@ -41,7 +66,9 @@ module.exports.getOptions = function (callback, force) {
             options: CONST.optionsDefault
         }, function (items) {
             console.log('Storage : Options loaded', items.options);
-            module.exports.options = items.options;
+            //module.exports.options = items.options;
+            // push any additional default options that might be added with new versions into the stored options object
+            module.exports.options = $.extend(true, {}, CONST.optionsDefault, items.options);
 
             if (callback) {
                 callback();

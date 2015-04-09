@@ -183,6 +183,7 @@
         } else if (isActive) {
             // update prices if the tab is active
             parser
+                .parse()
                 .updatePrices()
             ;
         }

@@ -51,5 +51,32 @@ module.exports = {
         }
     
         return keepGoing;
+    },
+
+    deepCheck: function(o1, o2) {
+        var k1, k2, key, _i, _len;
+        
+        k1 = Object.keys(o1).sort();
+        k2 = Object.keys(o2).sort();
+        
+        if (k1.length !== k2.length) {
+            return false;
+        }
+        
+        for (_i = 0, _len = k1.length; _i < _len; _i++) {
+            key = k1[_i];
+            
+            if (o1.hasOwnProperty(key) !== o2.hasOwnProperty(key)) {
+                return false;
+            } else if (typeof o1[key] !== typeof o2[key]) {
+                return false;
+            }
+            
+            if (typeof o1[key] === 'object') {
+                return this.deepCheck(o1[key], o2[key]);
+            } else {
+                return o1[key] === o2[key];
+            }
+        }
     }
 };

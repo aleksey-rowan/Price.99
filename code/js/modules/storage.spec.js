@@ -65,6 +65,19 @@ describe('storage module', function () {
             assert.strictEqual(isEqual, true);
         });
 
+        it('should correctly add new user option', function () {
+            var isEqual;
+
+            storage.options.newOption2 = { two: 2 };
+            storage.saveOptions();
+
+            storage.getOptions();
+
+            isEqual = util.deepCheck(storage.options, storage.defaults.optionsDefault);
+
+            assert.strictEqual(isEqual, false);
+        });
+
         /*it('should correctly purge price that no longer exist', function () {
             var pps;
 

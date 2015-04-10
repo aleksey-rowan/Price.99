@@ -1,4 +1,4 @@
-﻿/* global module, chrome */
+﻿/* global module, chrome:true */
 
 var $ = require('./../libs/jquery-1.11.1.min'),
     CONST = {
@@ -55,6 +55,36 @@ var $ = require('./../libs/jquery-1.11.1.min'),
 module.exports = {
     options: null,
     defaults: CONST
+};
+
+module.exports.testHook = function (j) {
+    var options;
+        
+    chrome = {
+        storage: {
+            sync: {
+
+            }
+        }
+    };
+
+    $ = j;
+
+    // mock chrome storage functions
+    chrome.storage.sync.get = function (arg, callback) {
+        var items = {
+            options : options || arg.options
+        };
+        
+        callback.call(this, items);
+    };
+
+    chrome.storage.sync.set = function (arg, callback) {
+
+        options = arg.options;
+
+        callback.call(this);
+    };
 };
 
 module.exports.getOptions = function (callback, force) {

@@ -1,4 +1,4 @@
-/* global require */
+/* global require, window */
 
 ; (function () {
     console.log('CONTENT SCRIPT WORKS!');
@@ -24,7 +24,10 @@
 
         isNew = true,
         isActive = false,
-            
+
+        _isIgnored,
+        _isWhitelisted,
+
         mutantNodes;
 
     //console.log(storage.options);
@@ -158,6 +161,10 @@
         //mutant.stop();
         var arePricesDetected;
         
+        if (isIgnored()) {
+            return;
+        }
+
         // parse if new and active; not just new
         if (isNew && isActive) {
             isNew = false;
@@ -165,10 +172,12 @@
             arePricesDetected = parser.peek();
             notifyBackground(arePricesDetected);
 
-            parser
-                .parse()
-                .updatePrices()
-            ;
+            if (!isWhitelisted()) {
+                parser
+                    .parse()
+                    .updatePrices()
+                ;
+            }
 
 
         } else if (mutantNodes && isActive) {
@@ -182,13 +191,72 @@
             */
         } else if (isActive) {
             // update prices if the tab is active
-            parser
-                .parse()
-                .updatePrices()
-            ;
+            if (!isWhitelisted()) {
+                parser
+                    .parse()
+                    .updatePrices()
+                ;
+            }
         }
         
         //mutant.start();
+    }
+
+    function isIgnored() {
+        var ignorelistDefault = storage.defaults.ignorelistDefault,
+            reg,
+            url = window.location.href;
+
+        if (typeof _isIgnored === "undefined") {
+
+            ignorelistDefault.items.forEach(function (item) {
+                reg = new RegExp(item.reg);
+
+                if (reg.test(url)) {
+                    console.log(item.name, 'detected. Ignoring.');
+
+                    _isIgnored = true;
+                }
+            });
+        } else {
+            _isIgnored = false;
+        }
+
+        return _isIgnored;
+    }
+
+    function isWhitelisted(force) {
+        var whitelist = storage.options.whitelist,
+            whitelistDefault = storage.defaults.whitelistDefault,
+            
+            url = window.location.href;
+    
+        if (typeof _isWhitelisted === "undefined" || force) {
+
+            if (whitelist.defaultsEnabled) {
+
+                whitelistDefault.items.forEach(function (item) {
+                    if (url.indexOf(item.url) !== -1) {
+                        _isWhitelisted = true;
+                    }
+
+                });
+            }
+
+            if (whitelist.enabled) {
+
+                whitelist.items.forEach(function (item) {
+                    if (url.indexOf(item.url) !== -1) {
+                        _isWhitelisted = true;
+                    }
+
+                });
+            }
+        } else {
+            _isWhitelisted = false;
+        }
+
+        return _isWhitelisted;
     }
 
     console.log('PPNN - CT: jQuery version:', $().jquery);

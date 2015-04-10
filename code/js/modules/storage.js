@@ -46,6 +46,7 @@ var $ = require('./../libs/jquery-1.11.1.min'),
         ignorelistDefault: {
             items: [
                 {
+                    name: 'Google images',
                     reg: /google\.([^\/]+)\/(ima?g|.*[?&]tbm=isch|.*[?&]site=images)/i
                 }
             ]

@@ -1,6 +1,7 @@
-﻿/* global module, chrome:true */
+﻿/* global module, $:true, chrome:true */
 
-var $ = require('./../libs/jquery-1.11.1.min'),
+var //$ = require('./../libs/jquery-1.11.1.min'),
+    deepExtend = require('./../libs/node-deep-extend.min.js'),
     CONST = {
         optionsDefault: {
             roundRules: {
@@ -97,7 +98,7 @@ module.exports.getOptions = function (callback, force) {
             console.log('Storage : Options loaded', items.options);
             //module.exports.options = items.options;
             // push any additional default options that might be added with new versions into the stored options object
-            module.exports.options = $.extend(true, {}, CONST.optionsDefault, items.options);
+            module.exports.options = deepExtend({}, CONST.optionsDefault, items.options);
 
             if (callback) {
                 callback();

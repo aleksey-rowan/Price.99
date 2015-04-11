@@ -1,6 +1,6 @@
 {
     "name": "Price.99",
-    "version": "0.1.3-45",
+    "version": "0.1.3-53",
     "description": "Round up prices automatically to avoid psychological pricing, reduce clutter, and make easy comparisons.",
     "dependencies": {},
     "devDependencies": {

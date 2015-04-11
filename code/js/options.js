@@ -23,7 +23,9 @@
         optionsButton = $('#options-button'),
         
         optionRules = require('./modules/optionRules.js'),
-        priceRules = require('./modules/priceRules.js');
+        priceRules = require('./modules/priceRules.js'),
+            
+        util = require('./modules/util.js');
 
         /*globalRule = {
             container: $('#global-rule'),
@@ -70,12 +72,22 @@
     }
 
     function init(callback) {
-        
+        var whitelistItems;
+
         $('[i18n-content]').each(function () {
             var element = $(this);
             //element.text(chrome.i18n.getMessage(element.attr('i18n-content')));
             element.html(chrome.i18n.getMessage(element.attr('i18n-content')));
         });
+
+        whitelistItems = storage.options.whitelist.items.map(function (item) {
+            return {
+                value: item.url,
+                text: item.url
+            };
+        });
+
+        util.setSelectOptions($('#user-whitelist'), whitelistItems);
 
         priceRules.init(function () {
             saveOptions(callback);

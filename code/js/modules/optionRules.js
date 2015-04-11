@@ -2,26 +2,33 @@
 
 var $ = require('./../libs/jquery-1.11.1.min'),
     storage = require('./../modules/storage'),
-    
+    bitRules = [];
+
+module.exports.init = function (callback) {
     bitRules = [
         {
             container: $('#hide-zero-cents'),
             enabledControl: $('#hide-zero-cents input[type=checkbox]'),
-            content: 'hideZeroCents'
+            content: storage.options.otherRules,
+            property: 'hideZeroCents'
         },
         {
             container: $('#global-rule'),
             enabledControl: $('#global-rule input[type=checkbox]'),
-            content: 'enabled'
+            content: storage.options.otherRules,
+            property: 'enabled'
+        },
+        {
+            container: $('#whitelist-enabled'),
+            enabledControl: $('#whitelist-enabled input[type=checkbox]'),
+            content: storage.options.whitelist,
+            property: 'enabled'
         }
     ];
 
-module.exports.init = function (callback) {
-    var otherRules = storage.options.otherRules;
-
     bitRules.forEach(function (rule) {
         rule.enabledControl
-            .prop('checked', otherRules[rule.content])
+            .prop('checked', rule.content[rule.property])
             .picker({
                 toggle: true,
                 labels: {
@@ -32,7 +39,7 @@ module.exports.init = function (callback) {
             .change(function (e) {
                 console.log(e);
 
-                otherRules[rule.content] = e.currentTarget.checked;
+                rule.content[rule.property] = e.currentTarget.checked;
                 callback();
             });
 

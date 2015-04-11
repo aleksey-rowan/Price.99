@@ -96,5 +96,5 @@ module.exports = {
                 text: option.text
             }));
         });
-    },
+    }
 };

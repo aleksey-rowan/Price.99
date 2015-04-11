@@ -11,9 +11,9 @@ var util = require('./../modules/util'),
 function updateWhitelist() {
     var whitelistItems;
 
-    whitelistItems = storage.options.whitelist.items.map(function (item) {
+    whitelistItems = storage.options.whitelist.items.map(function (item, index) {
         return {
-            value: item.url,
+            value: index,
             text: item.url
         };
     });
@@ -25,8 +25,20 @@ function updateWhitelist() {
 
 module.exports = {
     init: function (callback) {
+        var whitelistSelectedItems;
 
-        whitelist.selecter({ callback: function (i, e) { console.log(i, e); } });
+        whitelist.selecter(
+            {
+                callback: function (items)
+                {
+                    whitelistSelectedItems = items;
+
+                    if (items.length > 0) {
+
+                    }
+                }
+            }
+        );
         updateWhitelist();
 
         whitelistAdd.on('click', function () {
@@ -42,6 +54,14 @@ module.exports = {
         });
 
         whitelistDelete.on('click', function () {
+            // remove selected items from the whitelist
+            for (var i = whitelistSelectedItems.length - 1; i >= 0; i--) {
+                storage.options.whitelist.items.splice(whitelistSelectedItems[i], 1);
+            }
+
+            updateWhitelist();
+
+            callback();
         });
     }
 };

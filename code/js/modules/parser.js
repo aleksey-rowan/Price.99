@@ -221,6 +221,15 @@ module.exports = {
         return this;
     },
 
+    resetPrices: function () {
+        pricePoints.forEach(function (pp) {
+            pp.reset();
+        });
+        console.log('PPNN - CT-Parser : Prices resset');
+
+        return this;
+    },
+
     blah: function () {
         console.log('parser o', storage.options);
     }

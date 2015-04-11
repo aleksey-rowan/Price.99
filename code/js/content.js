@@ -265,6 +265,8 @@
         }
 
         if (_isWhitelisted) {
+            // reset prices if the page whitelisted in case the prices were changed before that
+            parser.resetPrices();
             console.log('PPNN - CT: Page is whitelisted');
         }
 

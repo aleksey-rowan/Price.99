@@ -96,6 +96,8 @@
         if (res) {
             toggleIcon(res.otherRules.enabled);
             storage.options = res;
+            // reset whitelist status to be rechecked
+            _isWhitelisted = undefined;
 
             evolution();
         } else {
@@ -203,7 +205,10 @@
         
         //mutant.start();
     }
-
+    
+    /**
+     * Checks if the tab page is in the ignore list. Check once and store the result as the ignore list cannot be dynamically changed.
+     */
     function isIgnored() {
         var ignorelistDefault = storage.defaults.ignorelistDefault,
             reg,

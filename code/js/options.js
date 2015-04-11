@@ -14,19 +14,16 @@
     // instance of given context is created / destroyed, or you want to be able to
     // issue command requests from this context), you may simply omit the
     // `hadnlers` parameter for good when invoking msg.init()
-    var //$ = require('./libs/jquery-1.11.1.min'),
-        handlers = require('./modules/handlers').create('options'),
+    var handlers = require('./modules/handlers').create('options'),
         storage = require('./modules/storage.js'),
         runner = require('./modules/runner'),
         msg = require('./modules/msg'),
-        
-        optionsButton = $('#options-button'),
-        
-        optionRules = require('./modules/optionRules.js'),
-        priceRules = require('./modules/priceRules.js'),
-            
-        util = require('./modules/util.js');
 
+        optionsButton = $('#options-button'),
+
+        optionRules = require('./modules/optionRules.js'),
+        priceRules = require('./modules/priceRules.js');
+            
         /*globalRule = {
             container: $('#global-rule'),
             enabledControl: $('#global-rule input[type=checkbox]'),
@@ -34,17 +31,6 @@
         },*/
 
     //form.init(runner.go.bind(runner, msg));
-
-    //require('./libs/jquery.maskedinput.min.js');
-
-    /*require('./libs/stepper/jquery.fs.stepper.min.js');
-    require('./libs/picker/jquery.fs.picker.js');*/
-
-
-    /*require('./libs/formstone-0.4.7/js/core.js');
-    require('./libs/formstone-0.4.7/js/number.js');
-    require('./libs/formstone-0.4.7/js/checkbox.js');
-    require('./libs/formstone-0.4.7/js/touch.js');*/
 
     msg = msg.init('options', handlers);
 
@@ -79,22 +65,12 @@
     }
 
     function init(callback) {
-        var whitelistItems;
 
         $('[i18n-content]').each(function () {
             var element = $(this);
             //element.text(chrome.i18n.getMessage(element.attr('i18n-content')));
             element.html(chrome.i18n.getMessage(element.attr('i18n-content')));
         });
-
-        whitelistItems = storage.options.whitelist.items.map(function (item) {
-            return {
-                value: item.url,
-                text: item.url
-            };
-        });
-
-        util.setSelectOptions($('#user-whitelist'), whitelistItems);
 
         priceRules.init(function () {
             saveOptions(callback);

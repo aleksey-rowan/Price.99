@@ -76,8 +76,14 @@
     "whitelistLabel": {
         "message": "Whitelist"
     },
-    "whitelistInfoText": {
-        "message": ""
+    "whitelistInfoText1": {
+        "message": "You can specify a list of sites where Price.99 will not round any prices."
+    },
+    "whitelistInfoText2": {
+        "message": "Enter the URL of the site, and click \"Add\":"
+    },
+    "whitelistInfoText3": {
+        "message": "Do not round prices on these sites:"
     },
     "whitelistAddLabel": {
         "message": "Add"

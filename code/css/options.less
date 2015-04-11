@@ -141,8 +141,7 @@ footer {
         background-image: none;
         padding-left: 0;
         padding-right: 0;
-        width: 100%;
-
+        
         option {
             padding-top: 8px;
             padding-left: 10px;
@@ -155,7 +154,7 @@ footer {
 .controls-line {
     width: 100%;
     display: -webkit-box;
-    padding: 10px 0;
+    margin: 10px 0;
 
     .spacer {
         -webkit-box-flex: 1;
@@ -164,24 +163,27 @@ footer {
     &.whitelist-add {
         input {
             display: block;
-            width: 80%;
+            width: 78%;
+            height: 34px;
         }
 
         button {
             display: block;
-            width: 17%;
+            width: 19%;
         }
     }
 
     &.whitelist-list {
-        select {
+        .selecter {
             display: block;
-            width: 80%;
+            width: 78%;
+            margin: 0;
         }
 
         button {
             display: block;
-            width: 17%;
+            width: 19%;
+            height: 34px;
         }
     }
 }

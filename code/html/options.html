@@ -7,6 +7,7 @@
 
     <link href="../css/libs/stepper/jquery.fs.stepper.min.css" rel="stylesheet" />
     <link href="../css/libs/picker/jquery.fs.picker.min.css" rel="stylesheet" />
+    <link href="../css/libs/selecter/jquery.fs.selecter.min.css" rel="stylesheet" />
 
     <!--<link href="../css/libs/formstone-0.4.7/css/checkbox.css" rel="stylesheet" />
     <link href="../css/libs/formstone-0.4.7/css/number.css" rel="stylesheet" />-->
@@ -256,7 +257,7 @@
                     <h1 i18n-content="whitelistLabel">About</h1>
                 </header>
                 <div class="content">
-                    <p i18n-content="whitelistInfoText"></p>
+                    <p i18n-content="whitelistInfoText1"></p>
 
                     <div class="option-item">
                         <div id="whitelist-enabled-title" class="option-item-title">
@@ -274,17 +275,21 @@
                         <div class="clearfix"></div>
                     </div>
 
-                    <div class="controls-line whitelist-add">
+                    <p i18n-content="whitelistInfoText2" class="mrgn-bt-0"></p>
 
-                        <input type="text">
+                    <div class="controls-line whitelist-add mrgn-tp-5">
+
+                        <input type="text" id="whitelist-new-item">
                         <div class="spacer"></div>
-                        <button i18n-content="whitelistAddLabel">Add</button>
+                        <button i18n-content="whitelistAddLabel" id="whitelist-add-button" class="fs-button">Add</button>
                     </div>
 
-                    <div class="controls-line whitelist-list">
-                        <select multiple="multiple" id="user-whitelist"></select>
+                    <p i18n-content="whitelistInfoText3" class="mrgn-bt-0"></p>
+
+                    <div class="controls-line whitelist-list mrgn-tp-5">
+                        <select multiple="multiple" id="whitelist-list"></select>
                         <div class="spacer"></div>
-                        <button i18n-content="whitelistDeleteLabel">Delete</button>
+                        <button i18n-content="whitelistDeleteLabel" class="fs-button" id="whitelist-delete-button">Delete</button>
                     </div>
                 </div>
             </div>
@@ -333,6 +338,7 @@
 
     <script src="../js/libs/picker/jquery.fs.picker.min.js"></script>
     <script src="../js/libs/stepper/jquery.fs.stepper.min.js"></script>
+    <script src="../js/libs/selecter/jquery.fs.selecter.min.js"></script>
 
     <script src="../js/options.js"></script>
 </body>

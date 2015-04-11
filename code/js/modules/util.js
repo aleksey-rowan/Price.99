@@ -1,7 +1,11 @@
-﻿/* global module, $, document */
+﻿/* global module, document */
+
+var $ = require('./../libs/jquery-1.11.1.min');
 
 module.exports = {
-    testHook: function(document) {
+    testHook: function(j, document) {
+        $ = j;
+
         this.containsInDom = function (el) {
             return $.contains(document.documentElement, el);
         };

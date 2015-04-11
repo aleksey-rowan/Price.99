@@ -67,7 +67,7 @@ module.exports = {
         $ = j;
         highlightRegex.testHook($, d);
         pricePoint.testHook($);
-        util.testHook(d);
+        util.testHook($, d);
     },
 
     init: function () {

@@ -1,4 +1,4 @@
-﻿/* global module, require */
+﻿/* global module, require, $:true */
 
 //Price.99
 
@@ -18,7 +18,7 @@ chrome.runtime.sendMessage({ greeting: 'getOptions' }, function (response) {
 
 //({ a : function() {console.log("ds")}}.a())
 
-var $ = require('./../libs/jquery-1.11.1.min'),
+var //$ = require('./../libs/jquery-1.11.1.min'),
     storage = require('./../modules/storage'),
     util = require('./../modules/util');
 

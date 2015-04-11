@@ -1,6 +1,6 @@
-﻿/* global*/
+﻿/* global $ */
 
-var $ = require('./../libs/jquery-1.11.1.min'),
+var //$ = require('./../libs/jquery-1.11.1.min'),
     storage = require('./../modules/storage'),
     pauseButton = $('#pause-button'),
     defaultDetails = $('#default-details'),

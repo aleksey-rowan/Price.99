@@ -1,6 +1,4 @@
-﻿/* global module, document */
-
-var $ = require('./../libs/jquery-1.11.1.min');
+﻿/* global module, document, $:true */
 
 module.exports = {
     testHook: function(j, document) {

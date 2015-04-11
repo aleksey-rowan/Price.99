@@ -1,7 +1,6 @@
-﻿/* global*/
+﻿/* global $ */
 
-var $ = require('./../libs/jquery-1.11.1.min'),
-    storage = require('./../modules/storage'),
+var storage = require('./../modules/storage'),
     bitRules = [];
 
 module.exports.init = function (callback) {

@@ -63,11 +63,19 @@ module.exports = function (grunt) {
                     expand: true,
                     cwd: 'code/',
                     src: [
-                        '**', '!js/**',
+                        '**',
+                        '!js/**',
+                        'js/libs/jquery-1.11.1.min.js',
+                        'js/libs/picker/*.min.js',
+                        'js/libs/stepper/*.min.js',
                         '!**/*.md',
 
                         '!**/*.less',
-                        '!**/*.map'
+                        '!**/*.map',
+
+                        '!css/libs/**',
+                        'css/libs/**/*.min.css',
+                        'css/libs/**/*.png'
                     ],
                     dest: 'build/unpacked-dev/'
                 }]

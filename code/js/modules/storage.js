@@ -30,16 +30,14 @@ var $ = require('./../libs/jquery-1.11.1.min'),
                 enabled: true,
                 defaultsEnabled: true,
                 items: [
-                    {
-                        url: 'rbc.ca'
-                    }
                 ]
             }
         },
         whitelistDefault: {
             items: [
                 {
-                    url: 'rbc.ca'
+                    name: 'Royal Bank of Canada',
+                    url: '.royalbank.com'
                 }
             ]
         },

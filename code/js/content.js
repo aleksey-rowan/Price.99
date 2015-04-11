@@ -211,17 +211,17 @@
 
         if (typeof _isIgnored === "undefined") {
 
+            _isIgnored = false;
+
             ignorelistDefault.items.forEach(function (item) {
                 reg = new RegExp(item.reg);
 
                 if (reg.test(url)) {
-                    console.log(item.name, 'detected. Ignoring.');
+                    console.log('PPNN - CT: Ignored page detected:', item.name);
 
                     _isIgnored = true;
                 }
             });
-        } else {
-            _isIgnored = false;
         }
 
         return _isIgnored;
@@ -234,11 +234,13 @@
             url = window.location.href;
     
         if (typeof _isWhitelisted === "undefined" || force) {
+            _isWhitelisted = false;
 
             if (whitelist.defaultsEnabled) {
 
                 whitelistDefault.items.forEach(function (item) {
                     if (url.indexOf(item.url) !== -1) {
+                        console.log('PPNN - CT: Whitelisted page detected:', item.name);
                         _isWhitelisted = true;
                     }
 
@@ -249,13 +251,16 @@
 
                 whitelist.items.forEach(function (item) {
                     if (url.indexOf(item.url) !== -1) {
+                        console.log('PPNN - CT: User-whitelisted page detected:', item.url);
                         _isWhitelisted = true;
                     }
 
                 });
             }
-        } else {
-            _isWhitelisted = false;
+        }
+
+        if (_isWhitelisted) {
+            console.log('PPNN - CT: Page is whitelisted');
         }
 
         return _isWhitelisted;

@@ -6,8 +6,6 @@
  * Copyright 2014 Ben Plum; MIT Licensed 
  */
 
-var jQuery = require('./../jquery-1.11.1.min.js');
-
 ;(function ($, window) {
 	"use strict";
 

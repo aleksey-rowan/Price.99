@@ -1,4 +1,4 @@
-/* global require, chrome */
+/* global require, chrome, $ */
 
 ; (function () {
     "use strict";
@@ -14,7 +14,7 @@
     // instance of given context is created / destroyed, or you want to be able to
     // issue command requests from this context), you may simply omit the
     // `hadnlers` parameter for good when invoking msg.init()
-    var $ = require('./libs/jquery-1.11.1.min'),
+    var //$ = require('./libs/jquery-1.11.1.min'),
         handlers = require('./modules/handlers').create('options'),
         storage = require('./modules/storage.js'),
         runner = require('./modules/runner'),
@@ -36,8 +36,15 @@
     //form.init(runner.go.bind(runner, msg));
 
     //require('./libs/jquery.maskedinput.min.js');
-    require('./libs/stepper/jquery.fs.stepper.min.js');
-    require('./libs/picker/jquery.fs.picker.js');
+
+    /*require('./libs/stepper/jquery.fs.stepper.min.js');
+    require('./libs/picker/jquery.fs.picker.js');*/
+
+
+    /*require('./libs/formstone-0.4.7/js/core.js');
+    require('./libs/formstone-0.4.7/js/number.js');
+    require('./libs/formstone-0.4.7/js/checkbox.js');
+    require('./libs/formstone-0.4.7/js/touch.js');*/
 
     msg = msg.init('options', handlers);
 

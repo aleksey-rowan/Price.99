@@ -1,4 +1,4 @@
-/* global require, chrome */
+/* global require, chrome, $ */
 
 ; (function () {
     "use strict";
@@ -14,18 +14,18 @@
     // instance of given context is created / destroyed, or you want to be able to
     // issue command requests from this context), you may simply omit the
     // `hadnlers` parameter for good when invoking msg.init()
-    var $ = require('./libs/jquery-1.11.1.min'),
+    var //$ = require('./libs/jquery-1.11.1.min'),
         handlers = require('./modules/handlers').create('popup'),
         storage = require('./modules/storage.js'),
         runner = require('./modules/runner'),
         msg = require('./modules/msg'),
-        
+
         optionsButton = $('#options-button'),
 
         priceRules = require('./modules/priceRules.js');
 
-    require('./libs/stepper/jquery.fs.stepper.min.js');
-    require('./libs/picker/jquery.fs.picker.js');
+    /*require('./libs/stepper/jquery.fs.stepper.min.js');
+    require('./libs/picker/jquery.fs.picker.js');*/
 
     msg = msg.init('options', handlers);
 

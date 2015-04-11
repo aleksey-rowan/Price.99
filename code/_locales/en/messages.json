@@ -73,6 +73,13 @@
         "message": "Price.99 rounds prices according to rules. Select a rule and adjust the cut-off value for rounding. Hover over rules for more information."
     },
     
+    "whitelistLabel": {
+        "message": "Whitelist"
+    },
+    "whitelistInfoText": {
+        "message": ""
+    },
+
     "optButtonLabel": {
         "message": "OPTIONS"
     },

@@ -98,6 +98,13 @@
         "message": "Enables price rounding."
     },
 
+    "enbWhitelistLabel": {
+        "message": "Enabled"
+    },
+    "enbWhitelistInfo": {
+        "message": "Use whitelist."
+    },
+
     "hideZerpOptLabel": {
         "message": "Hide Zero Cents"
     },

@@ -68,6 +68,7 @@ module.exports = function (grunt) {
                         'js/libs/jquery-1.11.1.min.js',
                         'js/libs/picker/*.min.js',
                         'js/libs/stepper/*.min.js',
+                        'js/libs/selecter/*.min.js',
                         '!**/*.md',
 
                         '!**/*.less',

@@ -78,5 +78,21 @@ module.exports = {
                 return o1[key] === o2[key];
             }
         }
-    }
+    },
+
+    setSelectOptions: function (select, options, append) {
+        //var optionsNode;
+
+        if (!append) {
+            select.empty();
+            //select.append(optionsNode);
+        }
+
+        options.forEach(function (option) {
+            select.append($("<option/>", {
+                value: option.value,
+                text: option.text
+            }));
+        });
+    },
 };

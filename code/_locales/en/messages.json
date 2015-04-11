@@ -79,6 +79,12 @@
     "whitelistInfoText": {
         "message": ""
     },
+    "whitelistAddLabel": {
+        "message": "Add"
+    },
+    "whitelistDeleteLabel": {
+        "message": "Delete"
+    },
 
     "optButtonLabel": {
         "message": "OPTIONS"
@@ -153,6 +159,6 @@
     },
 
     "copy": {
-        "message": "© 2014, IronBox, Some Rights Reserved"
+        "message": "© 2014-2015, IronBox, Some Rights Reserved"
     }
 }

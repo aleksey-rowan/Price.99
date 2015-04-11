@@ -162,6 +162,8 @@
         var arePricesDetected;
         
         if (isIgnored()) {
+            notifyBackground(false);
+
             return;
         }
 

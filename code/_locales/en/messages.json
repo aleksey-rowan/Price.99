@@ -105,6 +105,13 @@
         "message": "RESUME"
     },
 
+    "pauseNotice": {
+        "message": "Rounding is paused"
+    },
+    "whitelistNotice": {
+        "message": "Site is whitelisted"
+    },
+
 
     "enbOptLabel": {
         "message": "Enabled"

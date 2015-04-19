@@ -149,7 +149,23 @@ module.exports = function (grunt) {
                 tasks: ['light-build']
             }
         },
-
+        htmlmin: {
+            
+            all: {
+                options: {
+                    removeComments: true,
+                    collapseWhitespace: true,
+                    preserveLineBreaks: true,
+                    removeAttributeQuotes: false
+                },
+                files: [{
+                    cwd: 'build/unpacked-dev/',
+                    src: '**/*.html',
+                    dest: 'build/unpacked-dev/',
+                    expand: true
+                }]
+            }
+        },
         bump: {
             options: {
                 files: ['package.json'],
@@ -228,6 +244,7 @@ module.exports = function (grunt) {
         'less',
         'mkdir:unpacked',
         'copy:main',
+        'htmlmin',
         'manifest',
         'mkdir:js',
         'browserify',
@@ -245,6 +262,7 @@ module.exports = function (grunt) {
             'less',
             'mkdir:unpacked',
             'copy:main',
+            'htmlmin',
             'manifest',
             'mkdir:js',
             'browserify',

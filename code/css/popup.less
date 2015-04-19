@@ -37,6 +37,20 @@ footer {
     background-color: #494c51;
     height: 40px;
     position: relative;
+
+    .fs-button {
+        display: inline-block !important;
+        margin: 5px !important;
+        width: ~"calc(50% - 8px)";
+
+        &:first-child {
+            //margin-right: 0 !important;
+        }
+
+        &:last-child {
+            margin-left: 1px !important;
+        }
+    }
 }
 
 #options-button {
@@ -46,12 +60,6 @@ footer {
 }
 
 #pause-button {
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    width: 94px;
-    /*width: calc(~'100% - 10px');*/
-
     padding-left: 26px !important;
 
     background-image: url('../images/Play-16.png') !important;

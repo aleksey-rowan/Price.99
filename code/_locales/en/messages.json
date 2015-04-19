@@ -98,6 +98,9 @@
     "pauseButtonLabel": {
         "message": "PAUSE"
     },
+    "whitelistButtonLabel": {
+        "message": "whitelist site"
+    },
     "resumeButtonLabel": {
         "message": "RESUME"
     },

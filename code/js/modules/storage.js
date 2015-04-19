@@ -1,7 +1,7 @@
 ﻿/* global module, $:true, chrome:true */
 
 var //$ = require('./../libs/jquery-1.11.1.min'),
-    deepExtend = require('./../libs/node-deep-extend.min.js'),
+    deepExtend = require('./../libs/node-deep-extend.js'),
     CONST = {
         optionsDefault: {
             roundRules: {

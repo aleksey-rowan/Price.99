@@ -14,7 +14,7 @@ function updateWhitelist() {
     whitelistItems = storage.options.whitelist.items.map(function (item, index) {
         return {
             value: index,
-            text: item.url
+            text: index + '.' + ' ' + item.url
         };
     });
 

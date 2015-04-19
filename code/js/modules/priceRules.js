@@ -104,7 +104,7 @@ module.exports.init = function (callback) {
                 toggle: true,
                 labels: {
                     on: rule.content,
-                    off: ''
+                    off: '' 
                 }
             })
             .picker(otherRules.enabled ? "enable" : "disable") // enable or disabled control according to the global rule's state
@@ -165,9 +165,12 @@ module.exports.init = function (callback) {
 };
 
 module.exports.updateRuleControls = function () {
-    var otherRules = storage.options.otherRules;
+    var otherRules = storage.options.otherRules,
+        roundRules = storage.options.roundRules;
 
     rules.forEach(function (r) {
         r.enabledControl.picker(otherRules.enabled ? "enable" : "disable");
+
+        r.valueControl.parent().stepper(!otherRules.enabled ? 'disable' : roundRules[r.content].enabled ? 'enable' : 'disable');
     });
 };
